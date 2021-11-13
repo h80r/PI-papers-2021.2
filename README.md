@@ -2,15 +2,20 @@
 
 A new Flutter project.
 
-## Getting Started
+## Execução do Projeto
 
-This project is a starting point for a Flutter application.
+Na paǵina inicial do repositório no GitHub, clique no botão verde _Code_ e copie o endereço HTTPS para clonar o repositório na sua máquina local.
 
-A few resources to get you started if this is your first Flutter project:
+![github](assets/images/github.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Com o endereço HTTPS copiado, abra seu terminal de preferência, vá para o diretório onde deseja baixar o projeto e digite o comando `git clone <endereço HTTPS copiado>` e aperte *enter*.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![clone](assets/images/clone.png)
+
+Para visualizar o código, abra seu editor de código de preferência na pasta *pi-papers-2021.2*.
+
+Caso alguns pacotes estejam faltando ou estão desatualizados, execute o comando `flutter pub get` em seu terminal dentro da pasta *pi-papers-2021.2*.
+
+![pub-get](assets/images/pub_get.png)
+
+Para executar a aplicação, basta digitar o comanto `flutter run` em seu terminal ou utilizar o atalho `Crtl + F5`, caso esteja no VSCode.
