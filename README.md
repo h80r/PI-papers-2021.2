@@ -2,6 +2,10 @@
 
 A new Flutter project.
 
+## Execução do Projeto no GitHubPages
+
+Para executar o projeto no GitHub Pages, basta acessar o [link](http://h80r.github.io/pi-papers-2021.2/).
+
 ## Instalação do Flutter
 
 Acesse o [link](https://flutter.dev/docs/get-started/install) da página oficial do Flutter e escolha qual Sistema Operacional está utilizando.
