@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pi_papers_2021_2/widgets/big_button.dart';
-import 'package:pi_papers_2021_2/widgets/footer.dart';
-import 'package:pi_papers_2021_2/widgets/logo.dart';
+import 'package:pi_papers_2021_2/widgets/input/big_button.dart';
+import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
+import 'package:pi_papers_2021_2/widgets/structure/header.dart';
+import 'package:pi_papers_2021_2/widgets/structure/logo.dart';
 
 class TestPage extends StatelessWidget {
   const TestPage({Key? key}) : super(key: key);
@@ -9,7 +10,9 @@ class TestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Test')),
+      appBar: const Header(
+        title: 'Operações Aritméticas',
+      ),
       body: Wrap(
         children: [
           const Logo(

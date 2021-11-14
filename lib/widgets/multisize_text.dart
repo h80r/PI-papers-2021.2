@@ -6,7 +6,7 @@ class MultisizeText extends StatelessWidget {
     required this.text,
     required this.smallSize,
     required this.bigSize,
-    required this.dividerSize,
+    this.dividerSize = 30,
     required this.color,
   }) : super(key: key);
 
