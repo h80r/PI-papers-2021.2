@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
       title: 'Dr. Image',
       initialRoute: '/test',
       theme: ThemeData(
-        fontFamily: 'SF Pro Display',
         scaffoldBackgroundColor: ColorPalette.background,
       ),
       routes: {
