@@ -1,6 +1,6 @@
 # pi_papers_2021_2
 
-A new Flutter project.
+Projeto em flutter para o Trabalho 1 de Processamento de Imagens
 
 ## Execução do Projeto no GitHubPages
 
