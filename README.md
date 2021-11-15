@@ -50,11 +50,14 @@ O projeto tem nome **Dr. Image** e sua interface pode ser visualizada nas seguin
 
 ![github](assets/images/prototype/web_design/3_arithmetic_ops.png)
 ![github](assets/images/prototype/web_design/4_arithmetic_ops_selected_button.png)
-*Páginas de Operações Aritméticas*
+*Página de Operações Aritméticas*
 
 ![github](assets/images/prototype/web_design/6_geometric_ops.png)
+![github](assets/images/prototype/web_design/7_geometric_ops_translation_selected.png)
+![github](assets/images/prototype/web_design/8_geometric_ops_rotation_selected.png)
+![github](assets/images/prototype/web_design/9_geometric_ops_scale_selected.png)
 ![github](assets/images/prototype/web_design/10_geometric_ops_reflection_selected.png)
-*Páginas de Transformações Geométricas*
+*Página de Transformações Geométricas*
 
 Toda a interface é composta por cores da paleta oficial:
 ![github](assets/images/prototype/web_design/1_palette.png)
