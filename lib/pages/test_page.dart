@@ -6,6 +6,7 @@ import 'package:pi_papers_2021_2/widgets/input/big_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
+import 'package:pi_papers_2021_2/widgets/input/styled_radio.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_slider.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
@@ -58,6 +59,11 @@ class TestPage extends StatelessWidget {
               value: 0,
               onChanged: (value) => print(value),
             ),
+          ),
+          StyledRadio(
+            value: 'Horizontal',
+            groupValue: 'Vertical',
+            onChanged: (sel) => print(sel),
           ),
         ],
       ),
