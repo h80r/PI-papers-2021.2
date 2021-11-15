@@ -40,3 +40,27 @@ Caso alguns pacotes estejam faltando ou estão desatualizados, execute o comando
 ![pub-get](assets/images/pub_get.png)
 
 Para executar a aplicação, basta digitar o comanto `flutter run` em seu terminal ou utilizar o atalho `Crtl + F5`, caso esteja no VSCode.
+
+## Interface
+
+O projeto tem nome **Dr. Image** e sua interface pode ser visualizada nas seguintes imagens:
+
+![github](assets/images/prototype/web_design/2_home.png)
+*Página Home*
+
+![github](assets/images/prototype/web_design/3_arithmetic_ops.png)
+![github](assets/images/prototype/web_design/4_arithmetic_ops_selected_button.png)
+*Página de Operações Aritméticas*
+
+![github](assets/images/prototype/web_design/6_geometric_ops.png)
+![github](assets/images/prototype/web_design/7_geometric_ops_translation_selected.png)
+![github](assets/images/prototype/web_design/8_geometric_ops_rotation_selected.png)
+![github](assets/images/prototype/web_design/9_geometric_ops_scale_selected.png)
+![github](assets/images/prototype/web_design/10_geometric_ops_reflection_selected.png)
+*Página de Transformações Geométricas*
+
+Toda a interface é composta por cores da paleta oficial:
+![github](assets/images/prototype/web_design/1_palette.png)
+*Paleta de cores do projeto*
+
+A fonte oficial utilizada é a *San Francisco Display by Apple*.
