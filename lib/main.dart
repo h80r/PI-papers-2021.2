@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/pages/test_page.dart';
+import 'package:pi_papers_2021_2/style/color_palette.dart';
 
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  static const String _title = 'Flutter Code Sample';
-
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: _title,
-      home: MyStatelessWidget(),
+    return MaterialApp(
+      title: 'Dr. Image',
+      initialRoute: '/test',
+      theme: ThemeData(
+        scaffoldBackgroundColor: ColorPalette.background,
+      ),
+      routes: {
+        '/': (ctx) => const MyStatelessWidget(),
+        '/test': (ctx) => const TestPage(),
+      },
     );
   }
 }
