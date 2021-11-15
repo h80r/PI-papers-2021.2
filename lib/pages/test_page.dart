@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/models/operation_selection.dart';
 import 'package:pi_papers_2021_2/widgets/input/big_button.dart';
+import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 import 'package:pi_papers_2021_2/widgets/structure/logo.dart';
@@ -15,6 +17,20 @@ class TestPage extends StatelessWidget {
       ),
       body: Wrap(
         children: [
+          Selector(
+            options: [
+              OperationSelection(
+                value: 'Adição',
+                icon: Icons.add,
+                onPressed: () => print('clicou adição'),
+              ),
+              OperationSelection(
+                value: 'Subtração',
+                icon: Icons.remove,
+                onPressed: () => print('clicou subtração'),
+              ),
+            ],
+          ),
           const Logo(
             title: 'Operações Aritméticas',
           ),
