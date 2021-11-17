@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/pages/home_page.dart';
 import 'package:pi_papers_2021_2/pages/test_page.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
@@ -16,28 +17,12 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: ColorPalette.background,
       ),
       routes: {
-        '/': (ctx) => const MyStatelessWidget(),
+        '/': (ctx) => const HomePage(),
         '/test': (ctx) => const TestPage(),
+        '/arithmetic_operation': (ctx) => const TestPage(), // TODO: create page
+        '/geometric_transformation': (ctx) =>
+            const TestPage(), // TODO: create page
       },
-    );
-  }
-}
-
-class MyStatelessWidget extends StatelessWidget {
-  const MyStatelessWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Floating Action Button'),
-      ),
-      body: const Center(child: Text('Press the button below!')),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.navigation),
-        backgroundColor: Colors.green,
-      ),
     );
   }
 }
