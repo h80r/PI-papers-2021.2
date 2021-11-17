@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/widgets/multisize_text.dart';
 
 class BigButton extends StatelessWidget {
   const BigButton({
@@ -26,10 +27,19 @@ class BigButton extends StatelessWidget {
         elevation: 10,
       ),
       onPressed: onPressed,
-      child: Text(
-        text.replaceAll(' ', '\n'),
-        style: const TextStyle(fontSize: 30),
-        textAlign: TextAlign.center,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: text
+            .split(' ')
+            .map(
+              (e) => MultisizeText(
+                text: e,
+                smallSize: 21,
+                bigSize: 30,
+                color: ColorPalette.background,
+              ),
+            )
+            .toList(),
       ),
     );
   }
