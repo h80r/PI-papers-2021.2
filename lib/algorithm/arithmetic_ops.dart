@@ -48,3 +48,31 @@ Uint8List division(
   }
   return resultImagePixels;
 }
+
+Uint8List? operate(Uint8List? imageA, Uint8List? imageB, int operation) {
+  Image imgA = decodeImage(imageA!)!;
+  Image imgB = decodeImage(imageB!)!;
+
+  Uint8List pixelsImgA = imgA.getBytes(format: Format.rgb);
+  Uint8List pixelsImgB = imgB.getBytes(format: Format.rgb);
+
+  int resultImageLength = pixelsImgA.length <= pixelsImgB.length
+      ? pixelsImgA.length
+      : pixelsImgB.length;
+
+  // Image smallerImage = pixelsImgA.length <= pixelsImgB.length ? imgA : imgB;
+
+  if (operation == 1) {
+    // return Image.fromBytes(smallerImage.width, smallerImage.height, sum(pixelsImgA, pixelsImgB, resultImageLength)).getBytes();
+    // return Image.fromBytes(smallerImage.width, smallerImage.height, sum(pixelsImgA, pixelsImgB, resultImageLength)).getBytes().buffer.asUint8List();
+    return sum(pixelsImgA, pixelsImgB, resultImageLength);
+  } else if (operation == 2) {
+    return subtraction(pixelsImgA, pixelsImgB, resultImageLength);
+  } else if (operation == 3) {
+    return multiplication(pixelsImgA, pixelsImgB, resultImageLength);
+  } else if (operation == 4) {
+    return division(pixelsImgA, pixelsImgB, resultImageLength);
+  } else {
+    return null;
+  }
+}
