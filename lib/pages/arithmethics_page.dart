@@ -14,6 +14,8 @@ import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
+import 'package:pi_papers_2021_2/algorithm/arithmetic_ops.dart';
+
 class ArithmethicsPage extends StatefulWidget {
   const ArithmethicsPage({Key? key}) : super(key: key);
 
@@ -24,6 +26,8 @@ class ArithmethicsPage extends StatefulWidget {
 class _ArithmethicsPageState extends State<ArithmethicsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
+  Uint8List? imageC;
+  int operation = 0; //1 Soma, 2 subtração, 3 multiplicação, 4 divisão
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +70,9 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
               },
             ),
             const SizedBox(width: 10),
-            const ImageSelector(
+            ImageSelector(
               isResult: true,
+              image: imageC != null ? Image.memory(imageC!) : null,
             ),
             Selector(
               options: [
@@ -75,24 +80,40 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                   value: 'Adição',
                   icon: Icons.add,
                   // ignore: avoid_print
-                  onPressed: () => print('clicou adição'),
+                  onPressed: () {
+                    setState(() {
+                      operation = 1;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Subtração',
                   icon: Icons.remove,
                   // ignore: avoid_print
-                  onPressed: () => print('clicou subtração'),
+                  onPressed: () {
+                    setState(() {
+                      operation = 2;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Multiplicação',
                   icon: Icons.star,
                   // ignore: avoid_print
-                  onPressed: () => print('clicou multiplicação'),
+                  onPressed: () {
+                    setState(() {
+                      operation = 3;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Divisão',
                   icon: Icons.pause_sharp,
-                  onPressed: () => print('clicou divisão'),
+                  onPressed: () {
+                    setState(() {
+                      operation = 4;
+                    });
+                  },
                 ),
               ],
             ),
@@ -100,7 +121,11 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
             Center(
               child: FinishButton(
                 text: 'Operar',
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    imageC = operate(imageA, imageB, operation);
+                  });
+                },
               ),
             ),
           ],
