@@ -7,11 +7,11 @@ Uint8List sum(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int sum = 0;
+  int sum;
 
   for (var i = 0; i < resultImageLength; i++) {
     sum = pixelsImgA[i] + pixelsImgB[i];
-    resultImagePixels[i] = sum < 256 ? sum : 255;
+    resultImagePixels[i] = sum.clamp(0, 255);
   }
 
   return resultImagePixels;
@@ -23,11 +23,11 @@ Uint8List subtraction(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int sub = 0;
+  int sub;
 
   for (var i = 0; i < resultImageLength; i++) {
     sub = pixelsImgA[i] - pixelsImgB[i];
-    resultImagePixels[i] = sub > 0 ? sub : 0;
+    resultImagePixels[i] = sub.clamp(0, 255);
   }
   return resultImagePixels;
 }
@@ -38,11 +38,11 @@ Uint8List multiplication(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int mult = 0;
+  int mult;
 
   for (var i = 0; i < resultImageLength; i++) {
     mult = pixelsImgA[i] * pixelsImgB[i];
-    resultImagePixels[i] = mult < 256 ? mult : 255;
+    resultImagePixels[i] = mult.clamp(0, 255);
   }
   return resultImagePixels;
 }
@@ -53,11 +53,11 @@ Uint8List division(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int div = 0;
+  int div;
 
   for (var i = 0; i < resultImageLength; i++) {
     div = pixelsImgA[i] ~/ pixelsImgB[i];
-    resultImagePixels[i] = div > 0 ? div : 0;
+    resultImagePixels[i] = div.clamp(0, 255);
   }
   return resultImagePixels;
 }
