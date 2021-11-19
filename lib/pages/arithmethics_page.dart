@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, duplicate_ignore
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -79,7 +77,6 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 OperationSelection(
                   value: 'Adição',
                   icon: Icons.add,
-                  // ignore: avoid_print
                   onPressed: () {
                     setState(() {
                       operation = 1;
@@ -89,7 +86,6 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 OperationSelection(
                   value: 'Subtração',
                   icon: Icons.remove,
-                  // ignore: avoid_print
                   onPressed: () {
                     setState(() {
                       operation = 2;
@@ -99,7 +95,6 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 OperationSelection(
                   value: 'Multiplicação',
                   icon: Icons.star,
-                  // ignore: avoid_print
                   onPressed: () {
                     setState(() {
                       operation = 3;

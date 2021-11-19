@@ -2,7 +2,10 @@ import 'dart:typed_data';
 import 'package:image/image.dart';
 
 Uint8List sum(
-    Uint8List pixelsImgA, Uint8List pixelsImgB, int resultImageLength) {
+  Uint8List pixelsImgA,
+  Uint8List pixelsImgB,
+  int resultImageLength,
+) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
   int sum = 0;
 
@@ -15,7 +18,10 @@ Uint8List sum(
 }
 
 Uint8List subtraction(
-    Uint8List pixelsImgA, Uint8List pixelsImgB, int resultImageLength) {
+  Uint8List pixelsImgA,
+  Uint8List pixelsImgB,
+  int resultImageLength,
+) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
   int sub = 0;
 
@@ -27,7 +33,10 @@ Uint8List subtraction(
 }
 
 Uint8List multiplication(
-    Uint8List pixelsImgA, Uint8List pixelsImgB, int resultImageLength) {
+  Uint8List pixelsImgA,
+  Uint8List pixelsImgB,
+  int resultImageLength,
+) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
   int mult = 0;
 
@@ -39,7 +48,10 @@ Uint8List multiplication(
 }
 
 Uint8List division(
-    Uint8List pixelsImgA, Uint8List pixelsImgB, int resultImageLength) {
+  Uint8List pixelsImgA,
+  Uint8List pixelsImgB,
+  int resultImageLength,
+) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
   int div = 0;
 
