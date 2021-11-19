@@ -27,7 +27,7 @@ Uint8List subtraction(
 
   for (var i = 0; i < resultImageLength; i++) {
     sub = pixelsImgA[i] - pixelsImgB[i];
-    resultImagePixels[i] = sub.clamp(0, 255);
+    resultImagePixels[i] = sub.abs();
   }
   return resultImagePixels;
 }
@@ -38,11 +38,11 @@ Uint8List multiplication(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int mult;
+  double mult;
 
   for (var i = 0; i < resultImageLength; i++) {
-    mult = pixelsImgA[i] * pixelsImgB[i];
-    resultImagePixels[i] = mult.clamp(0, 255);
+    mult = (pixelsImgA[i] / 255) * (pixelsImgB[i] / 255);
+    resultImagePixels[i] = (mult * 255).toInt();
   }
   return resultImagePixels;
 }
@@ -53,11 +53,11 @@ Uint8List division(
   int resultImageLength,
 ) {
   Uint8List resultImagePixels = Uint8List(resultImageLength);
-  int div;
+  double div;
 
   for (var i = 0; i < resultImageLength; i++) {
-    div = pixelsImgA[i] ~/ pixelsImgB[i];
-    resultImagePixels[i] = div.clamp(0, 255);
+    div = (pixelsImgA[i] / 255) / (pixelsImgB[i] / 255);
+    resultImagePixels[i] = (div * 255).toInt();
   }
   return resultImagePixels;
 }
