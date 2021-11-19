@@ -62,7 +62,7 @@ Uint8List division(
   return resultImagePixels;
 }
 
-Uint8List? operate(Uint8List? imageA, Uint8List? imageB, int operation) {
+Uint8List? operate(Uint8List? imageA, Uint8List? imageB, dynamic operation) {
   Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
     return Uint8List.fromList(
       encodePng(
@@ -92,18 +92,11 @@ Uint8List? operate(Uint8List? imageA, Uint8List? imageB, int operation) {
     'height': smallestImg.height,
   };
 
-  if (operation == 1) {
-    return reformat(
+  return reformat(
       measurements,
-      sum(pixelsImgA, pixelsImgB, resultImageLength),
-    );
-  } else if (operation == 2) {
-    return subtraction(pixelsImgA, pixelsImgB, resultImageLength);
-  } else if (operation == 3) {
-    return multiplication(pixelsImgA, pixelsImgB, resultImageLength);
-  } else if (operation == 4) {
-    return division(pixelsImgA, pixelsImgB, resultImageLength);
-  } else {
-    return null;
-  }
+      operation(
+        pixelsImgA,
+        pixelsImgB,
+        resultImageLength,
+      ));
 }

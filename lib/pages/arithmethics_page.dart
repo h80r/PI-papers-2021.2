@@ -25,7 +25,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   Uint8List? imageC;
-  int operation = 0; //1 Soma, 2 subtração, 3 multiplicação, 4 divisão
+  dynamic operation;
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +79,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                   icon: Icons.add,
                   onPressed: () {
                     setState(() {
-                      operation = 1;
+                      operation = sum;
                     });
                   },
                 ),
@@ -88,7 +88,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                   icon: Icons.remove,
                   onPressed: () {
                     setState(() {
-                      operation = 2;
+                      operation = subtraction;
                     });
                   },
                 ),
@@ -97,7 +97,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                   icon: Icons.star,
                   onPressed: () {
                     setState(() {
-                      operation = 3;
+                      operation = multiplication;
                     });
                   },
                 ),
@@ -106,7 +106,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                   icon: Icons.pause_sharp,
                   onPressed: () {
                     setState(() {
-                      operation = 4;
+                      operation = division;
                     });
                   },
                 ),
