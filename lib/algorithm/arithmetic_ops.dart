@@ -10,6 +10,7 @@ Uint8List sum(
     sum = pixelsImgA[i] + pixelsImgB[i];
     resultImagePixels[i] = sum < 256 ? sum : 255;
   }
+
   return resultImagePixels;
 }
 
@@ -50,6 +51,19 @@ Uint8List division(
 }
 
 Uint8List? operate(Uint8List? imageA, Uint8List? imageB, int operation) {
+  Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
+    return Uint8List.fromList(
+      encodePng(
+        Image.fromBytes(
+          measurements['width'] ?? 0,
+          measurements['height'] ?? 0,
+          processedImage,
+          format: Format.rgb,
+        ),
+      ),
+    );
+  }
+
   Image imgA = decodeImage(imageA!)!;
   Image imgB = decodeImage(imageB!)!;
 
@@ -60,12 +74,17 @@ Uint8List? operate(Uint8List? imageA, Uint8List? imageB, int operation) {
       ? pixelsImgA.length
       : pixelsImgB.length;
 
-  // Image smallerImage = pixelsImgA.length <= pixelsImgB.length ? imgA : imgB;
+  final smallestImg = pixelsImgA.length <= pixelsImgB.length ? imgA : imgB;
+  final measurements = {
+    'width': smallestImg.width,
+    'height': smallestImg.height,
+  };
 
   if (operation == 1) {
-    // return Image.fromBytes(smallerImage.width, smallerImage.height, sum(pixelsImgA, pixelsImgB, resultImageLength)).getBytes();
-    // return Image.fromBytes(smallerImage.width, smallerImage.height, sum(pixelsImgA, pixelsImgB, resultImageLength)).getBytes().buffer.asUint8List();
-    return sum(pixelsImgA, pixelsImgB, resultImageLength);
+    return reformat(
+      measurements,
+      sum(pixelsImgA, pixelsImgB, resultImageLength),
+    );
   } else if (operation == 2) {
     return subtraction(pixelsImgA, pixelsImgB, resultImageLength);
   } else if (operation == 3) {
