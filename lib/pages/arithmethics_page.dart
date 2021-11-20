@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
-import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 
+import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
-
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
@@ -25,7 +24,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   Uint8List? imageC;
-  dynamic operation;
+  Uint8List Function(Uint8List, Uint8List)? operation;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +33,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
         title: 'Operações Aritméticas',
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Wrap(
           spacing: 5.0,
           runSpacing: 16.0,
@@ -125,7 +124,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 text: 'Operar',
                 onPressed: () {
                   setState(() {
-                    imageC = operate(imageA!, imageB!, operation);
+                    imageC = operate(imageA, imageB, operation);
                   });
                 },
               ),
