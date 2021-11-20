@@ -12,11 +12,11 @@ import 'package:image/image.dart';
 /// - `resultImagePixels`: List with luminance values in `results` redistributes to [0, 255] luminance range.
 /// If all luminance values are equal, a zero list is returned.
 Uint8List normalize(List<num> results) {
-  Uint8List resultImagePixels = Uint8List(results.length);
+  final resultImagePixels = Uint8List(results.length);
 
-  num minNumber = results.reduce(min);
-  num maxNumber = results.reduce(max);
-  num denominator = maxNumber - minNumber;
+  final minNumber = results.reduce(min);
+  final maxNumber = results.reduce(max);
+  final denominator = maxNumber - minNumber;
 
   if (minNumber != maxNumber) {
     for (var i = 0; i < results.length; i++) {
@@ -41,11 +41,10 @@ Uint8List sum(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
 ) {
-  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
-  int sum;
+  final resultImagePixels = Uint8List(pixelsImgA.length);
 
   for (var i = 0; i < pixelsImgA.length; i++) {
-    sum = pixelsImgA[i] + pixelsImgB[i];
+    final sum = pixelsImgA[i] + pixelsImgB[i];
     resultImagePixels[i] = sum.clamp(0, 255);
   }
 
@@ -64,11 +63,10 @@ Uint8List subtraction(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
 ) {
-  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
-  int sub;
+  final resultImagePixels = Uint8List(pixelsImgA.length);
 
   for (var i = 0; i < pixelsImgA.length; i++) {
-    sub = pixelsImgA[i] - pixelsImgB[i];
+    final sub = pixelsImgA[i] - pixelsImgB[i];
     resultImagePixels[i] = sub.abs();
   }
   return resultImagePixels;
@@ -90,11 +88,10 @@ Uint8List multiplication(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
 ) {
-  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
-  double mult;
+  final resultImagePixels = Uint8List(pixelsImgA.length);
 
   for (var i = 0; i < pixelsImgA.length; i++) {
-    mult = (pixelsImgA[i] / 255) * (pixelsImgB[i] / 255);
+    final mult = (pixelsImgA[i] / 255) * (pixelsImgB[i] / 255);
     resultImagePixels[i] = (mult * 255).toInt();
   }
   return resultImagePixels;
@@ -120,7 +117,7 @@ Uint8List division(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
 ) {
-  List<num> results = [];
+  final results = <num>[];
 
   for (var i = 0; i < pixelsImgA.length; i++) {
     results.add(pixelsImgB[i] != 0
@@ -158,11 +155,11 @@ Uint8List operate(
     );
   }
 
-  Image imgA = decodeImage(imageA)!;
-  Image imgB = decodeImage(imageB)!;
+  final imgA = decodeImage(imageA)!;
+  final imgB = decodeImage(imageB)!;
 
-  Uint8List pixelsImgA = imgA.getBytes(format: Format.luminance);
-  Uint8List pixelsImgB = imgB.getBytes(format: Format.luminance);
+  final pixelsImgA = imgA.getBytes(format: Format.luminance);
+  final pixelsImgB = imgB.getBytes(format: Format.luminance);
 
   if (pixelsImgA.length != pixelsImgB.length) {
     return Uint8List(0);
