@@ -118,7 +118,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 text: 'Operar',
                 onPressed: () {
                   setState(() {
-                    imageC = operate(imageA, imageB, operation);
+                    imageC = operate(imageA!, imageB!, operation);
                   });
                 },
               ),

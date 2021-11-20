@@ -115,7 +115,7 @@ Uint8List division(
 ///
 /// Returns:
 /// - List of result image's bytes.
-Uint8List? operate(Uint8List? imageA, Uint8List? imageB, dynamic operation) {
+Uint8List operate(Uint8List imageA, Uint8List imageB, dynamic operation) {
   Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
     return Uint8List.fromList(
       encodePng(
@@ -129,8 +129,8 @@ Uint8List? operate(Uint8List? imageA, Uint8List? imageB, dynamic operation) {
     );
   }
 
-  Image imgA = decodeImage(imageA!)!;
-  Image imgB = decodeImage(imageB!)!;
+  Image imgA = decodeImage(imageA)!;
+  Image imgB = decodeImage(imageB)!;
 
   Uint8List pixelsImgA = imgA.getBytes(format: Format.luminance);
   Uint8List pixelsImgB = imgB.getBytes(format: Format.luminance);
