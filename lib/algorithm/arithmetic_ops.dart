@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:typed_data';
+
 import 'package:image/image.dart';
 
 /// Redistributes values in a list using [0, 1] scale back to the [0, 255] luminance range.

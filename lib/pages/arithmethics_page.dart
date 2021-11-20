@@ -4,11 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
-import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 
+import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
-
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
