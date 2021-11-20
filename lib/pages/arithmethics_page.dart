@@ -34,7 +34,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
         title: 'Operações Aritméticas',
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Wrap(
           spacing: 5.0,
           runSpacing: 16.0,
