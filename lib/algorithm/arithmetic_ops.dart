@@ -137,10 +137,10 @@ Uint8List division(
 ///
 /// Returns:
 /// - List of result image's bytes if `imageA` and `imageB` are the same size, empty list otherwise.
-Uint8List operate(
-  Uint8List imageA,
-  Uint8List imageB,
-  dynamic operation,
+Uint8List? operate(
+  Uint8List? imageA,
+  Uint8List? imageB,
+  Uint8List Function(Uint8List, Uint8List)? operation,
 ) {
   Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
     return Uint8List.fromList(
@@ -154,6 +154,8 @@ Uint8List operate(
       ),
     );
   }
+
+  if (imageA == null || imageB == null || operation == null) return null;
 
   final imgA = decodeImage(imageA)!;
   final imgB = decodeImage(imageB)!;

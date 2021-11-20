@@ -24,7 +24,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   Uint8List? imageC;
-  dynamic operation;
+  Uint8List Function(Uint8List, Uint8List)? operation;
 
   @override
   Widget build(BuildContext context) {
@@ -124,7 +124,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
                 text: 'Operar',
                 onPressed: () {
                   setState(() {
-                    imageC = operate(imageA!, imageB!, operation);
+                    imageC = operate(imageA, imageB, operation);
                   });
                 },
               ),
