@@ -24,13 +24,15 @@ Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
   );
 }
 
-/// Redistributes values in a list using [0, 1] scale back to the [0, 255] luminance range.
+/// Redistributes values in a list using [0, 1] scale back to the [0, 255]
+/// luminance range.
 ///
 /// Parameters:
 /// - `results`: List with results from luminance values divided pixel by pixel.
 ///
 /// Returns:
-/// - `resultImagePixels`: List with luminance values in `results` redistributes to [0, 255] luminance range.
+/// - `resultImagePixels`: List with luminance values in `results` redistributes
+/// to [0, 255] luminance range.
 /// If all luminance values are equal, a zero list is returned.
 Uint8List normalize(List<num> results) {
   final resultImagePixels = Uint8List(results.length);
@@ -50,14 +52,16 @@ Uint8List normalize(List<num> results) {
   }
 }
 
-/// Adds two images by summing luminance value pixel by pixel and clamping the result to the [0, 255] range.
+/// Adds two images by summing luminance value pixel by pixel and clamping the
+/// result to the [0, 255] range.
 ///
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
 ///
 /// Returns:
-/// - `resultImagePixels`: List with luminance values resulted from sum of each luminance value in `pixelsImgA` and `pixelsImgB`.
+/// - `resultImagePixels`: List with luminance values resulted from sum of each
+/// luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List sum(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
@@ -72,14 +76,16 @@ Uint8List sum(
   return resultImagePixels;
 }
 
-/// Subtracts two images by subtracting luminance value pixel by pixel and getting its absolute value.
+/// Subtracts two images by subtracting luminance value pixel by pixel and
+/// getting its absolute value.
 ///
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
 ///
 /// Returns:
-/// - `resultImagePixels`: List with luminance values resulted from absolute subtraction of each luminance value in `pixelsImgA` and `pixelsImgB`.
+/// - `resultImagePixels`: List with luminance values resulted from absolute
+/// subtraction of each luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List subtraction(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
@@ -96,15 +102,18 @@ Uint8List subtraction(
 /// Multiplies two images by multiplying luminance value pixel by pixel.
 ///
 /// Luminance values are divided by 255 before multiplication
-/// (range from value 0 representing luminance 0 to value 1 representing luminance 255).
-/// After multiplication, the result is multiplied back by 255, recovering the equivalent luminance.
+/// (range from value 0 representing luminance 0 to value 1 representing
+/// luminance 255).
+/// After multiplication, the result is multiplied back by 255, recovering the
+/// equivalent luminance.
 ///
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
 ///
 /// Returns:
-/// - `resultImagePixels`: List with luminance values resulted from multiplication of each luminance value in `pixelsImgA` and `pixelsImgB`.
+/// - `resultImagePixels`: List with luminance values resulted from
+/// multiplication of each luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List multiplication(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
@@ -120,10 +129,12 @@ Uint8List multiplication(
 
 /// Divides two images by dividing luminance value pixel by pixel.
 ///
-/// Luminance values in `pixelsImgA` are divided by luminance values in `pixelsImgB` one by one.
+/// Luminance values in `pixelsImgA` are divided by luminance values in
+/// `pixelsImgB` one by one.
 /// If a pixel in `pixelsImgB` is 0, the division takes 1 as the denominator.
 ///
-/// Because the results are very close numbers, to improve the result image's colors, a Min-Max normalization
+/// Because the results are very close numbers, to improve the result image's
+/// colors, a Min-Max normalization
 /// is made to better redistribute the values in the [0, 255] luminance range.
 ///
 /// Parameters:
@@ -157,7 +168,8 @@ Uint8List division(
 /// - `operation`: Operation function to be executed.
 ///
 /// Returns:
-/// - List of result image's bytes if `imageA` and `imageB` are the same size, empty list otherwise.
+/// - List of result image's bytes if `imageA` and `imageB` are the same size,
+/// empty list otherwise.
 Uint8List? operate(
   Uint8List? imageA,
   Uint8List? imageB,
