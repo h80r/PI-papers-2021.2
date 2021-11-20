@@ -33,19 +33,17 @@ Uint8List normalize(List<num> results) {
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
-/// - `resultImageLength`: int defining the result image's size.
 ///
 /// Returns:
 /// - `resultImagePixels`: List with luminance values resulted from sum of each luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List sum(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
-  int resultImageLength,
 ) {
-  Uint8List resultImagePixels = Uint8List(resultImageLength);
+  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
   int sum;
 
-  for (var i = 0; i < resultImageLength; i++) {
+  for (var i = 0; i < pixelsImgA.length; i++) {
     sum = pixelsImgA[i] + pixelsImgB[i];
     resultImagePixels[i] = sum.clamp(0, 255);
   }
@@ -58,19 +56,17 @@ Uint8List sum(
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
-/// - `resultImageLength`: int defining the result image's size.
 ///
 /// Returns:
 /// - `resultImagePixels`: List with luminance values resulted from absolute subtraction of each luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List subtraction(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
-  int resultImageLength,
 ) {
-  Uint8List resultImagePixels = Uint8List(resultImageLength);
+  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
   int sub;
 
-  for (var i = 0; i < resultImageLength; i++) {
+  for (var i = 0; i < pixelsImgA.length; i++) {
     sub = pixelsImgA[i] - pixelsImgB[i];
     resultImagePixels[i] = sub.abs();
   }
@@ -86,19 +82,17 @@ Uint8List subtraction(
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
-/// - `resultImageLength`: int defining the result image's size.
 ///
 /// Returns:
 /// - `resultImagePixels`: List with luminance values resulted from multiplication of each luminance value in `pixelsImgA` and `pixelsImgB`.
 Uint8List multiplication(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
-  int resultImageLength,
 ) {
-  Uint8List resultImagePixels = Uint8List(resultImageLength);
+  Uint8List resultImagePixels = Uint8List(pixelsImgA.length);
   double mult;
 
-  for (var i = 0; i < resultImageLength; i++) {
+  for (var i = 0; i < pixelsImgA.length; i++) {
     mult = (pixelsImgA[i] / 255) * (pixelsImgB[i] / 255);
     resultImagePixels[i] = (mult * 255).toInt();
   }
@@ -116,7 +110,6 @@ Uint8List multiplication(
 /// Parameters:
 /// - `pixelsImgA`: List with luminance value of each pixel in imageA;
 /// - `pixelsImgB`: List with luminance value of each pixel in imageB;
-/// - `resultImageLength`: int defining the result image's size.
 ///
 /// Returns:
 /// - List with luminance values resulted from division
@@ -125,11 +118,10 @@ Uint8List multiplication(
 Uint8List division(
   Uint8List pixelsImgA,
   Uint8List pixelsImgB,
-  int resultImageLength,
 ) {
   List<num> results = [];
 
-  for (var i = 0; i < resultImageLength; i++) {
+  for (var i = 0; i < pixelsImgA.length; i++) {
     results.add(pixelsImgB[i] != 0
         ? (pixelsImgA[i] / pixelsImgB[i])
         : (pixelsImgA[i] / 1));
@@ -146,7 +138,7 @@ Uint8List division(
 /// - `operation`: Operation function to be executed.
 ///
 /// Returns:
-/// - List of result image's bytes.
+/// - List of result image's bytes if `imageA` and `imageB` are the same size, empty list otherwise.
 Uint8List operate(
   Uint8List imageA,
   Uint8List imageB,
@@ -175,14 +167,9 @@ Uint8List operate(
     return Uint8List(0);
   }
 
-  int resultImageLength = pixelsImgA.length <= pixelsImgB.length
-      ? pixelsImgA.length
-      : pixelsImgB.length;
-
-  final smallestImg = pixelsImgA.length <= pixelsImgB.length ? imgA : imgB;
   final measurements = {
-    'width': smallestImg.width,
-    'height': smallestImg.height,
+    'width': imgA.width,
+    'height': imgA.height,
   };
 
   return reformat(
@@ -190,6 +177,5 @@ Uint8List operate(
       operation(
         pixelsImgA,
         pixelsImgB,
-        resultImageLength,
       ));
 }

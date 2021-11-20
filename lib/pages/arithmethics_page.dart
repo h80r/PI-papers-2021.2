@@ -76,7 +76,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
               message: imageC == null
                   ? 'SEM IMAGEM\nPARA MOSTRAR'
                   : imageC!.isEmpty
-                      ? 'IMAGENS TEM\nTAMANHOS\nDIFERENTES'
+                      ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
                       : null,
             ),
             Selector(
