@@ -41,15 +41,13 @@ Uint8List normalize(List<num> results) {
   final maxNumber = results.reduce(max);
   final denominator = maxNumber - minNumber;
 
-  if (minNumber != maxNumber) {
-    for (var i = 0; i < results.length; i++) {
-      resultImagePixels[i] =
-          (((results[i] - minNumber) / denominator) * 255).toInt();
-    }
-    return resultImagePixels;
-  } else {
-    return resultImagePixels;
+  if (minNumber == maxNumber) return resultImagePixels;
+
+  for (var i = 0; i < results.length; i++) {
+    resultImagePixels[i] =
+        (((results[i] - minNumber) / denominator) * 255).toInt();
   }
+  return resultImagePixels;
 }
 
 /// Adds two images by summing luminance value pixel by pixel and clamping the
@@ -193,9 +191,10 @@ Uint8List? operate(
   };
 
   return reformat(
-      measurements,
-      operation(
-        pixelsImgA,
-        pixelsImgB,
-      ));
+    measurements,
+    operation(
+      pixelsImgA,
+      pixelsImgB,
+    ),
+  );
 }
