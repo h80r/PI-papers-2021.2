@@ -3,6 +3,27 @@ import 'dart:typed_data';
 
 import 'package:image/image.dart';
 
+/// Formats the [processedImage] to a [Uint8List] readable by Image widgets.
+///
+/// Parameters:
+/// - `measurements`: A map with the width and height of the image.
+/// - `processedImage`: The image to be formatted.
+///
+/// Returns:
+/// - An [Uint8List] with the image data.
+Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
+  return Uint8List.fromList(
+    encodePng(
+      Image.fromBytes(
+        measurements['width'] ?? 0,
+        measurements['height'] ?? 0,
+        processedImage,
+        format: Format.luminance,
+      ),
+    ),
+  );
+}
+
 /// Redistributes values in a list using [0, 1] scale back to the [0, 255] luminance range.
 ///
 /// Parameters:
@@ -142,19 +163,6 @@ Uint8List? operate(
   Uint8List? imageB,
   Uint8List Function(Uint8List, Uint8List)? operation,
 ) {
-  Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
-    return Uint8List.fromList(
-      encodePng(
-        Image.fromBytes(
-          measurements['width'] ?? 0,
-          measurements['height'] ?? 0,
-          processedImage,
-          format: Format.luminance,
-        ),
-      ),
-    );
-  }
-
   if (imageA == null || imageB == null || operation == null) return null;
 
   final imgA = decodeImage(imageA)!;
