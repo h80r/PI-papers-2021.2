@@ -70,7 +70,14 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
             const SizedBox(width: 10),
             ImageSelector(
               isResult: true,
-              image: imageC != null ? Image.memory(imageC!) : null,
+              image: imageC != null && imageC!.isNotEmpty
+                  ? Image.memory(imageC!)
+                  : null,
+              message: imageC == null
+                  ? 'SEM IMAGEM\nPARA MOSTRAR'
+                  : imageC!.isEmpty
+                      ? 'IMAGENS TEM\nTAMANHOS\nDIFERENTES'
+                      : null,
             ),
             Selector(
               options: [

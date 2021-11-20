@@ -171,6 +171,10 @@ Uint8List operate(
   Uint8List pixelsImgA = imgA.getBytes(format: Format.luminance);
   Uint8List pixelsImgB = imgB.getBytes(format: Format.luminance);
 
+  if (pixelsImgA.length != pixelsImgB.length) {
+    return Uint8List(0);
+  }
+
   int resultImageLength = pixelsImgA.length <= pixelsImgB.length
       ? pixelsImgA.length
       : pixelsImgB.length;
