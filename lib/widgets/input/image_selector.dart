@@ -26,8 +26,8 @@ class ImageSelector extends StatelessWidget {
       onTap: isResult ? null : onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        width: 400,
-        height: 400,
+        width: 300,
+        height: 300,
         child: image ??
             Center(
               child: isResult
