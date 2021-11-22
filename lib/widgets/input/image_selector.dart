@@ -6,6 +6,7 @@ class ImageSelector extends StatelessWidget {
     Key? key,
     required this.isResult,
     this.image,
+    this.message,
     this.onTap,
   })  : assert(
           (!isResult && onTap != null) || isResult,
@@ -16,6 +17,7 @@ class ImageSelector extends StatelessWidget {
 
   final bool isResult;
   final Image? image;
+  final String? message;
   final void Function()? onTap;
 
   @override
@@ -30,7 +32,7 @@ class ImageSelector extends StatelessWidget {
             Center(
               child: isResult
                   ? Text(
-                      'SEM IMAGEM\nPARA MOSTRAR',
+                      message!,
                       style: TextStyle(
                         fontSize: 35,
                         fontFamily: 'SF Pro Display',

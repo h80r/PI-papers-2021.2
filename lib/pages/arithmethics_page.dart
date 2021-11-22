@@ -1,18 +1,17 @@
-// ignore_for_file: avoid_print, duplicate_ignore
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
-import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 
+import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
-
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
+
+import 'package:pi_papers_2021_2/algorithm/arithmetic_ops.dart';
 
 class ArithmethicsPage extends StatefulWidget {
   const ArithmethicsPage({Key? key}) : super(key: key);
@@ -24,6 +23,8 @@ class ArithmethicsPage extends StatefulWidget {
 class _ArithmethicsPageState extends State<ArithmethicsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
+  Uint8List? imageC;
+  Uint8List Function(Uint8List, Uint8List)? operation;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
         title: 'Operações Aritméticas',
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Wrap(
           spacing: 5.0,
           runSpacing: 16.0,
@@ -66,33 +67,54 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
               },
             ),
             const SizedBox(width: 10),
-            const ImageSelector(
+            ImageSelector(
               isResult: true,
+              image: imageC != null && imageC!.isNotEmpty
+                  ? Image.memory(imageC!)
+                  : null,
+              message: imageC == null
+                  ? 'SEM IMAGEM\nPARA MOSTRAR'
+                  : imageC!.isEmpty
+                      ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
+                      : null,
             ),
             Selector(
               options: [
                 OperationSelection(
                   value: 'Adição',
                   icon: Icons.add,
-                  // ignore: avoid_print
-                  onPressed: () => print('clicou adição'),
+                  onPressed: () {
+                    setState(() {
+                      operation = sum;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Subtração',
                   icon: Icons.remove,
-                  // ignore: avoid_print
-                  onPressed: () => print('clicou subtração'),
+                  onPressed: () {
+                    setState(() {
+                      operation = subtraction;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Multiplicação',
                   icon: Icons.star,
-                  // ignore: avoid_print
-                  onPressed: () => print('clicou multiplicação'),
+                  onPressed: () {
+                    setState(() {
+                      operation = multiplication;
+                    });
+                  },
                 ),
                 OperationSelection(
                   value: 'Divisão',
                   icon: Icons.pause_sharp,
-                  onPressed: () => print('clicou divisão'),
+                  onPressed: () {
+                    setState(() {
+                      operation = division;
+                    });
+                  },
                 ),
               ],
             ),
@@ -100,7 +122,11 @@ class _ArithmethicsPageState extends State<ArithmethicsPage> {
             Center(
               child: FinishButton(
                 text: 'Operar',
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    imageC = operate(imageA, imageB, operation);
+                  });
+                },
               ),
             ),
           ],
