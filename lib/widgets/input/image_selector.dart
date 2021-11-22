@@ -22,12 +22,14 @@ class ImageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final smallestSide = MediaQuery.of(context).size.shortestSide;
+
     return InkWell(
       onTap: isResult ? null : onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        width: 300,
-        height: 300,
+        width: smallestSide * 0.45,
+        height: smallestSide * 0.45,
         child: image ??
             Center(
               child: isResult
@@ -44,7 +46,7 @@ class ImageSelector extends StatelessWidget {
                     )
                   : Icon(
                       Icons.add_a_photo_outlined,
-                      size: 200,
+                      size: smallestSide * 0.3,
                       color: ColorPalette.button.withOpacity(0.7),
                     ),
             ),
