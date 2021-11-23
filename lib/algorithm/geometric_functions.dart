@@ -2,61 +2,13 @@ import 'dart:typed_data';
 
 import 'package:image/image.dart';
 
-Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
-  return Uint8List.fromList(
-    encodePng(
-      Image.fromBytes(
-        measurements['width'] ?? 0,
-        measurements['height'] ?? 0,
-        processedImage,
-      ),
-    ),
-  );
-}
+typedef GeometricFunction = List<List<int>> Function({
+  required List<List<int>> imageMatrix,
+  required Map<String, int> data,
+});
 
-Uint8List? translation(Uint8List? imageData, int moveX, int moveY) {
-  if (imageData == null) return null;
-
-  final originalImage = decodeImage(imageData)!;
-  final width = originalImage.width;
-  final height = originalImage.height;
-
-  // final positionMap = <List<Point>>[];
-  // for (var y = 0; y < height; y++) {
-  //   final row = <Point>[];
-  //   for (var x = 0; x < width; x++) {
-  //     row.add(Point(x + moveX, y + moveY));
-  //   }
-  //   positionMap.add(row);
-  // }
-
-  final originalPixels = originalImage.data.toList();
-
-  final originalMatrix = <List<int>>[];
-  for (var y = 0; y < height; y++) {
-    final row = <int>[];
-    for (var x = 0; x < width; x++) {
-      row.add(originalPixels.removeAt(0));
-    }
-    originalMatrix.add(row);
-  }
-
-  final newMatrix = List.generate(
-    height,
-    (y) => List.generate(
-      width,
-      (x) {
-        try {
-          return originalMatrix[y - moveY][x - moveX];
-        } catch (e) {
-          return int.parse('FF000000', radix: 16);
-        }
-      },
-    ),
-  );
-
-  final newPixels = newMatrix.expand((row) => row).toList();
-  final newBytes = newPixels
+List<int> bytesFromPixels(List<int> pixels) {
+  return pixels
       .map((pixel) {
         final a = (pixel & 0xFF000000) >> 24;
         final b = (pixel & 0x00FF0000) >> 16;
@@ -66,33 +18,98 @@ Uint8List? translation(Uint8List? imageData, int moveX, int moveY) {
       })
       .expand((element) => element)
       .toList();
+}
 
-  // final newPixels = <int>[];
+List<List<int>> imagePixelsFromData(Uint32List data, int height, int width) {
+  final parsedData = data.toList();
+  final matrix = <List<int>>[];
 
-  // final newImage = Image.from(originalImage);
+  for (var y = 0; y < height; y++) {
+    final row = <int>[];
+    for (var x = 0; x < width; x++) {
+      row.add(parsedData.removeAt(0));
+    }
+    matrix.add(row);
+  }
 
-  // for (var y = 0; y < height; y++) {
-  //   for (var x = 0; x < width; x++) {
-  //     final newPixel = originalImage.getPixelSafe(x + moveX, y + moveY);
+  return matrix;
+}
 
-  //     newImage.setPixel(
-  //       x,
-  //       y,
-  //       newPixel == 0 ? int.parse('FF000000', radix: 16) : newPixel,
-  //     );
-  //   }
-  // }
-
-  // return Uint8List.fromList(encodePng(originalImage));
-
-  return reformat(
-    {'width': width, 'height': height},
-    Uint8List.fromList(newBytes),
+Uint8List reformat({
+  required int width,
+  required int height,
+  required Uint8List processedImage,
+}) {
+  return Uint8List.fromList(
+    encodePng(Image.fromBytes(width, height, processedImage)),
   );
 }
 
-void rotation() {}
+List<List<int>> translation({
+  required List<List<int>> imageMatrix,
+  required Map<String, int> data,
+}) {
+  return List.generate(
+    data['height']!,
+    (y) => List.generate(
+      data['width']!,
+      (x) {
+        try {
+          return imageMatrix[y - data['moveY']!][x - data['moveX']!];
+        } catch (e) {
+          return 0xFF000000;
+        }
+      },
+    ),
+  );
+}
 
-void scale() {}
+List<List<int>> rotation({
+  required List<List<int>> imageMatrix,
+  required Map<String, int> data,
+}) {
+  return <List<int>>[]; // TODO: Implement Rotation
+}
 
-void reflection() {}
+List<List<int>> scale({
+  required List<List<int>> imageMatrix,
+  required Map<String, int> data,
+}) {
+  return <List<int>>[]; // TODO: Implement Scale
+}
+
+List<List<int>> reflection({
+  required List<List<int>> imageMatrix,
+  required Map<String, int> data,
+}) {
+  return <List<int>>[]; // TODO: Implement Reflection
+}
+
+Uint8List? operate({
+  required Uint8List? image,
+  required Map<String, int>? inputs,
+  required GeometricFunction? operation,
+}) {
+  if (image == null || inputs == null || operation == null) return null;
+
+  final originalImage = decodeImage(image)!;
+  inputs['width'] = originalImage.width;
+  inputs['height'] = originalImage.height;
+
+  return reformat(
+    width: inputs['width']!,
+    height: inputs['height']!,
+    processedImage: Uint8List.fromList(
+      bytesFromPixels(
+        operation(
+          imageMatrix: imagePixelsFromData(
+            originalImage.data,
+            inputs['height']!,
+            inputs['width']!,
+          ),
+          data: inputs,
+        ).expand((element) => element).toList(),
+      ),
+    ),
+  );
+}

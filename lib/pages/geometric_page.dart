@@ -30,7 +30,7 @@ class _GeometricPageState extends State<GeometricPage> {
   String selectedRadio = 'Horizontal';
   double selectedSlider = 1;
   double selectedSlider2 = 1;
-  dynamic transformation;
+  GeometricFunction? operation;
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +76,10 @@ class _GeometricPageState extends State<GeometricPage> {
                   value: 'Translação',
                   icon: Icons.settings_overscan,
                   onPressed: () {
-                    if (transformation != translation) {
+                    if (operation != translation) {
                       setState(() {
                         selectedSlider = 1;
-                        transformation = translation;
+                        operation = translation;
                       });
                     }
                   },
@@ -88,10 +88,10 @@ class _GeometricPageState extends State<GeometricPage> {
                   value: 'Rotação',
                   icon: Icons.rotate_right,
                   onPressed: () {
-                    if (transformation != rotation) {
+                    if (operation != rotation) {
                       setState(() {
                         selectedSlider = 1;
-                        transformation = rotation;
+                        operation = rotation;
                       });
                     }
                   },
@@ -100,10 +100,10 @@ class _GeometricPageState extends State<GeometricPage> {
                   value: 'Escala',
                   icon: Icons.photo_size_select_large,
                   onPressed: () {
-                    if (transformation != scale) {
+                    if (operation != scale) {
                       setState(() {
                         selectedSlider = 1;
-                        transformation = scale;
+                        operation = scale;
                       });
                     }
                   },
@@ -114,7 +114,7 @@ class _GeometricPageState extends State<GeometricPage> {
                   icon: Icons.compare,
                   onPressed: () {
                     setState(() {
-                      transformation = reflection;
+                      operation = reflection;
                     });
                   },
                 ),
@@ -123,7 +123,7 @@ class _GeometricPageState extends State<GeometricPage> {
             const Padding(padding: EdgeInsets.all(16.0)),
             SizedBox(
               width: 400,
-              child: transformation == translation
+              child: operation == translation
                   ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -187,7 +187,7 @@ class _GeometricPageState extends State<GeometricPage> {
                         ),
                       ],
                     )
-                  : transformation == rotation
+                  : operation == rotation
                       ? StyledSlider(
                           min: -180,
                           max: 180,
@@ -198,7 +198,7 @@ class _GeometricPageState extends State<GeometricPage> {
                             });
                           },
                         )
-                      : transformation == scale
+                      : operation == scale
                           ? StyledSlider(
                               min: 0.5,
                               max: 2,
@@ -209,7 +209,7 @@ class _GeometricPageState extends State<GeometricPage> {
                                 });
                               },
                             )
-                          : transformation == reflection
+                          : operation == reflection
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -253,10 +253,13 @@ class _GeometricPageState extends State<GeometricPage> {
                 text: 'Transformar',
                 onPressed: () {
                   setState(() {
-                    imageB = transformation(
-                      imageA,
-                      selectedSlider.toInt(),
-                      selectedSlider2.toInt(),
+                    imageB = operate(
+                      image: imageA,
+                      inputs: {
+                        'moveX': selectedSlider.toInt(),
+                        'moveY': selectedSlider2.toInt(),
+                      },
+                      operation: operation,
                     );
                   });
                 },
