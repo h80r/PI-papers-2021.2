@@ -9,7 +9,6 @@ Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
         measurements['width'] ?? 0,
         measurements['height'] ?? 0,
         processedImage,
-        format: Format.luminance,
       ),
     ),
   );
@@ -18,35 +17,42 @@ Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
 Uint8List? translation(Uint8List? imageData, int moveX, int moveY) {
   if (imageData == null) return null;
 
-  final image = decodeImage(imageData)!;
-  final width = image.width;
-  final height = image.height;
+  final originalImage = decodeImage(imageData)!;
+  final width = originalImage.width;
+  final height = originalImage.height;
 
-  final positions = <Point>[];
+  // final positionMap = <List<Point>>[];
+  // for (var y = 0; y < height; y++) {
+  //   final row = <Point>[];
+  //   for (var x = 0; x < width; x++) {
+  //     row.add(Point(x + moveX, y + moveY));
+  //   }
+  //   positionMap.add(row);
+  // }
+
+  // final originalPixels = originalImage.getBytes().toList();
+  // final newPixels = <int>[];
+
+  final newImage = Image.from(originalImage);
+
   for (var y = 0; y < height; y++) {
     for (var x = 0; x < width; x++) {
-      positions.add(Point(x + moveX, y + moveY));
+      final newPixel = originalImage.getPixelSafe(x + moveX, y + moveY);
+
+      newImage.setPixel(
+        x,
+        y,
+        newPixel == 0 ? int.parse('FF000000', radix: 16) : newPixel,
+      );
     }
   }
 
-  final originalPixels = image.getBytes(format: Format.luminance).toList();
-  final newPixels = <int>[];
+  return Uint8List.fromList(encodePng(newImage));
 
-  for (var y = 0; y < height; y++) {
-    for (var x = 0; x < width; x++) {
-      final newPosition = positions.indexWhere((e) => e.x == x && e.y == y);
-      if (newPosition == -1) {
-        newPixels.add(0);
-      } else {
-        newPixels.add(originalPixels[newPosition]);
-      }
-    }
-  }
-
-  return reformat(
-    {'width': width, 'height': height},
-    Uint8List.fromList(newPixels),
-  );
+  // return reformat(
+  //   {'width': width, 'height': height},
+  //   Uint8List.fromList(newPixels),
+  // );
 }
 
 void rotation() {}
