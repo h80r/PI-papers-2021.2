@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/pages/home_page.dart';
 import 'package:pi_papers_2021_2/pages/test_page.dart';
-import 'package:pi_papers_2021_2/pages/arithmethics_page.dart';
+import 'package:pi_papers_2021_2/pages/arithmetic_page.dart';
+import 'package:pi_papers_2021_2/pages/geometric_page.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
 void main() => runApp(const MyApp());
@@ -20,9 +21,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (ctx) => const HomePage(),
         '/test': (ctx) => const TestPage(),
-        '/arithmetic_operation': (ctx) => const ArithmethicsPage(),
-        '/geometric_transformation': (ctx) =>
-            const TestPage(), // TODO: create page
+        '/arithmetic_operation': (ctx) => const ArithmeticPage(),
+        '/geometric_transformation': (ctx) => const GeometricPage(),
       },
     );
   }

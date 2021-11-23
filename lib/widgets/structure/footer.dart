@@ -24,9 +24,9 @@ class Footer extends StatelessWidget {
           ]
               .map((e) => MultisizeText(
                     text: e,
-                    smallSize: 30,
-                    bigSize: 40,
-                    dividerSize: 30,
+                    smallSize: 20,
+                    bigSize: 30,
+                    dividerSize: 20,
                     color: ColorPalette.background,
                   ))
               .toList(),
