@@ -11,16 +11,16 @@ import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
-import 'package:pi_papers_2021_2/algorithm/arithmetic_ops.dart';
+import 'package:pi_papers_2021_2/algorithm/arithmetic_functions.dart';
 
-class ArithmethicsPage extends StatefulWidget {
-  const ArithmethicsPage({Key? key}) : super(key: key);
+class ArithmeticPage extends StatefulWidget {
+  const ArithmeticPage({Key? key}) : super(key: key);
 
   @override
-  State<ArithmethicsPage> createState() => _ArithmethicsPageState();
+  State<ArithmeticPage> createState() => _ArithmeticPageState();
 }
 
-class _ArithmethicsPageState extends State<ArithmethicsPage> {
+class _ArithmeticPageState extends State<ArithmeticPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   Uint8List? imageC;

@@ -15,16 +15,16 @@ import 'package:pi_papers_2021_2/widgets/input/styled_radio.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
-import 'package:pi_papers_2021_2/algorithm/geometric_trans.dart';
+import 'package:pi_papers_2021_2/algorithm/geometric_functions.dart';
 
-class TransformationsPage extends StatefulWidget {
-  const TransformationsPage({Key? key}) : super(key: key);
+class GeometricPage extends StatefulWidget {
+  const GeometricPage({Key? key}) : super(key: key);
 
   @override
-  State<TransformationsPage> createState() => _TransformationsPageState();
+  State<GeometricPage> createState() => _GeometricPageState();
 }
 
-class _TransformationsPageState extends State<TransformationsPage> {
+class _GeometricPageState extends State<GeometricPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   String selectedRadio = 'Horizontal';
@@ -213,38 +213,39 @@ class _TransformationsPageState extends State<TransformationsPage> {
                               ? Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                      StyledRadio(
-                                        value: 'Horizontal',
-                                        groupValue: selectedRadio,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedRadio = value!;
-                                          });
-                                        },
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.all(10.0)),
-                                      StyledRadio(
-                                        value: 'Vertical',
-                                        groupValue: selectedRadio,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedRadio = value!;
-                                          });
-                                        },
-                                      ),
-                                      const Padding(
-                                          padding: EdgeInsets.all(10.0)),
-                                      StyledRadio(
-                                        value: 'Ambos',
-                                        groupValue: selectedRadio,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedRadio = value!;
-                                          });
-                                        },
-                                      )
-                                    ])
+                                    StyledRadio(
+                                      value: 'Horizontal',
+                                      groupValue: selectedRadio,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRadio = value!;
+                                        });
+                                      },
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.all(10.0)),
+                                    StyledRadio(
+                                      value: 'Vertical',
+                                      groupValue: selectedRadio,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRadio = value!;
+                                        });
+                                      },
+                                    ),
+                                    const Padding(
+                                        padding: EdgeInsets.all(10.0)),
+                                    StyledRadio(
+                                      value: 'Ambos',
+                                      groupValue: selectedRadio,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedRadio = value!;
+                                        });
+                                      },
+                                    )
+                                  ],
+                                )
                               : null,
             ),
             Center(
