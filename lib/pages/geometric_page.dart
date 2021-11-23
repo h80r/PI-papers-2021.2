@@ -255,8 +255,8 @@ class _GeometricPageState extends State<GeometricPage> {
                   setState(() {
                     imageB = transformation(
                       imageA,
-                      selectedSlider,
-                      selectedSlider2,
+                      selectedSlider.toInt(),
+                      selectedSlider2.toInt(),
                     );
                   });
                 },
