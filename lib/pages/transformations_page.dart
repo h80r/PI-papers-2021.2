@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print, duplicate_ignore
-
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -77,7 +75,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                 OperationSelection(
                   value: 'Translação',
                   icon: Icons.settings_overscan,
-                  // ignore: avoid_print
                   onPressed: () {
                     if (transformation != translation) {
                       setState(() {
@@ -90,7 +87,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                 OperationSelection(
                   value: 'Rotação',
                   icon: Icons.rotate_right,
-                  // ignore: avoid_print
                   onPressed: () {
                     if (transformation != rotation) {
                       setState(() {
@@ -103,7 +99,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                 OperationSelection(
                   value: 'Escala',
                   icon: Icons.photo_size_select_large,
-                  // ignore: avoid_print
                   onPressed: () {
                     if (transformation != scale) {
                       setState(() {
@@ -155,7 +150,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                                 onChanged: (value) {
                                   setState(() {
                                     selectedSlider = value;
-                                    print(selectedSlider);
                                   });
                                 },
                               ),
@@ -212,7 +206,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                               onChanged: (value) {
                                 setState(() {
                                   selectedSlider = value;
-                                  print(selectedSlider);
                                 });
                               },
                             )
@@ -226,7 +219,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                                         onChanged: (value) {
                                           setState(() {
                                             selectedRadio = value!;
-                                            print(selectedRadio);
                                           });
                                         },
                                       ),
@@ -238,7 +230,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                                         onChanged: (value) {
                                           setState(() {
                                             selectedRadio = value!;
-                                            print(selectedRadio);
                                           });
                                         },
                                       ),
@@ -250,7 +241,6 @@ class _TransformationsPageState extends State<TransformationsPage> {
                                         onChanged: (value) {
                                           setState(() {
                                             selectedRadio = value!;
-                                            print(selectedRadio);
                                           });
                                         },
                                       )
