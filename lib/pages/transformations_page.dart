@@ -61,8 +61,16 @@ class _TransformationsPageState extends State<TransformationsPage> {
               },
             ),
             const SizedBox(width: 10),
-            const ImageSelector(
+            ImageSelector(
               isResult: true,
+              image: imageB != null && imageB!.isNotEmpty
+                  ? Image.memory(imageB!)
+                  : null,
+              message: imageB == null
+                  ? 'SEM IMAGEM\nPARA MOSTRAR'
+                  : imageB!.isEmpty
+                      ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
+                      : null,
             ),
             Selector(
               options: [
