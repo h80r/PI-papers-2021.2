@@ -13,6 +13,7 @@ import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_slider.dart';
+import 'package:pi_papers_2021_2/widgets/input/styled_radio.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
@@ -28,6 +29,7 @@ class TransformationsPage extends StatefulWidget {
 class _TransformationsPageState extends State<TransformationsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
+  String selectedRadio = 'Horizontal';
   double selectedSlider = 1;
   double selectedSlider2 = 1;
   Function()? transformation;
@@ -206,7 +208,46 @@ class _TransformationsPageState extends State<TransformationsPage> {
                                 });
                               },
                             )
-                          : null,
+                          : transformation == reflection
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                      StyledRadio(
+                                        value: 'Horizontal',
+                                        groupValue: selectedRadio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedRadio = value!;
+                                            print(selectedRadio);
+                                          });
+                                        },
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.all(10.0)),
+                                      StyledRadio(
+                                        value: 'Vertical',
+                                        groupValue: selectedRadio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedRadio = value!;
+                                            print(selectedRadio);
+                                          });
+                                        },
+                                      ),
+                                      const Padding(
+                                          padding: EdgeInsets.all(10.0)),
+                                      StyledRadio(
+                                        value: 'Ambos',
+                                        groupValue: selectedRadio,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedRadio = value!;
+                                            print(selectedRadio);
+                                          });
+                                        },
+                                      )
+                                    ])
+                              : null,
             ),
             Center(
               child: FinishButton(
