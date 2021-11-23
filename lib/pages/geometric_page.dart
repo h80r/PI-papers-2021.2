@@ -30,7 +30,7 @@ class _GeometricPageState extends State<GeometricPage> {
   String selectedRadio = 'Horizontal';
   double selectedSlider = 1;
   double selectedSlider2 = 1;
-  Function()? transformation;
+  dynamic transformation;
 
   @override
   Widget build(BuildContext context) {
@@ -251,7 +251,15 @@ class _GeometricPageState extends State<GeometricPage> {
             Center(
               child: FinishButton(
                 text: 'Transformar',
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    imageB = transformation(
+                      imageA,
+                      selectedSlider,
+                      selectedSlider2,
+                    );
+                  });
+                },
               ),
             ),
           ],
