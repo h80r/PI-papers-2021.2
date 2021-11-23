@@ -26,6 +26,7 @@ class TransformationsPage extends StatefulWidget {
 class _TransformationsPageState extends State<TransformationsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
+  double selectedSlider = 1;
   Function()? transformation;
 
   @override
@@ -79,6 +80,7 @@ class _TransformationsPageState extends State<TransformationsPage> {
                   onPressed: () {
                     if (transformation != rotation) {
                       setState(() {
+                        selectedSlider = 1;
                         transformation = rotation;
                       });
                     }
@@ -111,12 +113,18 @@ class _TransformationsPageState extends State<TransformationsPage> {
             const Padding(padding: EdgeInsets.all(16.0)),
             SizedBox(
               width: 400,
-              child: StyledSlider(
-                min: -180,
-                max: 180,
-                value: 0,
-                onChanged: (value) => print(value),
-              ),
+              child: transformation == rotation
+                  ? StyledSlider(
+                      min: -180,
+                      max: 180,
+                      value: selectedSlider,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedSlider = value;
+                        });
+                      },
+                    )
+                  : null,
             ),
             Center(
               child: FinishButton(
