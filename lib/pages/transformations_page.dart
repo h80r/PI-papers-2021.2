@@ -97,6 +97,7 @@ class _TransformationsPageState extends State<TransformationsPage> {
                   onPressed: () {
                     if (transformation != scale) {
                       setState(() {
+                        selectedSlider = 1;
                         transformation = scale;
                       });
                     }
@@ -193,7 +194,19 @@ class _TransformationsPageState extends State<TransformationsPage> {
                             });
                           },
                         )
-                      : null,
+                      : transformation == scale
+                          ? StyledSlider(
+                              min: 0.5,
+                              max: 2,
+                              value: selectedSlider,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedSlider = value;
+                                  print(selectedSlider);
+                                });
+                              },
+                            )
+                          : null,
             ),
             Center(
               child: FinishButton(
