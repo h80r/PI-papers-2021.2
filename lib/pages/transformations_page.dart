@@ -7,6 +7,8 @@ import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
 
+import 'package:pi_papers_2021_2/style/color_palette.dart';
+
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector.dart';
@@ -27,6 +29,7 @@ class _TransformationsPageState extends State<TransformationsPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   double selectedSlider = 1;
+  double selectedSlider2 = 1;
   Function()? transformation;
 
   @override
@@ -68,6 +71,7 @@ class _TransformationsPageState extends State<TransformationsPage> {
                   onPressed: () {
                     if (transformation != translation) {
                       setState(() {
+                        selectedSlider = 1;
                         transformation = translation;
                       });
                     }
@@ -113,18 +117,83 @@ class _TransformationsPageState extends State<TransformationsPage> {
             const Padding(padding: EdgeInsets.all(16.0)),
             SizedBox(
               width: 400,
-              child: transformation == rotation
-                  ? StyledSlider(
-                      min: -180,
-                      max: 180,
-                      value: selectedSlider,
-                      onChanged: (value) {
-                        setState(() {
-                          selectedSlider = value;
-                        });
-                      },
+              child: transformation == translation
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Expanded(
+                              flex: 3,
+                              child: Text(
+                                'Horizontal',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'SF Pro Display',
+                                  color: ColorPalette.button,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 7,
+                              child: StyledSlider(
+                                min: -50,
+                                max: 50,
+                                value: selectedSlider,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedSlider = value;
+                                    print(selectedSlider);
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Expanded(
+                              flex: 3,
+                              child: Text(
+                                'Vertical',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontFamily: 'SF Pro Display',
+                                  color: ColorPalette.button,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 7,
+                              child: StyledSlider(
+                                min: -50,
+                                max: 50,
+                                value: selectedSlider2,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedSlider2 = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     )
-                  : null,
+                  : transformation == rotation
+                      ? StyledSlider(
+                          min: -180,
+                          max: 180,
+                          value: selectedSlider,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedSlider = value;
+                            });
+                          },
+                        )
+                      : null,
             ),
             Center(
               child: FinishButton(
