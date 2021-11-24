@@ -8,6 +8,6 @@ class OperationSelection {
   });
 
   final String value;
-  final IconData icon;
+  final ImageIcon icon;
   final void Function() onPressed;
 }

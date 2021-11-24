@@ -14,8 +14,8 @@ class Logo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final icon = Icon(
-      Icons.edit,
+    final icon = ImageIcon(
+      const AssetImage("images/prototype/icons/edit_img.png"),
       color: ColorPalette.secondary,
       size: isVertical ? 100 : 50,
     );
