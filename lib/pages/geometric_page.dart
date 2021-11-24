@@ -98,7 +98,10 @@ class _GeometricPageState extends State<GeometricPage> {
                         icon: Icons.photo_size_select_large,
                         onPressed: () {
                           if (operation == scale) return;
-                          setState(() => operation = scale);
+                          setState(() {
+                            selectedSlider = 1.0;
+                            operation = scale;
+                          });
                         },
                       ),
                       OperationSelection(
@@ -261,6 +264,7 @@ class _GeometricPageState extends State<GeometricPage> {
                                   }[selectedRadio] ??
                                   0,
                               'rotation': selectedSlider.toInt(),
+                              'scale': (selectedSlider * 10).toInt(),
                             },
                             operation: operation,
                           );

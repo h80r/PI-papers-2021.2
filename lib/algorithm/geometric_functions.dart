@@ -86,7 +86,20 @@ List<List<int>> scale({
   required List<List<int>> imageMatrix,
   required Map<String, int> data,
 }) {
-  return <List<int>>[]; // TODO: Implement Scale
+  return List.generate(
+    data['height']!,
+    (y) => List.generate(
+      data['width']!,
+      (x) {
+        try {
+          return imageMatrix[y ~/ (data['scale']! / 10)]
+              [x ~/ (data['scale']! / 10)];
+        } catch (e) {
+          return 0xFF000000;
+        }
+      },
+    ),
+  );
 }
 
 List<List<int>> reflection({
