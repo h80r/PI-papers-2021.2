@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
@@ -59,7 +60,26 @@ List<List<int>> rotation({
   required List<List<int>> imageMatrix,
   required Map<String, int> data,
 }) {
-  return <List<int>>[]; // TODO: Implement Rotation
+  final newImage = List.generate(
+    data['height']!,
+    (y) => List.generate(data['width']!, (x) => 0xFF000000),
+  );
+
+  final rads = data['rotation']! * pi / 180;
+
+  for (var y = 0; y < data['height']!; y++) {
+    for (var x = 0; x < data['width']!; x++) {
+      final newX = x * cos(rads) + y * sin(rads);
+      if (newX < 0 || newX >= data['width']!) continue;
+
+      final newY = y * cos(rads) - x * sin(rads);
+      if (newY < 0 || newY >= data['height']!) continue;
+
+      newImage[newY.toInt()][newX.toInt()] = imageMatrix[y][x];
+    }
+  }
+
+  return newImage;
 }
 
 List<List<int>> scale({

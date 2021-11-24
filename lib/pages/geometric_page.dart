@@ -260,6 +260,7 @@ class _GeometricPageState extends State<GeometricPage> {
                                     'Vertical': 2
                                   }[selectedRadio] ??
                                   0,
+                              'rotation': selectedSlider.toInt(),
                             },
                             operation: operation,
                           );
