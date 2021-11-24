@@ -27,10 +27,12 @@ class GeometricPage extends StatefulWidget {
 class _GeometricPageState extends State<GeometricPage> {
   Uint8List? imageA;
   Uint8List? imageB;
-  String selectedRadio = 'Horizontal';
-  double selectedSlider = 1;
-  double selectedSlider2 = 1;
   GeometricFunction? operation;
+
+  var selectedRadio = 'Horizontal';
+  var selectedSlider = 0.0;
+  var selectedSlider2 = 0.0;
+  var isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -38,236 +40,245 @@ class _GeometricPageState extends State<GeometricPage> {
       appBar: const Header(
         title: 'Transformações Geométricas',
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          spacing: 5.0,
-          runSpacing: 16.0,
-          alignment: WrapAlignment.center,
-          children: [
-            ImageSelector(
-              isResult: false,
-              image: imageA != null ? Image.memory(imageA!) : null,
-              onTap: () async {
-                final pickedFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (pickedFile == null) return;
-                final fileBytes = await pickedFile.readAsBytes();
-                setState(() {
-                  imageA = fileBytes;
-                });
-              },
-            ),
-            const SizedBox(width: 10),
-            ImageSelector(
-              isResult: true,
-              image: imageB != null && imageB!.isNotEmpty
-                  ? Image.memory(imageB!)
-                  : null,
-              message: imageB == null
-                  ? 'SEM IMAGEM\nPARA MOSTRAR'
-                  : imageB!.isEmpty
-                      ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
-                      : null,
-            ),
-            Selector(
-              options: [
-                OperationSelection(
-                  value: 'Translação',
-                  icon: Icons.settings_overscan,
-                  onPressed: () {
-                    if (operation != translation) {
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Wrap(
+                spacing: 5.0,
+                runSpacing: 16.0,
+                alignment: WrapAlignment.center,
+                children: [
+                  ImageSelector(
+                    isResult: false,
+                    image: imageA != null ? Image.memory(imageA!) : null,
+                    onTap: () async {
+                      final pickedFile = await ImagePicker()
+                          .pickImage(source: ImageSource.gallery);
+                      if (pickedFile == null) return;
+                      final fileBytes = await pickedFile.readAsBytes();
                       setState(() {
-                        selectedSlider = 1;
-                        operation = translation;
+                        imageA = fileBytes;
                       });
-                    }
-                  },
-                ),
-                OperationSelection(
-                  value: 'Rotação',
-                  icon: Icons.rotate_right,
-                  onPressed: () {
-                    if (operation != rotation) {
-                      setState(() {
-                        selectedSlider = 1;
-                        operation = rotation;
-                      });
-                    }
-                  },
-                ),
-                OperationSelection(
-                  value: 'Escala',
-                  icon: Icons.photo_size_select_large,
-                  onPressed: () {
-                    if (operation != scale) {
-                      setState(() {
-                        selectedSlider = 1;
-                        operation = scale;
-                      });
-                    }
-                  },
-                ),
-                OperationSelection(
-                  value: 'Reflexão',
-                  // Talvez usar Icons.flip
-                  icon: Icons.compare,
-                  onPressed: () {
-                    setState(() {
-                      operation = reflection;
-                    });
-                  },
-                ),
-              ],
-            ),
-            const Padding(padding: EdgeInsets.all(16.0)),
-            SizedBox(
-              width: 400,
-              child: operation == translation
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Expanded(
-                              flex: 3,
-                              child: Text(
-                                'Horizontal',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'SF Pro Display',
-                                  color: ColorPalette.button,
-                                ),
+                    },
+                  ),
+                  const SizedBox(width: 10),
+                  ImageSelector(
+                    isResult: true,
+                    image: imageB != null && imageB!.isNotEmpty
+                        ? Image.memory(imageB!)
+                        : null,
+                    message: imageB == null
+                        ? 'SEM IMAGEM\nPARA MOSTRAR'
+                        : imageB!.isEmpty
+                            ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
+                            : null,
+                  ),
+                  Selector(
+                    options: [
+                      OperationSelection(
+                        value: 'Translação',
+                        icon: Icons.settings_overscan,
+                        onPressed: () {
+                          if (operation != translation) {
+                            setState(() {
+                              selectedSlider = 1;
+                              operation = translation;
+                            });
+                          }
+                        },
+                      ),
+                      OperationSelection(
+                        value: 'Rotação',
+                        icon: Icons.rotate_right,
+                        onPressed: () {
+                          if (operation != rotation) {
+                            setState(() {
+                              selectedSlider = 1;
+                              operation = rotation;
+                            });
+                          }
+                        },
+                      ),
+                      OperationSelection(
+                        value: 'Escala',
+                        icon: Icons.photo_size_select_large,
+                        onPressed: () {
+                          if (operation != scale) {
+                            setState(() {
+                              selectedSlider = 1;
+                              operation = scale;
+                            });
+                          }
+                        },
+                      ),
+                      OperationSelection(
+                        value: 'Reflexão',
+                        // Talvez usar Icons.flip
+                        icon: Icons.compare,
+                        onPressed: () {
+                          setState(() {
+                            operation = reflection;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const Padding(padding: EdgeInsets.all(16.0)),
+                  SizedBox(
+                    width: 400,
+                    child: operation == translation
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      'Horizontal',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'SF Pro Display',
+                                        color: ColorPalette.button,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 7,
+                                    child: StyledSlider(
+                                      min: -50,
+                                      max: 50,
+                                      value: selectedSlider,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedSlider = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            Expanded(
-                              flex: 7,
-                              child: StyledSlider(
-                                min: -50,
-                                max: 50,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Expanded(
+                                    flex: 3,
+                                    child: Text(
+                                      'Vertical',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontFamily: 'SF Pro Display',
+                                        color: ColorPalette.button,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 7,
+                                    child: StyledSlider(
+                                      min: -50,
+                                      max: 50,
+                                      value: selectedSlider2,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedSlider2 = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+                        : operation == rotation
+                            ? StyledSlider(
+                                min: -180,
+                                max: 180,
                                 value: selectedSlider,
                                 onChanged: (value) {
                                   setState(() {
                                     selectedSlider = value;
                                   });
                                 },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Expanded(
-                              flex: 3,
-                              child: Text(
-                                'Vertical',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontFamily: 'SF Pro Display',
-                                  color: ColorPalette.button,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 7,
-                              child: StyledSlider(
-                                min: -50,
-                                max: 50,
-                                value: selectedSlider2,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedSlider2 = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  : operation == rotation
-                      ? StyledSlider(
-                          min: -180,
-                          max: 180,
-                          value: selectedSlider,
-                          onChanged: (value) {
-                            setState(() {
-                              selectedSlider = value;
-                            });
-                          },
-                        )
-                      : operation == scale
-                          ? StyledSlider(
-                              min: 0.5,
-                              max: 2,
-                              value: selectedSlider,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedSlider = value;
-                                });
-                              },
-                            )
-                          : operation == reflection
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    StyledRadio(
-                                      value: 'Horizontal',
-                                      groupValue: selectedRadio,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedRadio = value!;
-                                        });
-                                      },
-                                    ),
-                                    const Padding(
-                                        padding: EdgeInsets.all(10.0)),
-                                    StyledRadio(
-                                      value: 'Vertical',
-                                      groupValue: selectedRadio,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedRadio = value!;
-                                        });
-                                      },
-                                    ),
-                                    const Padding(
-                                        padding: EdgeInsets.all(10.0)),
-                                    StyledRadio(
-                                      value: 'Ambos',
-                                      groupValue: selectedRadio,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedRadio = value!;
-                                        });
-                                      },
-                                    )
-                                  ],
-                                )
-                              : null,
-            ),
-            Center(
-              child: FinishButton(
-                text: 'Transformar',
-                onPressed: () {
-                  setState(() {
-                    imageB = operate(
-                      image: imageA,
-                      inputs: {
-                        'moveX': selectedSlider.toInt(),
-                        'moveY': selectedSlider2.toInt(),
+                              )
+                            : operation == scale
+                                ? StyledSlider(
+                                    min: 0.5,
+                                    max: 2,
+                                    value: selectedSlider,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedSlider = value;
+                                      });
+                                    },
+                                  )
+                                : operation == reflection
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          StyledRadio(
+                                            value: 'Horizontal',
+                                            groupValue: selectedRadio,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedRadio = value!;
+                                              });
+                                            },
+                                          ),
+                                          const Padding(
+                                              padding: EdgeInsets.all(10.0)),
+                                          StyledRadio(
+                                            value: 'Vertical',
+                                            groupValue: selectedRadio,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedRadio = value!;
+                                              });
+                                            },
+                                          ),
+                                          const Padding(
+                                              padding: EdgeInsets.all(10.0)),
+                                          StyledRadio(
+                                            value: 'Ambos',
+                                            groupValue: selectedRadio,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedRadio = value!;
+                                              });
+                                            },
+                                          )
+                                        ],
+                                      )
+                                    : null,
+                  ),
+                  Center(
+                    child: FinishButton(
+                      text: 'Transformar',
+                      onPressed: () async {
+                        setState(() => isLoading = true);
+
+                        await Future.delayed(const Duration(seconds: 2));
+
+                        setState(() {
+                          imageB = operate(
+                            image: imageA,
+                            inputs: {
+                              'moveX': selectedSlider.toInt(),
+                              'moveY': selectedSlider2.toInt(),
+                            },
+                            operation: operation,
+                          );
+
+                          isLoading = false;
+                        });
                       },
-                      operation: operation,
-                    );
-                  });
-                },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
       bottomNavigationBar: const Footer(),
     );
   }
