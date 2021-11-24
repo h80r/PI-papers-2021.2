@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
+import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
 typedef GeometricFunction = List<List<int>> Function({
   required List<List<int>> imageMatrix,
@@ -33,16 +34,6 @@ List<List<int>> imagePixelsFromData(Uint32List data, int height, int width) {
   }
 
   return matrix;
-}
-
-Uint8List reformat({
-  required int width,
-  required int height,
-  required Uint8List processedImage,
-}) {
-  return Uint8List.fromList(
-    encodePng(Image.fromBytes(width, height, processedImage)),
-  );
 }
 
 List<List<int>> translation({

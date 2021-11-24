@@ -2,27 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
-
-/// Formats the [processedImage] to a [Uint8List] readable by Image widgets.
-///
-/// Parameters:
-/// - `measurements`: A map with the width and height of the image.
-/// - `processedImage`: The image to be formatted.
-///
-/// Returns:
-/// - An [Uint8List] with the image data.
-Uint8List reformat(Map<String, int> measurements, Uint8List processedImage) {
-  return Uint8List.fromList(
-    encodePng(
-      Image.fromBytes(
-        measurements['width'] ?? 0,
-        measurements['height'] ?? 0,
-        processedImage,
-        format: Format.luminance,
-      ),
-    ),
-  );
-}
+import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
 /// Redistributes values in a list using [0, 1] scale back to the [0, 255]
 /// luminance range.
@@ -185,16 +165,13 @@ Uint8List? operate(
     return Uint8List(0);
   }
 
-  final measurements = {
-    'width': imgA.width,
-    'height': imgA.height,
-  };
-
   return reformat(
-    measurements,
-    operation(
+    width: imgA.width,
+    height: imgA.height,
+    processedImage: operation(
       pixelsImgA,
       pixelsImgB,
     ),
+    format: Format.luminance,
   );
 }
