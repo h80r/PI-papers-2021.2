@@ -73,7 +73,20 @@ List<List<int>> reflection({
   required List<List<int>> imageMatrix,
   required Map<String, int> data,
 }) {
-  return <List<int>>[]; // TODO: Implement Reflection
+  return List.generate(
+    data['height']!,
+    (y) => List.generate(
+      data['width']!,
+      (x) {
+        final yCoord =
+            data['reflectionType'] != 1 ? (y - (data['height']! - 1)).abs() : y;
+        final xCoord =
+            data['reflectionType'] != 2 ? (x - (data['width']! - 1)).abs() : x;
+
+        return imageMatrix[yCoord][xCoord];
+      },
+    ),
+  );
 }
 
 Uint8List? operate({

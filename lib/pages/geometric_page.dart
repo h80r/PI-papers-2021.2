@@ -28,6 +28,7 @@ class _GeometricPageState extends State<GeometricPage> {
   Uint8List? imageA;
   Uint8List? imageB;
   GeometricFunction? operation;
+  Map<String, int>? parameters;
 
   var selectedRadio = 'Horizontal';
   var selectedSlider = 0.0;
@@ -80,36 +81,24 @@ class _GeometricPageState extends State<GeometricPage> {
                         value: 'Translação',
                         icon: Icons.settings_overscan,
                         onPressed: () {
-                          if (operation != translation) {
-                            setState(() {
-                              selectedSlider = 1;
-                              operation = translation;
-                            });
-                          }
+                          if (operation == translation) return;
+                          setState(() => operation = translation);
                         },
                       ),
                       OperationSelection(
                         value: 'Rotação',
                         icon: Icons.rotate_right,
                         onPressed: () {
-                          if (operation != rotation) {
-                            setState(() {
-                              selectedSlider = 1;
-                              operation = rotation;
-                            });
-                          }
+                          if (operation == rotation) return;
+                          setState(() => operation = rotation);
                         },
                       ),
                       OperationSelection(
                         value: 'Escala',
                         icon: Icons.photo_size_select_large,
                         onPressed: () {
-                          if (operation != scale) {
-                            setState(() {
-                              selectedSlider = 1;
-                              operation = scale;
-                            });
-                          }
+                          if (operation == scale) return;
+                          setState(() => operation = scale);
                         },
                       ),
                       OperationSelection(
@@ -117,9 +106,8 @@ class _GeometricPageState extends State<GeometricPage> {
                         // Talvez usar Icons.flip
                         icon: Icons.compare,
                         onPressed: () {
-                          setState(() {
-                            operation = reflection;
-                          });
+                          if (operation == reflection) return;
+                          setState(() => operation = reflection);
                         },
                       ),
                     ],
@@ -267,6 +255,11 @@ class _GeometricPageState extends State<GeometricPage> {
                             inputs: {
                               'moveX': selectedSlider.toInt(),
                               'moveY': selectedSlider2.toInt(),
+                              'reflectionType': {
+                                    'Horizontal': 1,
+                                    'Vertical': 2
+                                  }[selectedRadio] ??
+                                  0,
                             },
                             operation: operation,
                           );
