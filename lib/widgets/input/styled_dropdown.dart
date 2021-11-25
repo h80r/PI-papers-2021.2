@@ -10,7 +10,7 @@ class StyleDropdown extends StatelessWidget {
   }) : super(key: key);
 
   final List<String> items;
-  final String value;
+  final String? value;
   final void Function(String?) onChanged;
 
   @override
