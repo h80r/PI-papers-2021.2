@@ -37,6 +37,20 @@ class HomePage extends StatelessWidget {
                   text: 'Transformações Geométricas',
                 ),
               ],
+            ),
+            const Divider(
+              color: Colors.transparent,
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                BigButton(
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed('/histogram_processing'),
+                  text: 'Processar Histogramas',
+                ),
+              ],
             )
           ],
         ),
