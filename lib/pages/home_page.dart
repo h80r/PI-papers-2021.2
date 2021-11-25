@@ -36,6 +36,15 @@ class HomePage extends StatelessWidget {
                       .pushNamed('/geometric_transformation'),
                   text: 'Transformações Geométricas',
                 ),
+                const VerticalDivider(
+                  color: Colors.transparent,
+                  width: 30,
+                ),
+                BigButton(
+                  onPressed: () =>
+                      Navigator.of(context).pushNamed('/histogram'),
+                  text: 'Histograma/ Gráficos',
+                ),
               ],
             ),
             const Divider(

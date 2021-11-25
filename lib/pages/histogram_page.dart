@@ -7,6 +7,8 @@ import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
 import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
+import 'package:pi_papers_2021_2/widgets/histogram_graph.dart';
+import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 
 import 'package:pi_papers_2021_2/algorithm/histogram_functions.dart';
 
@@ -22,6 +24,89 @@ class _HistogramPageState extends State<HistogramPage> {
   Uint8List? imageB;
   Uint8List? chart;
   dynamic operation;
+  final intensityFrequency = <int, num>{};
+
+  final menu = <String>[
+    'Histograma',
+    'Histograma normalizado',
+    'Equalização de histograma',
+    'Efeitos de Contrast Streching',
+  ];
+
+  String? currentValue;
+
+// TODO: remover. Estes valores são temporários
+  final valores = [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    5,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    6,
+    9,
+  ];
+
+  @override
+  void initState() {
+    currentValue = menu.first;
+
+    for (final v in valores) {
+      intensityFrequency.update(v, (value) => value + 1, ifAbsent: () => 1);
+    }
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +144,21 @@ class _HistogramPageState extends State<HistogramPage> {
               ),
             const SizedBox(width: 10),
             // TODO: Add chart component here
-            // const SizedBox(width: 10),
-            // TODO: Add dropdown here
+            const SizedBox(width: 10),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  StyleDropdown(
+                    items: menu,
+                    value: currentValue,
+                    onChanged: (newValue) =>
+                        setState(() => currentValue = newValue!),
+                  ),
+                  HistogramGraph(intensityFrequency: intensityFrequency),
+                ],
+              ),
+            ),
             const Padding(padding: EdgeInsets.all(16.0)),
             Center(
               child: FinishButton(

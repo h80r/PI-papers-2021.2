@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/pages/histogram_page.dart';
 import 'package:pi_papers_2021_2/pages/home_page.dart';
 import 'package:pi_papers_2021_2/pages/test_page.dart';
 import 'package:pi_papers_2021_2/pages/arithmetic_page.dart';
