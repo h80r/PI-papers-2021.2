@@ -1,26 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
-class StyleDropdown extends StatefulWidget {
+class StyleDropdown extends StatelessWidget {
   const StyleDropdown({
     Key? key,
     required this.items,
+    required this.value,
+    required this.onChanged,
   }) : super(key: key);
 
   final List<String> items;
-
-  @override
-  _StyleDropdownState createState() => _StyleDropdownState();
-}
-
-class _StyleDropdownState extends State<StyleDropdown> {
-  String? value;
-
-  @override
-  void initState() {
-    super.initState();
-    value = widget.items.first;
-  }
+  final String value;
+  final void Function(String?) onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +29,7 @@ class _StyleDropdownState extends State<StyleDropdown> {
           width: 350,
           child: DropdownButton<String>(
             value: value,
-            items: widget.items
+            items: items
                 .map(
                   (e) => DropdownMenuItem(
                     child: Text(e),
@@ -46,7 +37,7 @@ class _StyleDropdownState extends State<StyleDropdown> {
                   ),
                 )
                 .toList(),
-            onChanged: (newValue) => setState(() => value = newValue!),
+            onChanged: onChanged,
             borderRadius: const BorderRadius.all(Radius.circular(40.0)),
             elevation: 5,
             isDense: true,

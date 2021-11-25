@@ -80,6 +80,8 @@ final valores = [
 ];
 
 class _HistogramPageState extends State<HistogramPage> {
+  String currentValue = menu.first;
+
   @override
   Widget build(BuildContext context) {
     final intensityFrequency = <int, num>{};
@@ -96,7 +98,11 @@ class _HistogramPageState extends State<HistogramPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            StyleDropdown(items: menu),
+            StyleDropdown(
+              items: menu,
+              value: currentValue,
+              onChanged: (newValue) => setState(() => currentValue = newValue!),
+            ),
             HistogramGraph(intensityFrequency: intensityFrequency),
           ],
         ),
