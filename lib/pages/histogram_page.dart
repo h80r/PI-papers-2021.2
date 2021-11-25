@@ -12,7 +12,6 @@ class HistogramPage extends StatefulWidget {
 final menu = <String>[
   'Histograma',
   'Histograma normalizado',
-  'Enhancement',
   'Equalização de histograma',
   'Efeitos de Contrast Streching',
 ];
@@ -24,7 +23,9 @@ class _HistogramPageState extends State<HistogramPage> {
       appBar: const Header(
         title: 'Processamento de Histograma',
       ),
-      body: StyleDropdown(items: menu),
+      body: Center(
+        child: StyleDropdown(items: menu),
+      ),
     );
   }
 }
