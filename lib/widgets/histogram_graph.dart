@@ -3,7 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
 class HistogramGraph extends StatelessWidget {
-  const HistogramGraph({Key? key}) : super(key: key);
+  const HistogramGraph({
+    Key? key,
+    required this.intensityFrequency,
+  }) : super(key: key);
+
+  /// Um mapa cujas chaves são os valores de intensidade, e os valores são a
+  /// quantidade de vezes que se repete.
+  final Map<int, num> intensityFrequency;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +56,12 @@ class HistogramGraph extends StatelessWidget {
         fontSize: 14,
       );
 
-  List<BarChartGroupData> get barGroups => [0, 1, 2, 3, 4, 5, 6, 7]
+  List<BarChartGroupData> get barGroups => intensityFrequency.keys
       .map((e) => BarChartGroupData(
             x: e,
             barRods: [
               BarChartRodData(
-                y: 7, // TODO: y = receber o valor de vezes que a cor se repete
+                y: intensityFrequency[e]?.toDouble() ?? 0.0,
                 colors: [
                   ColorPalette.background
                 ], // TODO: receber o valor da cor x
