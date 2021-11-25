@@ -14,7 +14,13 @@ class StyleDropdown extends StatefulWidget {
 }
 
 class _StyleDropdownState extends State<StyleDropdown> {
-  var value = 'Histograma';
+  String? value;
+
+  @override
+  void initState() {
+    super.initState();
+    value = widget.items.first;
+  }
 
   @override
   Widget build(BuildContext context) {
