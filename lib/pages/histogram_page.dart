@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/widgets/histogram_graph.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
@@ -24,7 +25,13 @@ class _HistogramPageState extends State<HistogramPage> {
         title: 'Processamento de Histograma',
       ),
       body: Center(
-        child: StyleDropdown(items: menu),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            StyleDropdown(items: menu),
+            const HistogramGraph(),
+          ],
+        ),
       ),
     );
   }
