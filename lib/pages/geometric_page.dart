@@ -261,7 +261,11 @@ class _GeometricPageState extends State<GeometricPage> {
                         ),
                         onPressed: () {
                           if (operation == translation) return;
-                          setState(() => operation = translation);
+                          setState(() {
+                            selectedSlider = 0.0;
+                            selectedSlider2 = 0.0;
+                            operation = translation;
+                          });
                         },
                       ),
                       OperationSelection(
