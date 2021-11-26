@@ -42,11 +42,11 @@ class HomePage extends StatelessWidget {
                 ),
                 BigButton(
                   onPressed: () =>
-                      Navigator.of(context).pushNamed('/histogram'),
-                  text: 'Histograma/ Gráficos',
+                      Navigator.of(context).pushNamed('/histogram_processing'),
+                  text: 'Processar Histogramas',
                 ),
               ],
-            )
+            ),
           ],
         ),
       ),
