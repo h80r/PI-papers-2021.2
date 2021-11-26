@@ -27,6 +27,25 @@ flutter:
       fonts:
         - asset: assets/fonts/SF-Pro-Display.otf
 
+assets:
+  - assets/images/prototype/icons/add_img.png
+  - assets/images/prototype/icons/edit_img.png
+  - assets/images/prototype/icons/field.png
+  - assets/images/prototype/icons/home.png
+  - assets/images/prototype/icons/img.png
+  - assets/images/prototype/icons/levels.png
+  - assets/images/prototype/icons/radio_button_selected.png
+  - assets/images/prototype/icons/radio_button.png
+  - assets/images/prototype/icons/reflection.png
+  - assets/images/prototype/icons/right_arrow.png
+  - assets/images/prototype/icons/rotation.png
+  - assets/images/prototype/icons/scale.png
+  - assets/images/prototype/icons/translation.png
+  - assets/images/prototype/icons/plus.png
+  - assets/images/prototype/icons/minus.png
+  - assets/images/prototype/icons/slash.png
+  - assets/images/prototype/icons/times.png
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

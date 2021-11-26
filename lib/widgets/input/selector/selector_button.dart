@@ -12,7 +12,7 @@ class SelectorButton extends StatelessWidget {
 
   final String groupValue;
   final String value;
-  final IconData icon;
+  final ImageIcon icon;
   final void Function() onPressed;
 
   @override
@@ -23,14 +23,7 @@ class SelectorButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ElevatedButton(
-          child: Padding(
-            padding: const EdgeInsets.all(12),
-            child: Icon(
-              icon,
-              color: isSelected ? Colors.white : ColorPalette.primary,
-              size: 30,
-            ),
-          ),
+          child: Padding(padding: const EdgeInsets.all(12), child: icon),
           onPressed: onPressed,
           style: ElevatedButton.styleFrom(
             shape: const CircleBorder(),

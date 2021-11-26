@@ -23,8 +23,8 @@ class Header extends StatelessWidget with PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 30),
           child: TextButton.icon(
             onPressed: () => Navigator.of(context).popAndPushNamed('/'),
-            icon: const Icon(
-              Icons.home_rounded,
+            icon: const ImageIcon(
+              AssetImage("images/prototype/icons/home.png"),
               size: 45,
               color: ColorPalette.background,
             ),

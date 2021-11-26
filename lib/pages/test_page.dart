@@ -30,12 +30,16 @@ class TestPage extends StatelessWidget {
             options: [
               OperationSelection(
                 value: 'Adição',
-                icon: Icons.add,
+                icon: const ImageIcon(
+                  AssetImage("images/prototype/icons/plus.png"),
+                ),
                 onPressed: () => print('clicou adição'),
               ),
               OperationSelection(
                 value: 'Subtração',
-                icon: Icons.remove,
+                icon: const ImageIcon(
+                  AssetImage("images/prototype/icons/minus.png"),
+                ),
                 onPressed: () => print('clicou subtração'),
               ),
             ],

@@ -82,7 +82,9 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
               options: [
                 OperationSelection(
                   value: 'Adição',
-                  icon: Icons.add,
+                  icon: const ImageIcon(
+                    AssetImage("images/prototype/icons/plus.png"),
+                  ),
                   onPressed: () {
                     setState(() {
                       operation = sum;
@@ -91,7 +93,9 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Subtração',
-                  icon: Icons.remove,
+                  icon: const ImageIcon(
+                    AssetImage("images/prototype/icons/minus.png"),
+                  ),
                   onPressed: () {
                     setState(() {
                       operation = subtraction;
@@ -100,7 +104,9 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Multiplicação',
-                  icon: Icons.star,
+                  icon: const ImageIcon(
+                    AssetImage("images/prototype/icons/times.png"),
+                  ),
                   onPressed: () {
                     setState(() {
                       operation = multiplication;
@@ -109,7 +115,9 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Divisão',
-                  icon: Icons.pause_sharp,
+                  icon: const ImageIcon(
+                    AssetImage("images/prototype/icons/slash.png"),
+                  ),
                   onPressed: () {
                     setState(() {
                       operation = division;

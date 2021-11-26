@@ -79,7 +79,9 @@ class _GeometricPageState extends State<GeometricPage> {
                     options: [
                       OperationSelection(
                         value: 'Translação',
-                        icon: Icons.settings_overscan,
+                        icon: const ImageIcon(
+                          AssetImage("images/prototype/icons/translation.png"),
+                        ),
                         onPressed: () {
                           if (operation == translation) return;
                           setState(() => operation = translation);
@@ -87,7 +89,9 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Rotação',
-                        icon: Icons.rotate_right,
+                        icon: const ImageIcon(
+                          AssetImage("images/prototype/icons/rotation.png"),
+                        ),
                         onPressed: () {
                           if (operation == rotation) return;
                           setState(() => operation = rotation);
@@ -95,7 +99,9 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Escala',
-                        icon: Icons.photo_size_select_large,
+                        icon: const ImageIcon(
+                          AssetImage("images/prototype/icons/scale.png"),
+                        ),
                         onPressed: () {
                           if (operation == scale) return;
                           setState(() {
@@ -106,8 +112,9 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Reflexão',
-                        // Talvez usar Icons.flip
-                        icon: Icons.compare,
+                        icon: const ImageIcon(
+                          AssetImage("images/prototype/icons/reflection.png"),
+                        ),
                         onPressed: () {
                           if (operation == reflection) return;
                           setState(() => operation = reflection);

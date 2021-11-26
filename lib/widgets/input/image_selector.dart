@@ -23,13 +23,14 @@ class ImageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final smallestSide = MediaQuery.of(context).size.shortestSide;
+    final desiredSize = smallestSide * 0.45;
 
     return InkWell(
       onTap: isResult ? null : onTap,
       borderRadius: BorderRadius.circular(30),
       child: Container(
-        width: smallestSide * 0.45,
-        height: smallestSide * 0.45,
+        width: desiredSize,
+        height: desiredSize,
         child: image ??
             Center(
               child: isResult
@@ -44,10 +45,10 @@ class ImageSelector extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     )
-                  : Icon(
-                      Icons.add_a_photo_outlined,
-                      size: smallestSide * 0.3,
-                      color: ColorPalette.button.withOpacity(0.7),
+                  : ImageIcon(
+                      const AssetImage("images/prototype/icons/add_img.png"),
+                      size: desiredSize * 0.6,
+                      color: ColorPalette.button.withOpacity(0.5),
                     ),
             ),
         decoration: BoxDecoration(
