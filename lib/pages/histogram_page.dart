@@ -88,7 +88,9 @@ class _HistogramPageState extends State<HistogramPage> {
                     onChanged: (newValue) =>
                         setState(() => currentValue = newValue!),
                   ),
-                  HistogramGraph(intensityFrequency: intensityFrequency),
+                  HistogramGraph(
+                      intensityFrequency:
+                          getIntensityFrequency(pixelsLuminanceValues)),
                 ],
               ),
             ),
