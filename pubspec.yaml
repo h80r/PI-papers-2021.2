@@ -22,13 +22,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/prototype/icons/
   fonts:
     - family: SF Pro Display
       fonts:
         - asset: assets/fonts/SF-Pro-Display.otf
 
-assets:
-  - assets/images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:
