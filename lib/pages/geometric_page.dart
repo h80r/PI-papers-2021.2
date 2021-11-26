@@ -205,6 +205,7 @@ class _GeometricPageState extends State<GeometricPage> {
                                     min: 0.5,
                                     max: 2,
                                     value: selectedSlider,
+                                    isDecimal: true,
                                     onChanged: (value) {
                                       setState(() {
                                         selectedSlider = value;
