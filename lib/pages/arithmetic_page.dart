@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
+import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
@@ -82,8 +83,8 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
               options: [
                 OperationSelection(
                   value: 'Adição',
-                  icon: const ImageIcon(
-                    AssetImage("images/prototype/icons/plus.png"),
+                  icon: ImageIcon(
+                    AssetImage(path('images/prototype/icons/plus.png')),
                   ),
                   onPressed: () {
                     setState(() {
@@ -93,8 +94,8 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Subtração',
-                  icon: const ImageIcon(
-                    AssetImage("images/prototype/icons/minus.png"),
+                  icon: ImageIcon(
+                    AssetImage(path('images/prototype/icons/minus.png')),
                   ),
                   onPressed: () {
                     setState(() {
@@ -104,8 +105,8 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Multiplicação',
-                  icon: const ImageIcon(
-                    AssetImage("images/prototype/icons/times.png"),
+                  icon: ImageIcon(
+                    AssetImage(path('images/prototype/icons/times.png')),
                   ),
                   onPressed: () {
                     setState(() {
@@ -115,8 +116,8 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                 ),
                 OperationSelection(
                   value: 'Divisão',
-                  icon: const ImageIcon(
-                    AssetImage("images/prototype/icons/slash.png"),
+                  icon: ImageIcon(
+                    AssetImage(path('images/prototype/icons/slash.png')),
                   ),
                   onPressed: () {
                     setState(() {

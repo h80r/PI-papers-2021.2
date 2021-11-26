@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/utils/web_utils.dart';
 import 'package:pi_papers_2021_2/widgets/multisize_text.dart';
 
 class Logo extends StatelessWidget {
@@ -15,7 +16,7 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final icon = ImageIcon(
-      const AssetImage("images/prototype/icons/edit_img.png"),
+      AssetImage(path('images/prototype/icons/edit_img.png')),
       color: ColorPalette.secondary,
       size: isVertical ? 100 : 50,
     );

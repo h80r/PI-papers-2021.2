@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 class ImageSelector extends StatelessWidget {
   const ImageSelector({
@@ -46,7 +48,7 @@ class ImageSelector extends StatelessWidget {
                       textAlign: TextAlign.center,
                     )
                   : ImageIcon(
-                      const AssetImage("images/prototype/icons/add_img.png"),
+                      AssetImage(path('images/prototype/icons/add_img.png')),
                       size: desiredSize * 0.6,
                       color: ColorPalette.button.withOpacity(0.5),
                     ),
