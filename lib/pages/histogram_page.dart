@@ -101,10 +101,23 @@ class _HistogramPageState extends State<HistogramPage> {
 
                     if (operation != getHistogram &&
                         operation != getNormalizedHistogram) {
+                      // TODO: a operação de soma abaixo é um exemplo e precisa ser substituída pela operation escolhida:
+                      // TODO: Remover importacao de arithmetic_functions.dart nesse arquivo:
                       imageB = operate(imageA, imageA, sum);
+
+                      // TODO: Nesse caso, a apresentação do histograma padrão ocorre para
+                      // a imagem B (resultante) independentemente da operacao escolhida:
+                      // pixelsLuminanceValues = getHistogram(imageB);
                     } else {
+                      // A imagemB é removida
                       imageB = null;
+
+                      // TODO: Se um tipo de histograma foi a operation escolhida,
+                      // então basta apresentar seu retorno:
+                      // pixelsLuminanceValues = operation(imageA);
                     }
+
+                    //TODO: Os valores abaixos são para fins de testes e precisam ser removidos;
                     pixelsLuminanceValues = [
                       0,
                       0,

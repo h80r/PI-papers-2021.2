@@ -2,6 +2,9 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
+// TODO: Verificar HistogramGraph com vários valores de pixels, talvez os números (legenda)
+// à esquerda e à direita possam ser removidos para evitar sobreposição deles na visualização
+
 class HistogramGraph extends StatelessWidget {
   const HistogramGraph({
     Key? key,

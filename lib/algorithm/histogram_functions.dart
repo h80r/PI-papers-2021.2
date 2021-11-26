@@ -1,3 +1,4 @@
+// TODO: Se as funções tiverem retornos diferentes, é aconselhado definir a getOperation como dynamic ao invés de Function(<retornos>)
 Function() getOperation(dropdownCurrentValue) {
   switch (dropdownCurrentValue) {
     case 'Histograma':
