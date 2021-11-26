@@ -22,10 +22,9 @@ class HistogramPage extends StatefulWidget {
 class _HistogramPageState extends State<HistogramPage> {
   Uint8List? imageA;
   Uint8List? imageB;
-  Uint8List? chart;
   dynamic operation;
-  final intensityFrequency = <int, num>{};
   String? dropdownCurrentValue;
+  List? pixelsLuminanceValues;
 
   final menu = <String>[
     'Histograma',
@@ -35,68 +34,6 @@ class _HistogramPageState extends State<HistogramPage> {
   ];
 
   String? currentValue;
-
-// TODO: remover. Estes valores são temporários
-  final valores = [
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    1,
-    2,
-    2,
-    2,
-    2,
-    2,
-    2,
-    2,
-    3,
-    3,
-    3,
-    3,
-    3,
-    3,
-    3,
-    4,
-    4,
-    4,
-    4,
-    4,
-    4,
-    4,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    5,
-    6,
-    6,
-    6,
-    6,
-    6,
-    6,
-    6,
-    9,
-  ];
 
   @override
   void initState() {
@@ -165,7 +102,66 @@ class _HistogramPageState extends State<HistogramPage> {
                         operation != getNormalizedHistogram) {
                       imageB = operation(imageA);
                     }
-                    chart = operation(imageA);
+                    pixelsLuminanceValues = [
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      2,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      3,
+                      4,
+                      4,
+                      4,
+                      4,
+                      4,
+                      4,
+                      4,
+                      5,
+                      5,
+                      5,
+                      5,
+                      5,
+                      5,
+                      5,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      6,
+                      9
+                    ];
                   });
                 },
               ),
