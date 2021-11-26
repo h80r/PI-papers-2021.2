@@ -45,35 +45,212 @@ class _GeometricPageState extends State<GeometricPage> {
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Wrap(
-                spacing: 5.0,
-                runSpacing: 16.0,
-                alignment: WrapAlignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ImageSelector(
-                    isResult: false,
-                    image: imageA != null ? Image.memory(imageA!) : null,
-                    onTap: () async {
-                      final pickedFile = await ImagePicker()
-                          .pickImage(source: ImageSource.gallery);
-                      if (pickedFile == null) return;
-                      final fileBytes = await pickedFile.readAsBytes();
-                      setState(() {
-                        imageA = fileBytes;
-                      });
-                    },
-                  ),
-                  const SizedBox(width: 10),
-                  ImageSelector(
-                    isResult: true,
-                    image: imageB != null && imageB!.isNotEmpty
-                        ? Image.memory(imageB!)
-                        : null,
-                    message: imageB == null
-                        ? 'SEM IMAGEM\nPARA MOSTRAR'
-                        : imageB!.isEmpty
-                            ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
-                            : null,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        children: [
+                          SizedBox(
+                            width: 400,
+                            child: operation == translation
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              'Horizontal',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'SF Pro Display',
+                                                color: ColorPalette.button,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 7,
+                                            child: StyledSlider(
+                                              min: -50,
+                                              max: 50,
+                                              value: selectedSlider,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedSlider = value;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Expanded(
+                                            flex: 3,
+                                            child: Text(
+                                              'Vertical',
+                                              style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: 'SF Pro Display',
+                                                color: ColorPalette.button,
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 7,
+                                            child: StyledSlider(
+                                              min: -50,
+                                              max: 50,
+                                              value: selectedSlider2,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  selectedSlider2 = value;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : operation == rotation
+                                    ? StyledSlider(
+                                        min: -180,
+                                        max: 180,
+                                        value: selectedSlider,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            selectedSlider = value;
+                                          });
+                                        },
+                                      )
+                                    : operation == scale
+                                        ? StyledSlider(
+                                            min: 0.5,
+                                            max: 2,
+                                            value: selectedSlider,
+                                            isDecimal: true,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                selectedSlider = value;
+                                              });
+                                            },
+                                          )
+                                        : operation == reflection
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  StyledRadio(
+                                                    value: 'Horizontal',
+                                                    groupValue: selectedRadio,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedRadio = value!;
+                                                      });
+                                                    },
+                                                  ),
+                                                  const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(10.0)),
+                                                  StyledRadio(
+                                                    value: 'Vertical',
+                                                    groupValue: selectedRadio,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedRadio = value!;
+                                                      });
+                                                    },
+                                                  ),
+                                                  const Padding(
+                                                      padding:
+                                                          EdgeInsets.all(10.0)),
+                                                  StyledRadio(
+                                                    value: 'Ambos',
+                                                    groupValue: selectedRadio,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        selectedRadio = value!;
+                                                      });
+                                                    },
+                                                  )
+                                                ],
+                                              )
+                                            : null,
+                          ),
+                          FinishButton(
+                            text: 'Transformar',
+                            onPressed: () async {
+                              setState(() => isLoading = true);
+
+                              await Future.delayed(const Duration(seconds: 2));
+
+                              setState(() {
+                                imageB = operate(
+                                  image: imageA,
+                                  inputs: {
+                                    'moveX': selectedSlider.toInt(),
+                                    'moveY': selectedSlider2.toInt(),
+                                    'reflectionType': {
+                                          'Horizontal': 1,
+                                          'Vertical': 2
+                                        }[selectedRadio] ??
+                                        0,
+                                    'rotation': selectedSlider.toInt(),
+                                    'scale': (selectedSlider * 10).toInt(),
+                                  },
+                                  operation: operation,
+                                );
+
+                                isLoading = false;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      Wrap(
+                        spacing: 5.0,
+                        runSpacing: 16.0,
+                        alignment: WrapAlignment.center,
+                        children: [
+                          ImageSelector(
+                            isResult: false,
+                            image:
+                                imageA != null ? Image.memory(imageA!) : null,
+                            onTap: () async {
+                              final pickedFile = await ImagePicker()
+                                  .pickImage(source: ImageSource.gallery);
+                              if (pickedFile == null) return;
+                              final fileBytes = await pickedFile.readAsBytes();
+                              setState(() {
+                                imageA = fileBytes;
+                              });
+                            },
+                          ),
+                          const SizedBox(width: 10),
+                          ImageSelector(
+                            isResult: true,
+                            image: imageB != null && imageB!.isNotEmpty
+                                ? Image.memory(imageB!)
+                                : null,
+                            message: imageB == null
+                                ? 'SEM IMAGEM\nPARA MOSTRAR'
+                                : imageB!.isEmpty
+                                    ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
+                                    : null,
+                          ),
+                          const Padding(padding: EdgeInsets.all(16.0)),
+                        ],
+                      ),
+                    ],
                   ),
                   Selector(
                     options: [
@@ -121,166 +298,6 @@ class _GeometricPageState extends State<GeometricPage> {
                         },
                       ),
                     ],
-                  ),
-                  const Padding(padding: EdgeInsets.all(16.0)),
-                  SizedBox(
-                    width: 400,
-                    child: operation == translation
-                        ? Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      'Horizontal',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'SF Pro Display',
-                                        color: ColorPalette.button,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 7,
-                                    child: StyledSlider(
-                                      min: -50,
-                                      max: 50,
-                                      value: selectedSlider,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedSlider = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Expanded(
-                                    flex: 3,
-                                    child: Text(
-                                      'Vertical',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontFamily: 'SF Pro Display',
-                                        color: ColorPalette.button,
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 7,
-                                    child: StyledSlider(
-                                      min: -50,
-                                      max: 50,
-                                      value: selectedSlider2,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedSlider2 = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          )
-                        : operation == rotation
-                            ? StyledSlider(
-                                min: -180,
-                                max: 180,
-                                value: selectedSlider,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedSlider = value;
-                                  });
-                                },
-                              )
-                            : operation == scale
-                                ? StyledSlider(
-                                    min: 0.5,
-                                    max: 2,
-                                    value: selectedSlider,
-                                    isDecimal: true,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedSlider = value;
-                                      });
-                                    },
-                                  )
-                                : operation == reflection
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          StyledRadio(
-                                            value: 'Horizontal',
-                                            groupValue: selectedRadio,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedRadio = value!;
-                                              });
-                                            },
-                                          ),
-                                          const Padding(
-                                              padding: EdgeInsets.all(10.0)),
-                                          StyledRadio(
-                                            value: 'Vertical',
-                                            groupValue: selectedRadio,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedRadio = value!;
-                                              });
-                                            },
-                                          ),
-                                          const Padding(
-                                              padding: EdgeInsets.all(10.0)),
-                                          StyledRadio(
-                                            value: 'Ambos',
-                                            groupValue: selectedRadio,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                selectedRadio = value!;
-                                              });
-                                            },
-                                          )
-                                        ],
-                                      )
-                                    : null,
-                  ),
-                  Center(
-                    child: FinishButton(
-                      text: 'Transformar',
-                      onPressed: () async {
-                        setState(() => isLoading = true);
-
-                        await Future.delayed(const Duration(seconds: 2));
-
-                        setState(() {
-                          imageB = operate(
-                            image: imageA,
-                            inputs: {
-                              'moveX': selectedSlider.toInt(),
-                              'moveY': selectedSlider2.toInt(),
-                              'reflectionType': {
-                                    'Horizontal': 1,
-                                    'Vertical': 2
-                                  }[selectedRadio] ??
-                                  0,
-                              'rotation': selectedSlider.toInt(),
-                              'scale': (selectedSlider * 10).toInt(),
-                            },
-                            operation: operation,
-                          );
-
-                          isLoading = false;
-                        });
-                      },
-                    ),
                   ),
                 ],
               ),
