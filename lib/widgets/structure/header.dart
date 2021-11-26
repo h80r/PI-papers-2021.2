@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/utils/web_utils.dart';
 import 'package:pi_papers_2021_2/widgets/multisize_text.dart';
 import 'package:pi_papers_2021_2/widgets/structure/logo.dart';
 
@@ -23,8 +24,8 @@ class Header extends StatelessWidget with PreferredSizeWidget {
           padding: const EdgeInsets.only(right: 30),
           child: TextButton.icon(
             onPressed: () => Navigator.of(context).popAndPushNamed('/'),
-            icon: const ImageIcon(
-              AssetImage("images/prototype/icons/home.png"),
+            icon: ImageIcon(
+              AssetImage(path('images/prototype/icons/home.png')),
               size: 45,
               color: ColorPalette.background,
             ),

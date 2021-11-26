@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
 
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
@@ -119,8 +120,9 @@ class _GeometricPageState extends State<GeometricPage> {
                     options: [
                       OperationSelection(
                         value: 'Translação',
-                        icon: const ImageIcon(
-                          AssetImage("images/prototype/icons/translation.png"),
+                        icon: ImageIcon(
+                          AssetImage(
+                              path('images/prototype/icons/translation.png')),
                         ),
                         onPressed: () {
                           if (operation == translation) return;
@@ -133,8 +135,9 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Rotação',
-                        icon: const ImageIcon(
-                          AssetImage("images/prototype/icons/rotation.png"),
+                        icon: ImageIcon(
+                          AssetImage(
+                              path('images/prototype/icons/rotation.png')),
                         ),
                         onPressed: () {
                           if (operation == rotation) return;
@@ -143,8 +146,8 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Escala',
-                        icon: const ImageIcon(
-                          AssetImage("images/prototype/icons/scale.png"),
+                        icon: ImageIcon(
+                          AssetImage(path('images/prototype/icons/scale.png')),
                         ),
                         onPressed: () {
                           if (operation == scale) return;
@@ -156,8 +159,9 @@ class _GeometricPageState extends State<GeometricPage> {
                       ),
                       OperationSelection(
                         value: 'Reflexão',
-                        icon: const ImageIcon(
-                          AssetImage("images/prototype/icons/reflection.png"),
+                        icon: ImageIcon(
+                          AssetImage(
+                              path('images/prototype/icons/reflection.png')),
                         ),
                         onPressed: () {
                           if (operation == reflection) return;
