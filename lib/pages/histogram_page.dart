@@ -33,8 +33,6 @@ class _HistogramPageState extends State<HistogramPage> {
     'Efeitos de Contrast Streching',
   ];
 
-  String? currentValue;
-
   @override
   void initState() {
     dropdownCurrentValue = menu.first;
@@ -74,7 +72,10 @@ class _HistogramPageState extends State<HistogramPage> {
                 image: Image.memory(imageB!),
               ),
             const SizedBox(width: 10),
-            // TODO: Add chart component here
+            if (pixelsLuminanceValues != null)
+              HistogramGraph(
+                  intensityFrequency:
+                      getIntensityFrequency(pixelsLuminanceValues)),
             const SizedBox(width: 10),
             Center(
               child: Row(
@@ -82,13 +83,10 @@ class _HistogramPageState extends State<HistogramPage> {
                 children: [
                   StyleDropdown(
                     items: menu,
-                    value: currentValue,
+                    value: dropdownCurrentValue,
                     onChanged: (newValue) =>
-                        setState(() => currentValue = newValue!),
+                        setState(() => dropdownCurrentValue = newValue!),
                   ),
-                  HistogramGraph(
-                      intensityFrequency:
-                          getIntensityFrequency(pixelsLuminanceValues)),
                 ],
               ),
             ),
