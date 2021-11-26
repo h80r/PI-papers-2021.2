@@ -25,6 +25,7 @@ class _HistogramPageState extends State<HistogramPage> {
   Uint8List? chart;
   dynamic operation;
   final intensityFrequency = <int, num>{};
+  String? dropdownCurrentValue;
 
   final menu = <String>[
     'Histograma',
@@ -99,12 +100,7 @@ class _HistogramPageState extends State<HistogramPage> {
 
   @override
   void initState() {
-    currentValue = menu.first;
-
-    for (final v in valores) {
-      intensityFrequency.update(v, (value) => value + 1, ifAbsent: () => 1);
-    }
-
+    dropdownCurrentValue = menu.first;
     super.initState();
   }
 
