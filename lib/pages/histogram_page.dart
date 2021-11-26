@@ -54,20 +54,18 @@ class _HistogramPageState extends State<HistogramPage> {
           runSpacing: 16.0,
           alignment: WrapAlignment.center,
           children: [
-            Center(
-              child: ImageSelector(
-                isResult: false,
-                image: imageA != null ? Image.memory(imageA!) : null,
-                onTap: () async {
-                  final pickedFile = await ImagePicker()
-                      .pickImage(source: ImageSource.gallery);
-                  if (pickedFile == null) return;
-                  final fileBytes = await pickedFile.readAsBytes();
-                  setState(() {
-                    imageA = fileBytes;
-                  });
-                },
-              ),
+            ImageSelector(
+              isResult: false,
+              image: imageA != null ? Image.memory(imageA!) : null,
+              onTap: () async {
+                final pickedFile =
+                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (pickedFile == null) return;
+                final fileBytes = await pickedFile.readAsBytes();
+                setState(() {
+                  imageA = fileBytes;
+                });
+              },
             ),
             const SizedBox(width: 10),
             if (imageB != null)
