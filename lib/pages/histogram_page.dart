@@ -11,6 +11,7 @@ import 'package:pi_papers_2021_2/widgets/histogram_graph.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 
 import 'package:pi_papers_2021_2/algorithm/histogram_functions.dart';
+import 'package:pi_papers_2021_2/algorithm/arithmetic_functions.dart';
 
 class HistogramPage extends StatefulWidget {
   const HistogramPage({Key? key}) : super(key: key);
@@ -96,9 +97,13 @@ class _HistogramPageState extends State<HistogramPage> {
                 text: 'Processar',
                 onPressed: () {
                   setState(() {
+                    operation = getOperation(dropdownCurrentValue);
+
                     if (operation != getHistogram &&
                         operation != getNormalizedHistogram) {
-                      imageB = operation(imageA);
+                      imageB = operate(imageA, imageA, sum);
+                    } else {
+                      imageB = null;
                     }
                     pixelsLuminanceValues = [
                       0,
