@@ -216,39 +216,29 @@ class _GeometricPageState extends State<GeometricPage> {
                           ),
                         ],
                       ),
-                      Wrap(
-                        spacing: 5.0,
-                        runSpacing: 16.0,
-                        alignment: WrapAlignment.center,
-                        children: [
-                          ImageSelector(
-                            isResult: false,
-                            image:
-                                imageA != null ? Image.memory(imageA!) : null,
-                            onTap: () async {
-                              final pickedFile = await ImagePicker()
-                                  .pickImage(source: ImageSource.gallery);
-                              if (pickedFile == null) return;
-                              final fileBytes = await pickedFile.readAsBytes();
-                              setState(() {
-                                imageA = fileBytes;
-                              });
-                            },
-                          ),
-                          const SizedBox(width: 10),
-                          ImageSelector(
-                            isResult: true,
-                            image: imageB != null && imageB!.isNotEmpty
-                                ? Image.memory(imageB!)
+                      ImageSelector(
+                        isResult: false,
+                        image: imageA != null ? Image.memory(imageA!) : null,
+                        onTap: () async {
+                          final pickedFile = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          if (pickedFile == null) return;
+                          final fileBytes = await pickedFile.readAsBytes();
+                          setState(() {
+                            imageA = fileBytes;
+                          });
+                        },
+                      ),
+                      ImageSelector(
+                        isResult: true,
+                        image: imageB != null && imageB!.isNotEmpty
+                            ? Image.memory(imageB!)
+                            : null,
+                        message: imageB == null
+                            ? 'SEM IMAGEM\nPARA MOSTRAR'
+                            : imageB!.isEmpty
+                                ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
                                 : null,
-                            message: imageB == null
-                                ? 'SEM IMAGEM\nPARA MOSTRAR'
-                                : imageB!.isEmpty
-                                    ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
-                                    : null,
-                          ),
-                          const Padding(padding: EdgeInsets.all(16.0)),
-                        ],
                       ),
                     ],
                   ),
