@@ -50,7 +50,7 @@ class StyledSlider extends StatelessWidget {
             min: min,
             max: max,
             value: value,
-            divisions: (max + min.abs()) ~/ 0.1,
+            divisions: (max + min.abs()).toInt(),
             onChanged: onChanged,
             label: value.toStringAsFixed(1),
           ),
