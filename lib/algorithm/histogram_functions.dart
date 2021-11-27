@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
@@ -32,6 +33,7 @@ HistogramResult? operate(Uint8List? image, HistogramFunction? operation) {
       width: decodedImage.width,
       height: decodedImage.height,
       processedImage: result.get<Uint8List?>()!,
+      format: Format.luminance,
     ),
   );
 }
@@ -73,7 +75,27 @@ HistogramResult histogramEqualization(Uint8List luminanceList) {
 }
 
 HistogramResult contrastStreching(Uint8List luminanceList) {
-  // TODO: Process the image accordingly
-  final processedPixelList = luminanceList;
-  return Tuple({}, processedPixelList);
+  final oldHistogram = histogramGeneration(luminanceList).get<Map<int, num>>();
+
+  const smallerIntervalValue = 0;
+  const biggerIntervalValue = 255;
+
+  final smallerImageValue = oldHistogram!.keys.toList().reduce(min);
+  final biggerImageValue = oldHistogram.keys.toList().reduce(max);
+
+  final newHistogram = oldHistogram.map((key, value) => MapEntry(
+        ((key - smallerImageValue) *
+                    ((biggerIntervalValue - smallerIntervalValue) /
+                        (biggerImageValue - smallerImageValue)) +
+                smallerIntervalValue)
+            .toInt(),
+        value,
+      ));
+
+  final luminanceMap = Map.fromIterables(oldHistogram.keys, newHistogram.keys);
+  final processedPixelList = Uint8List.fromList(
+    luminanceList.map((e) => luminanceMap[e]!).toList(),
+  );
+
+  return Tuple(newHistogram, processedPixelList);
 }
