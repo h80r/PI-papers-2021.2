@@ -6,10 +6,12 @@ class FinishButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPressed,
+    this.isCompact = false,
   }) : super(key: key);
 
   final String text;
   final void Function() onPressed;
+  final bool isCompact;
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +19,19 @@ class FinishButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         text,
-        style: const TextStyle(
-          color: ColorPalette.secondary,
+        style: TextStyle(
+          color: isCompact ? ColorPalette.primary : ColorPalette.secondary,
           fontWeight: FontWeight.bold,
           fontFamily: 'SF Pro Display',
           fontSize: 20,
         ),
       ),
       style: ElevatedButton.styleFrom(
-        shape: const StadiumBorder(),
-        primary: ColorPalette.primary,
+        shape: isCompact ? const CircleBorder() : const StadiumBorder(),
+        primary: isCompact ? ColorPalette.secondary : ColorPalette.primary,
         elevation: 5,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 120,
+        padding: EdgeInsets.symmetric(
+          horizontal: isCompact ? 35 : 120,
           vertical: 20,
         ),
       ),

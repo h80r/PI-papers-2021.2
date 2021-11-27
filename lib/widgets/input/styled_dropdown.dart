@@ -26,7 +26,7 @@ class StyleDropdown extends StatelessWidget {
       ),
       child: DropdownButtonHideUnderline(
         child: SizedBox(
-          width: 350,
+          width: 300,
           child: DropdownButton<String>(
             value: value,
             items: items
