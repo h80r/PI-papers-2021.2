@@ -20,27 +20,29 @@ class HistogramPage extends StatefulWidget {
 }
 
 class _HistogramPageState extends State<HistogramPage> {
-  Uint8List? imageA;
-  Uint8List? imageB;
-  //dynamic operation;
+  Uint8List? inputImage;
   String? dropdownCurrentValue;
-  Map<int, num>? histogramResult;
+  HistogramFunction? operation;
+  HistogramResult? histogramResult;
 
-  final menu = [
-    'Histograma',
-    'Histograma normalizado',
-    'Equalização de histograma',
-    'Efeitos de Contrast Streching',
-  ];
+  final menu = {
+    'Histograma': histogramGeneration,
+    'Histograma normalizado': normalizedHistogram,
+    'Equalização de histograma': histogramEqualization,
+    'Efeitos de Contrast Streching': contrastStreching,
+  };
 
   @override
   void initState() {
-    dropdownCurrentValue = menu.first;
+    dropdownCurrentValue = menu.keys.first;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final resultImage = histogramResult?.get<Uint8List?>();
+    final histogramData = histogramResult?.get<HistogramData>();
+
     return Scaffold(
       appBar: const Header(
         title: 'Processar Histogramas',
@@ -54,27 +56,26 @@ class _HistogramPageState extends State<HistogramPage> {
           children: [
             ImageSelector(
               isResult: false,
-              image: imageA != null ? Image.memory(imageA!) : null,
+              image: inputImage != null ? Image.memory(inputImage!) : null,
               onTap: () async {
-                final pickedFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
-                setState(() {
-                  imageA = fileBytes;
-                });
+                setState(() => inputImage = fileBytes);
               },
             ),
             const SizedBox(width: 10),
-            if (imageB != null)
+            if (resultImage != null)
               ImageSelector(
                 isResult: true,
-                image: Image.memory(imageB!),
+                image: Image.memory(resultImage),
               ),
             const SizedBox(width: 10),
-            if (histogramResult != null)
+            if (histogramData != null)
               HistogramGraph(
-                intensityFrequency: histogramResult!,
+                intensityFrequency: histogramData,
               ),
             const SizedBox(width: 10),
             Center(
@@ -82,10 +83,14 @@ class _HistogramPageState extends State<HistogramPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   StyleDropdown(
-                    items: menu,
+                    items: menu.keys.toList(),
                     value: dropdownCurrentValue,
-                    onChanged: (newValue) =>
-                        setState(() => dropdownCurrentValue = newValue!),
+                    onChanged: (newValue) {
+                      setState(() {
+                        dropdownCurrentValue = newValue;
+                        operation = menu[newValue];
+                      });
+                    },
                   ),
                 ],
               ),
@@ -96,27 +101,8 @@ class _HistogramPageState extends State<HistogramPage> {
                 text: 'Processar',
                 onPressed: () {
                   setState(() {
-                    //operation = getOperation(dropdownCurrentValue);
-
-                    //if (operation != getHistogram &&
-                    //  operation != getNormalizedHistogram) {
-                    // TODO: a operação de soma abaixo é um exemplo e precisa ser substituída pela operation escolhida:
-                    // TODO: Remover importacao de arithmetic_functions.dart nesse arquivo:
-                    //imageB = operate(imageA, imageA, sum);
-
-                    // TODO: Nesse caso, a apresentação do histograma padrão ocorre para
-                    // a imagem B (resultante) independentemente da operacao escolhida:
-                    // pixelsLuminanceValues = getHistogram(imageB);
-                    //} else {
-                    // A imagemB é removida
-                    //imageB = null;
-
-                    // TODO: Se um tipo de histograma foi a operation escolhida,
-                    // então basta apresentar seu retorno:
-                    // pixelsLuminanceValues = operation(imageA);
-
-                    histogramResult = getHistogram(imageA);
-                    //}
+                    operation = menu[dropdownCurrentValue];
+                    histogramResult = operate(inputImage, operation);
                   });
                 },
               ),
