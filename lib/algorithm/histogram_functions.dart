@@ -56,7 +56,14 @@ HistogramResult histogramGeneration(Uint8List luminanceList) {
 }
 
 HistogramResult normalizedHistogram(Uint8List luminanceList) {
-  return Tuple({}, null);
+  final histogramData = histogramGeneration(luminanceList).get<Map<int, num>>();
+
+  final pixelCount = luminanceList.length;
+  final normalizedFrequency = histogramData!.map(
+    (key, value) => MapEntry(key, value / pixelCount),
+  );
+
+  return Tuple(normalizedFrequency, null);
 }
 
 HistogramResult histogramEqualization(Uint8List luminanceList) {

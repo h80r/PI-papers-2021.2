@@ -48,65 +48,58 @@ class _HistogramPageState extends State<HistogramPage> {
         title: 'Processar Histogramas',
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Wrap(
-          spacing: 5.0,
-          runSpacing: 16.0,
-          alignment: WrapAlignment.center,
+        padding: const EdgeInsets.all(24.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ImageSelector(
-              isResult: false,
-              image: inputImage != null ? Image.memory(inputImage!) : null,
-              onTap: () async {
-                final pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile == null) return;
-                final fileBytes = await pickedFile.readAsBytes();
-                setState(() => inputImage = fileBytes);
-              },
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ImageSelector(
+                  isResult: false,
+                  image: inputImage != null ? Image.memory(inputImage!) : null,
+                  onTap: () async {
+                    final pickedFile = await ImagePicker().pickImage(
+                      source: ImageSource.gallery,
+                    );
+                    if (pickedFile == null) return;
+                    final fileBytes = await pickedFile.readAsBytes();
+                    setState(() => inputImage = fileBytes);
+                  },
+                ),
+                Row(
+                  children: [
+                    StyleDropdown(
+                      items: menu.keys.toList(),
+                      value: dropdownCurrentValue,
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownCurrentValue = newValue;
+                          operation = menu[newValue];
+                        });
+                      },
+                    ),
+                    FinishButton(
+                      text: 'GO',
+                      isCompact: true,
+                      onPressed: () {
+                        setState(() {
+                          operation = menu[dropdownCurrentValue];
+                          histogramResult = operate(inputImage, operation);
+                        });
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(width: 10),
             if (resultImage != null)
               ImageSelector(
                 isResult: true,
                 image: Image.memory(resultImage),
               ),
-            const SizedBox(width: 10),
             if (histogramData != null)
-              HistogramGraph(
-                intensityFrequency: histogramData,
-              ),
-            const SizedBox(width: 10),
-            Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  StyleDropdown(
-                    items: menu.keys.toList(),
-                    value: dropdownCurrentValue,
-                    onChanged: (newValue) {
-                      setState(() {
-                        dropdownCurrentValue = newValue;
-                        operation = menu[newValue];
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const Padding(padding: EdgeInsets.all(16.0)),
-            Center(
-              child: FinishButton(
-                text: 'Processar',
-                onPressed: () {
-                  setState(() {
-                    operation = menu[dropdownCurrentValue];
-                    histogramResult = operate(inputImage, operation);
-                  });
-                },
-              ),
-            ),
+              HistogramGraph(intensityFrequency: histogramData),
           ],
         ),
       ),
