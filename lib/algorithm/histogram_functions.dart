@@ -14,6 +14,10 @@ Uint8List getLuminanceValues(Image decodedImage) {
   return decodedImage.getBytes(format: Format.luminance);
 }
 
+/// Returns the result of the histogram operation with an image.
+///
+/// The histogram is calculated by the [operation] function.
+/// If the operation generates a new image, it will be encoded by this function.
 HistogramResult? operate(Uint8List? image, HistogramFunction? operation) {
   if (image == null || operation == null) return null;
 
@@ -32,14 +36,15 @@ HistogramResult? operate(Uint8List? image, HistogramFunction? operation) {
   );
 }
 
-/// Creates a Map associating each pixel value to its frequency (quantity) in image.
+/// Creates a Map associating each pixel value
+/// to its frequency (quantity) in image.
 ///
 /// Parameters:
-/// - `imageA`: uploaded image.
+/// - `luminanceList`: uploaded image.
 ///
 /// Returns:
-/// - `intensityFrequency`: Map containing each pixel value
-/// associated to its frequency in `getPixelsLuminanceValues()`.
+/// - A tuple with it's Uint8List as a null value and a map containing each
+/// pixel value associated to its frequency in `luminanceList`.
 HistogramResult histogramGeneration(Uint8List luminanceList) {
   final intensityFrequency = <int, num>{};
 
@@ -55,11 +60,13 @@ HistogramResult normalizedHistogram(Uint8List? luminanceList) {
 }
 
 HistogramResult histogramEqualization(Uint8List? luminanceList) {
+  // TODO: Process the image accordingly
   final processedPixelList = luminanceList;
   return Tuple({}, processedPixelList);
 }
 
 HistogramResult contrastStreching(Uint8List? luminanceList) {
+  // TODO: Process the image accordingly
   final processedPixelList = luminanceList;
   return Tuple({}, processedPixelList);
 }
