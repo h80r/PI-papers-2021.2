@@ -74,10 +74,7 @@ class _HistogramPageState extends State<HistogramPage> {
               ),
             const SizedBox(width: 10),
             if (histogramData != null)
-              HistogramGraph(
-                intensityFrequency: histogramData,
-              ),
-            const SizedBox(width: 10),
+              HistogramGraph(intensityFrequency: histogramData),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
