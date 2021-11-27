@@ -55,17 +55,17 @@ HistogramResult histogramGeneration(Uint8List luminanceList) {
   return Tuple(intensityFrequency, null);
 }
 
-HistogramResult normalizedHistogram(Uint8List? luminanceList) {
+HistogramResult normalizedHistogram(Uint8List luminanceList) {
   return Tuple({}, null);
 }
 
-HistogramResult histogramEqualization(Uint8List? luminanceList) {
+HistogramResult histogramEqualization(Uint8List luminanceList) {
   // TODO: Process the image accordingly
   final processedPixelList = luminanceList;
   return Tuple({}, processedPixelList);
 }
 
-HistogramResult contrastStreching(Uint8List? luminanceList) {
+HistogramResult contrastStreching(Uint8List luminanceList) {
   // TODO: Process the image accordingly
   final processedPixelList = luminanceList;
   return Tuple({}, processedPixelList);
