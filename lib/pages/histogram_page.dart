@@ -11,7 +11,6 @@ import 'package:pi_papers_2021_2/widgets/histogram_graph.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 
 import 'package:pi_papers_2021_2/algorithm/histogram_functions.dart';
-import 'package:pi_papers_2021_2/algorithm/arithmetic_functions.dart';
 
 class HistogramPage extends StatefulWidget {
   const HistogramPage({Key? key}) : super(key: key);
@@ -23,11 +22,11 @@ class HistogramPage extends StatefulWidget {
 class _HistogramPageState extends State<HistogramPage> {
   Uint8List? imageA;
   Uint8List? imageB;
-  dynamic operation;
+  //dynamic operation;
   String? dropdownCurrentValue;
-  List? pixelsLuminanceValues;
+  Map<int, num>? histogramResult;
 
-  final menu = <String>[
+  final menu = [
     'Histograma',
     'Histograma normalizado',
     'Equalização de histograma',
@@ -44,7 +43,7 @@ class _HistogramPageState extends State<HistogramPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const Header(
-        title: 'Processamento de Histogramas',
+        title: 'Processar Histogramas',
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,10 +72,10 @@ class _HistogramPageState extends State<HistogramPage> {
                 image: Image.memory(imageB!),
               ),
             const SizedBox(width: 10),
-            if (pixelsLuminanceValues != null)
+            if (histogramResult != null)
               HistogramGraph(
-                  intensityFrequency:
-                      getIntensityFrequency(pixelsLuminanceValues)),
+                intensityFrequency: histogramResult!,
+              ),
             const SizedBox(width: 10),
             Center(
               child: Row(
@@ -97,87 +96,27 @@ class _HistogramPageState extends State<HistogramPage> {
                 text: 'Processar',
                 onPressed: () {
                   setState(() {
-                    operation = getOperation(dropdownCurrentValue);
+                    //operation = getOperation(dropdownCurrentValue);
 
-                    if (operation != getHistogram &&
-                        operation != getNormalizedHistogram) {
-                      // TODO: a operação de soma abaixo é um exemplo e precisa ser substituída pela operation escolhida:
-                      // TODO: Remover importacao de arithmetic_functions.dart nesse arquivo:
-                      imageB = operate(imageA, imageA, sum);
+                    //if (operation != getHistogram &&
+                    //  operation != getNormalizedHistogram) {
+                    // TODO: a operação de soma abaixo é um exemplo e precisa ser substituída pela operation escolhida:
+                    // TODO: Remover importacao de arithmetic_functions.dart nesse arquivo:
+                    //imageB = operate(imageA, imageA, sum);
 
-                      // TODO: Nesse caso, a apresentação do histograma padrão ocorre para
-                      // a imagem B (resultante) independentemente da operacao escolhida:
-                      // pixelsLuminanceValues = getHistogram(imageB);
-                    } else {
-                      // A imagemB é removida
-                      imageB = null;
+                    // TODO: Nesse caso, a apresentação do histograma padrão ocorre para
+                    // a imagem B (resultante) independentemente da operacao escolhida:
+                    // pixelsLuminanceValues = getHistogram(imageB);
+                    //} else {
+                    // A imagemB é removida
+                    //imageB = null;
 
-                      // TODO: Se um tipo de histograma foi a operation escolhida,
-                      // então basta apresentar seu retorno:
-                      // pixelsLuminanceValues = operation(imageA);
-                    }
+                    // TODO: Se um tipo de histograma foi a operation escolhida,
+                    // então basta apresentar seu retorno:
+                    // pixelsLuminanceValues = operation(imageA);
 
-                    //TODO: Os valores abaixos são para fins de testes e precisam ser removidos;
-                    pixelsLuminanceValues = [
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      0,
-                      1,
-                      1,
-                      1,
-                      1,
-                      1,
-                      1,
-                      1,
-                      2,
-                      2,
-                      2,
-                      2,
-                      2,
-                      2,
-                      2,
-                      3,
-                      3,
-                      3,
-                      3,
-                      3,
-                      3,
-                      3,
-                      4,
-                      4,
-                      4,
-                      4,
-                      4,
-                      4,
-                      4,
-                      5,
-                      5,
-                      5,
-                      5,
-                      5,
-                      5,
-                      5,
-                      6,
-                      6,
-                      6,
-                      6,
-                      6,
-                      6,
-                      6,
-                      9
-                    ];
+                    histogramResult = getHistogram(imageA);
+                    //}
                   });
                 },
               ),
