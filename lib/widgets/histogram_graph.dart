@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
@@ -38,7 +36,6 @@ class HistogramGraph extends StatelessWidget {
         borderData: FlBorderData(show: false),
         titlesData: titlesData,
         barGroups: barGroups,
-        maxY: intensityFrequency.values.fold(0.0, max).ceil().toDouble(),
       );
 
   FlTitlesData get titlesData => FlTitlesData(
