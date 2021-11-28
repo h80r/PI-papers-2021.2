@@ -122,3 +122,23 @@ List<num> getEq(List<num> frequency) {
 
   return eq;
 }
+
+List<int> getNewRk(List<num> eq) {
+  List<int> newRk = [];
+  for (num value in eq) {
+    newRk.add(value.toInt());
+  }
+  return newRk;
+}
+
+List<num> histogramListFromMap(Map<int, num> generatedHistogram) {
+  List<num> histogramList = [];
+
+  for (int grayLevel = 0; grayLevel < graysQuantity; grayLevel++) {
+    histogramList.add(generatedHistogram.containsKey(grayLevel)
+        ? generatedHistogram[grayLevel]!
+        : 0);
+  }
+
+  return histogramList;
+}
