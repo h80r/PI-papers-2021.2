@@ -113,3 +113,12 @@ List<num> getFrequency(List<num> prRk) {
   }
   return frequency;
 }
+
+List<num> getEq(List<num> frequency) {
+  List<num> eq = [];
+  for (num value in frequency) {
+    eq.add((graysQuantity - 1) * value);
+  }
+
+  return eq;
+}
