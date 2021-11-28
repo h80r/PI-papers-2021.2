@@ -95,6 +95,13 @@ HistogramResult contrastStreching(Uint8List luminanceList) {
   return Tuple(newHistogram, processedPixelList);
 }
 
+/// Calculates `Pr(rk)` dividing each `nk` value by the total sum of `nk`.
+///
+/// Parameters:
+/// - `nk`: image's histogram List.
+///
+/// Returns:
+/// - `prRk`: each nk's probability.
 List<num> getPrRk(List<num> nk) {
   List<num> prRk = [];
   num sumRk = nk.reduce((a, b) => a + b);
@@ -105,6 +112,13 @@ List<num> getPrRk(List<num> nk) {
   return prRk;
 }
 
+/// Calculates luminance `frequency` adding each `prRk` in a list to its next value.
+///
+/// Parameters:
+/// - `prRk`: each nk's probability.
+///
+/// Returns:
+/// - `prRk`: each nk's frequency.
 List<num> getFrequency(List<num> prRk) {
   List<num> frequency = [];
   frequency.add(prRk[0]);
@@ -114,6 +128,13 @@ List<num> getFrequency(List<num> prRk) {
   return frequency;
 }
 
+/// Calculates `eq` multiplying each `frequency` in a list by max possible luminance value.
+///
+/// Parameters:
+/// - `frequency`: each nk's frequency value.
+///
+/// Returns:
+/// - `eq`: each nk's frequency multiplied by max possible luminance value.
 List<num> getEq(List<num> frequency) {
   List<num> eq = [];
   for (num value in frequency) {
@@ -123,6 +144,13 @@ List<num> getEq(List<num> frequency) {
   return eq;
 }
 
+/// Calculates `NewRk` getting the integer value of each `eq` value.
+///
+/// Parameters:
+/// - `eq`: each nk's frequency multiplied by max possible luminance value.
+///
+/// Returns:
+/// - `newRk`: new luminance value to be added in the result image.
 List<int> getNewRk(List<num> eq) {
   List<int> newRk = [];
   for (num value in eq) {
@@ -131,6 +159,14 @@ List<int> getNewRk(List<num> eq) {
   return newRk;
 }
 
+/// Converts a histogram Map into a List of gray luminance values and their quantity in an image.
+/// If `histogramList[34] = 345`, that means there are 345 pixels with luminance value 34 in an image.
+///
+/// Parameters:
+/// - `generatedHistogram`: image's histogram Map.
+///
+/// Returns:
+/// - `histogramList`: image's histogram List.
 List<num> histogramListFromMap(Map<int, num> generatedHistogram) {
   List<num> histogramList = [];
 
@@ -143,6 +179,15 @@ List<num> histogramListFromMap(Map<int, num> generatedHistogram) {
   return histogramList;
 }
 
+/// Applies Histogram Equalization to an image by processing
+/// each pixel's luminance value in the `originalImageLuminanceList`,
+/// and then equalizes these values.
+///
+/// Parameters:
+/// - `originalImageLuminanceList`: List of input image's luminance values.
+///
+/// Returns:
+/// - `histogramList`: a `HistogramResult` containing the equalized histogram and the new equalized image.
 HistogramResult histogramEqualization(Uint8List originalImageLuminanceList) {
   Map<int, num> imageHistogram =
       histogramGeneration(originalImageLuminanceList).get<Map<int, num>>()!;
