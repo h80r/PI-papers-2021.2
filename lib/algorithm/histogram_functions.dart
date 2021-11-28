@@ -142,3 +142,25 @@ List<num> histogramListFromMap(Map<int, num> generatedHistogram) {
 
   return histogramList;
 }
+
+HistogramResult histogramEqualization(Uint8List originalImageLuminanceList) {
+  Map<int, num> imageHistogram =
+      histogramGeneration(originalImageLuminanceList).get<Map<int, num>>()!;
+  List<num> nk = histogramListFromMap(imageHistogram);
+
+  List<num> prRk = getPrRk(nk);
+  List<num> frequency = getFrequency(prRk);
+  List<num> eq = getEq(frequency);
+  List<num> newRk = getNewRk(eq);
+
+  List<int> newImageLuminanceList = [];
+  for (int pixelValue in originalImageLuminanceList) {
+    newImageLuminanceList.add(newRk[pixelValue].toInt());
+  }
+
+  Map<int, num> newHistogram =
+      histogramGeneration(Uint8List.fromList(newImageLuminanceList))
+          .get<Map<int, num>>()!;
+
+  return Tuple(newHistogram, Uint8List.fromList(newImageLuminanceList));
+}
