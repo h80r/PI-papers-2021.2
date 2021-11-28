@@ -11,6 +11,7 @@ import 'package:pi_papers_2021_2/widgets/histogram_graph.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 
 import 'package:pi_papers_2021_2/algorithm/histogram_functions.dart';
+import 'package:sortedmap/sortedmap.dart';
 
 class HistogramPage extends StatefulWidget {
   const HistogramPage({Key? key}) : super(key: key);
@@ -99,7 +100,12 @@ class _HistogramPageState extends State<HistogramPage> {
                 image: Image.memory(resultImage),
               ),
             if (histogramData != null)
-              HistogramGraph(intensityFrequency: histogramData),
+              HistogramGraph(
+                intensityFrequency: SortedMap.from(
+                  histogramData,
+                  const Ordering.byKey(),
+                ),
+              ),
           ],
         ),
       ),
