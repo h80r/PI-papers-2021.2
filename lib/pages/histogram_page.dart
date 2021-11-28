@@ -55,17 +55,30 @@ class _HistogramPageState extends State<HistogramPage> {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                ImageSelector(
-                  isResult: false,
-                  image: inputImage != null ? Image.memory(inputImage!) : null,
-                  onTap: () async {
-                    final pickedFile = await ImagePicker().pickImage(
-                      source: ImageSource.gallery,
-                    );
-                    if (pickedFile == null) return;
-                    final fileBytes = await pickedFile.readAsBytes();
-                    setState(() => inputImage = fileBytes);
-                  },
+                Row(
+                  children: [
+                    ImageSelector(
+                      isResult: false,
+                      image:
+                          inputImage != null ? Image.memory(inputImage!) : null,
+                      onTap: () async {
+                        final pickedFile = await ImagePicker().pickImage(
+                          source: ImageSource.gallery,
+                        );
+                        if (pickedFile == null) return;
+                        final fileBytes = await pickedFile.readAsBytes();
+                        setState(() => inputImage = fileBytes);
+                      },
+                    ),
+                    if (resultImage != null)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20.0),
+                        child: ImageSelector(
+                          isResult: true,
+                          image: Image.memory(resultImage),
+                        ),
+                      ),
+                  ],
                 ),
                 Row(
                   children: [
@@ -93,11 +106,6 @@ class _HistogramPageState extends State<HistogramPage> {
                 ),
               ],
             ),
-            if (resultImage != null)
-              ImageSelector(
-                isResult: true,
-                image: Image.memory(resultImage),
-              ),
             if (histogramData != null)
               HistogramGraph(intensityFrequency: histogramData),
           ],
