@@ -8,6 +8,7 @@ import 'package:pi_papers_2021_2/utils/image_utils.dart';
 typedef HistogramData = Map<int, num>;
 typedef HistogramResult = Tuple<HistogramData, Uint8List?>;
 typedef HistogramFunction = HistogramResult Function(Uint8List luminanceList);
+const int graysQuantity = 256;
 
 /// Reads the provided image, and returns the
 /// luminance value of each pixel as a list.
@@ -68,12 +69,6 @@ HistogramResult normalizedHistogram(Uint8List luminanceList) {
   return Tuple(normalizedFrequency, null);
 }
 
-HistogramResult histogramEqualization(Uint8List luminanceList) {
-  // TODO: Process the image accordingly
-  final processedPixelList = luminanceList;
-  return Tuple({}, processedPixelList);
-}
-
 HistogramResult contrastStreching(Uint8List luminanceList) {
   final oldHistogram = histogramGeneration(luminanceList).get<Map<int, num>>();
 
@@ -98,4 +93,14 @@ HistogramResult contrastStreching(Uint8List luminanceList) {
   );
 
   return Tuple(newHistogram, processedPixelList);
+}
+
+List<num> getPrRk(List<num> nk) {
+  List<num> prRk = [];
+  num sumRk = nk.reduce((a, b) => a + b);
+  for (num value in nk) {
+    prRk.add(value / sumRk);
+  }
+
+  return prRk;
 }
