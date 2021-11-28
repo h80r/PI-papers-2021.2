@@ -90,6 +90,7 @@ HistogramResult normalizedHistogram(Uint8List luminanceList) {
 /// histogram and the new stretched contrast image.
 HistogramResult contrastStretching(Uint8List luminanceList) {
   final oldHistogram = histogramGeneration(luminanceList).get<Map<int, num>>();
+  oldHistogram?.removeWhere((key, value) => value == 0);
 
   const smallerIntervalValue = 0;
   const biggerIntervalValue = 255;
@@ -97,7 +98,7 @@ HistogramResult contrastStretching(Uint8List luminanceList) {
   final smallerImageValue = oldHistogram!.keys.toList().reduce(min);
   final biggerImageValue = oldHistogram.keys.toList().reduce(max);
 
-  final newHistogram = oldHistogram.map((key, value) => MapEntry(
+  final stretchedHistogram = oldHistogram.map((key, value) => MapEntry(
         ((key - smallerImageValue) *
                     ((biggerIntervalValue - smallerIntervalValue) /
                         (biggerImageValue - smallerImageValue)) +
@@ -106,10 +107,17 @@ HistogramResult contrastStretching(Uint8List luminanceList) {
         value,
       ));
 
-  final luminanceMap = Map.fromIterables(oldHistogram.keys, newHistogram.keys);
+  final luminanceMap =
+      Map.fromIterables(oldHistogram.keys, stretchedHistogram.keys);
   final processedPixelList = Uint8List.fromList(
     luminanceList.map((e) => luminanceMap[e]!).toList(),
   );
+
+  final newHistogram = <int, num>{};
+
+  for (var i = 0; i < 256; i++) {
+    newHistogram[i] = stretchedHistogram[i] ?? 0;
+  }
 
   return Tuple(newHistogram, processedPixelList);
 }
