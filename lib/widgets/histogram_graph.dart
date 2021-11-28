@@ -2,9 +2,6 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
-// TODO: Verificar HistogramGraph com vários valores de pixels, talvez os números (legenda)
-// à esquerda e à direita possam ser removidos para evitar sobreposição deles na visualização
-
 class HistogramGraph extends StatelessWidget {
   const HistogramGraph({
     Key? key,
@@ -25,7 +22,12 @@ class HistogramGraph extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         color: ColorPalette.primary,
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(
+            left: 10,
+            right: 20,
+            top: 20,
+            bottom: 10,
+          ),
           child: BarChart(data),
         ),
       ),
@@ -43,11 +45,14 @@ class HistogramGraph extends StatelessWidget {
         rightTitles: SideTitles(showTitles: false),
         bottomTitles: SideTitles(
           showTitles: true,
+          interval: 25,
+          margin: 10,
           getTextStyles: (context, value) => titleStyle,
         ),
         leftTitles: SideTitles(
-          reservedSize: 30,
           showTitles: true,
+          margin: 20,
+          reservedSize: 40,
           getTextStyles: (context, value) => titleStyle,
         ),
       );
