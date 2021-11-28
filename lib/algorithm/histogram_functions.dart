@@ -104,3 +104,12 @@ List<num> getPrRk(List<num> nk) {
 
   return prRk;
 }
+
+List<num> getFrequency(List<num> prRk) {
+  List<num> frequency = [];
+  frequency.add(prRk[0]);
+  for (int rk = 1; rk < graysQuantity; rk++) {
+    frequency.add(prRk.sublist(0, rk + 1).reduce((a, b) => a + b));
+  }
+  return frequency;
+}
