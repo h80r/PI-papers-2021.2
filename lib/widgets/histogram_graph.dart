@@ -66,8 +66,8 @@ class HistogramGraph extends StatelessWidget {
               BarChartRodData(
                 y: intensityFrequency[e]?.toDouble() ?? 0.0,
                 colors: [
-                  ColorPalette.background
-                ], // TODO: receber o valor da cor x
+                  Color.fromARGB(255, e, e, e),
+                ],
                 borderRadius: BorderRadius.circular(20.0),
               ),
             ],
