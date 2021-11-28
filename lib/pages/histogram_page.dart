@@ -29,7 +29,7 @@ class _HistogramPageState extends State<HistogramPage> {
     'Histograma': histogramGeneration,
     'Histograma normalizado': normalizedHistogram,
     'Equalização de histograma': histogramEqualization,
-    'Efeitos de Contrast Streching': contrastStreching,
+    'Efeitos de Contrast Stretching': contrastStretching,
   };
 
   @override

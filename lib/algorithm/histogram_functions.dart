@@ -43,7 +43,7 @@ HistogramResult? operate(Uint8List? image, HistogramFunction? operation) {
 /// to its frequency (quantity) in image.
 ///
 /// Parameters:
-/// - `luminanceList`: uploaded image.
+/// - `luminanceList`: List of input image's luminance values.
 ///
 /// Returns:
 /// - A tuple with it's Uint8List as a null value and a map containing each
@@ -60,6 +60,14 @@ HistogramResult histogramGeneration(Uint8List luminanceList) {
   return Tuple(intensityFrequency, null);
 }
 
+/// Normalizes an image's histogram through it's `luminanceList`'s
+/// length and luminances frequency.
+///
+/// Parameters:
+/// - `luminanceList`: List of input image's luminance values.
+///
+/// Returns:
+/// - a `HistogramResult` containing the normalized frequency.
 HistogramResult normalizedHistogram(Uint8List luminanceList) {
   final histogramData = histogramGeneration(luminanceList).get<Map<int, num>>();
 
@@ -71,7 +79,16 @@ HistogramResult normalizedHistogram(Uint8List luminanceList) {
   return Tuple(normalizedFrequency, null);
 }
 
-HistogramResult contrastStreching(Uint8List luminanceList) {
+/// Performs Contrast Stretching in an image through it's `luminanceList`.
+/// Gets the smallest and biggest luminance values and map them to the [0, 255] gray interval.
+///
+/// Parameters:
+/// - `luminanceList`: List of input image's luminance values.
+///
+/// Returns:
+/// - a `HistogramResult` containing the stretched contrast
+/// histogram and the new stretched contrast image.
+HistogramResult contrastStretching(Uint8List luminanceList) {
   final oldHistogram = histogramGeneration(luminanceList).get<Map<int, num>>();
 
   const smallerIntervalValue = 0;
