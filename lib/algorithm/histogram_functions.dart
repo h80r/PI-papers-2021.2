@@ -49,10 +49,12 @@ HistogramResult? operate(Uint8List? image, HistogramFunction? operation) {
 /// - A tuple with it's Uint8List as a null value and a map containing each
 /// pixel value associated to its frequency in `luminanceList`.
 HistogramResult histogramGeneration(Uint8List luminanceList) {
-  final intensityFrequency = <int, num>{};
+  final intensityFrequency = <int, num>{
+    for (var l in List.generate(256, (i) => i)) l: 0
+  };
 
   for (final v in luminanceList) {
-    intensityFrequency.update(v, (value) => value + 1, ifAbsent: () => 1);
+    intensityFrequency.update(v, (value) => value + 1);
   }
 
   return Tuple(intensityFrequency, null);
