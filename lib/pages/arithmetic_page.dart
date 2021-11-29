@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
@@ -14,21 +15,16 @@ import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
 import 'package:pi_papers_2021_2/algorithm/arithmetic_functions.dart';
 
-class ArithmeticPage extends StatefulWidget {
+class ArithmeticPage extends HookWidget {
   const ArithmeticPage({Key? key}) : super(key: key);
 
   @override
-  State<ArithmeticPage> createState() => _ArithmeticPageState();
-}
-
-class _ArithmeticPageState extends State<ArithmeticPage> {
-  Uint8List? imageA;
-  Uint8List? imageB;
-  Uint8List? imageC;
-  Uint8List Function(Uint8List, Uint8List)? operation;
-
-  @override
   Widget build(BuildContext context) {
+    var imageA = useState<Uint8List?>(null);
+    var imageB = useState<Uint8List?>(null);
+    var imageC = useState<Uint8List?>(null);
+    var operation = useState<ArithmeticOperation?>(null);
+
     return Scaffold(
       appBar: const Header(
         title: 'Operações Aritméticas',
@@ -42,40 +38,36 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
           children: [
             ImageSelector(
               isResult: false,
-              image: imageA != null ? Image.memory(imageA!) : null,
+              image: imageA.value != null ? Image.memory(imageA.value!) : null,
               onTap: () async {
                 final pickedFile =
                     await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
-                setState(() {
-                  imageA = fileBytes;
-                });
+                imageA.value = fileBytes;
               },
             ),
             const SizedBox(width: 10),
             ImageSelector(
               isResult: false,
-              image: imageB != null ? Image.memory(imageB!) : null,
+              image: imageB.value != null ? Image.memory(imageB.value!) : null,
               onTap: () async {
                 final pickedFile =
                     await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
-                setState(() {
-                  imageB = fileBytes;
-                });
+                imageB.value = fileBytes;
               },
             ),
             const SizedBox(width: 10),
             ImageSelector(
               isResult: true,
-              image: imageC != null && imageC!.isNotEmpty
-                  ? Image.memory(imageC!)
+              image: imageC.value != null && imageC.value!.isNotEmpty
+                  ? Image.memory(imageC.value!)
                   : null,
-              message: imageC == null
+              message: imageC.value == null
                   ? 'SEM IMAGEM\nPARA MOSTRAR'
-                  : imageC!.isEmpty
+                  : imageC.value!.isEmpty
                       ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
                       : null,
             ),
@@ -87,9 +79,7 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                     AssetImage(path('images/prototype/icons/plus.png')),
                   ),
                   onPressed: () {
-                    setState(() {
-                      operation = sum;
-                    });
+                    operation.value = sum;
                   },
                 ),
                 OperationSelection(
@@ -98,9 +88,7 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                     AssetImage(path('images/prototype/icons/minus.png')),
                   ),
                   onPressed: () {
-                    setState(() {
-                      operation = subtraction;
-                    });
+                    operation.value = subtraction;
                   },
                 ),
                 OperationSelection(
@@ -109,9 +97,7 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                     AssetImage(path('images/prototype/icons/times.png')),
                   ),
                   onPressed: () {
-                    setState(() {
-                      operation = multiplication;
-                    });
+                    operation.value = multiplication;
                   },
                 ),
                 OperationSelection(
@@ -120,9 +106,7 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
                     AssetImage(path('images/prototype/icons/slash.png')),
                   ),
                   onPressed: () {
-                    setState(() {
-                      operation = division;
-                    });
+                    operation.value = division;
                   },
                 ),
               ],
@@ -132,9 +116,11 @@ class _ArithmeticPageState extends State<ArithmeticPage> {
               child: FinishButton(
                 text: 'Operar',
                 onPressed: () {
-                  setState(() {
-                    imageC = operate(imageA, imageB, operation);
-                  });
+                  imageC.value = operate(
+                    imageA.value,
+                    imageB.value,
+                    operation.value,
+                  );
                 },
               ),
             ),

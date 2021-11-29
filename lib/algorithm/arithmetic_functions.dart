@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:image/image.dart';
 import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
+typedef ArithmeticOperation = Uint8List Function(Uint8List, Uint8List);
+
 /// Redistributes values in a list using [0, 1] scale back to the [0, 255]
 /// luminance range.
 ///
@@ -151,7 +153,7 @@ Uint8List division(
 Uint8List? operate(
   Uint8List? imageA,
   Uint8List? imageB,
-  Uint8List Function(Uint8List, Uint8List)? operation,
+  ArithmeticOperation? operation,
 ) {
   if (imageA == null || imageB == null || operation == null) return null;
 
