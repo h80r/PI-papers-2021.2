@@ -36,8 +36,9 @@ class ArithmeticPage extends HookWidget {
               isResult: false,
               image: imageA.widget,
               onTap: () async {
-                final pickedFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
                 imageA.data = fileBytes;
@@ -48,8 +49,9 @@ class ArithmeticPage extends HookWidget {
               isResult: false,
               image: imageB.widget,
               onTap: () async {
-                final pickedFile =
-                    await ImagePicker().pickImage(source: ImageSource.gallery);
+                final pickedFile = await ImagePicker().pickImage(
+                  source: ImageSource.gallery,
+                );
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
                 imageB.data = fileBytes;
@@ -66,38 +68,38 @@ class ArithmeticPage extends HookWidget {
                 OperationSelection(
                   value: 'Adição',
                   icon: ImageIcon(
-                    AssetImage(path('images/prototype/icons/plus.png')),
+                    AssetImage(
+                      path('images/prototype/icons/plus.png'),
+                    ),
                   ),
-                  onPressed: () {
-                    operation.value = sum;
-                  },
+                  onPressed: () => operation.value = sum,
                 ),
                 OperationSelection(
                   value: 'Subtração',
                   icon: ImageIcon(
-                    AssetImage(path('images/prototype/icons/minus.png')),
+                    AssetImage(
+                      path('images/prototype/icons/minus.png'),
+                    ),
                   ),
-                  onPressed: () {
-                    operation.value = subtraction;
-                  },
+                  onPressed: () => operation.value = subtraction,
                 ),
                 OperationSelection(
                   value: 'Multiplicação',
                   icon: ImageIcon(
-                    AssetImage(path('images/prototype/icons/times.png')),
+                    AssetImage(
+                      path('images/prototype/icons/times.png'),
+                    ),
                   ),
-                  onPressed: () {
-                    operation.value = multiplication;
-                  },
+                  onPressed: () => operation.value = multiplication,
                 ),
                 OperationSelection(
                   value: 'Divisão',
                   icon: ImageIcon(
-                    AssetImage(path('images/prototype/icons/slash.png')),
+                    AssetImage(
+                      path('images/prototype/icons/slash.png'),
+                    ),
                   ),
-                  onPressed: () {
-                    operation.value = division;
-                  },
+                  onPressed: () => operation.value = division,
                 ),
               ],
             ),
@@ -105,13 +107,11 @@ class ArithmeticPage extends HookWidget {
             Center(
               child: FinishButton(
                 text: 'Operar',
-                onPressed: () {
-                  imageC.data = operate(
-                    imageA.data,
-                    imageB.data,
-                    operation.value,
-                  );
-                },
+                onPressed: () => imageC.data = operate(
+                  imageA.data,
+                  imageB.data,
+                  operation.value,
+                ),
               ),
             ),
           ],

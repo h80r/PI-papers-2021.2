@@ -66,7 +66,7 @@ class GeometricPage extends HookWidget {
                                     'moveY': selectedSlider2.value.toInt(),
                                     'reflectionType': {
                                           'Horizontal': 1,
-                                          'Vertical': 2
+                                          'Vertical': 2,
                                         }[selectedRadio.value] ??
                                         0,
                                     'rotation': selectedSlider.value.toInt(),
@@ -121,9 +121,7 @@ class GeometricPage extends HookWidget {
                           AssetImage(
                               path('images/prototype/icons/rotation.png')),
                         ),
-                        onPressed: () {
-                          operation.value = rotation;
-                        },
+                        onPressed: () => operation.value = rotation,
                       ),
                       OperationSelection(
                         value: 'Escala',
@@ -139,11 +137,10 @@ class GeometricPage extends HookWidget {
                         value: 'Reflexão',
                         icon: ImageIcon(
                           AssetImage(
-                              path('images/prototype/icons/reflection.png')),
+                            path('images/prototype/icons/reflection.png'),
+                          ),
                         ),
-                        onPressed: () {
-                          operation.value = reflection;
-                        },
+                        onPressed: () => operation.value = reflection,
                       ),
                     ],
                   ),

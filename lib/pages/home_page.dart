@@ -22,8 +22,9 @@ class HomePage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 BigButton(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/arithmetic_operation'),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/arithmetic_operation',
+                  ),
                   text: 'Operações Aritméticas',
                 ),
                 const VerticalDivider(
@@ -31,8 +32,9 @@ class HomePage extends StatelessWidget {
                   width: 30,
                 ),
                 BigButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushNamed('/geometric_transformation'),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/geometric_transformation',
+                  ),
                   text: 'Transformações Geométricas',
                 ),
                 const VerticalDivider(
@@ -40,8 +42,9 @@ class HomePage extends StatelessWidget {
                   width: 30,
                 ),
                 BigButton(
-                  onPressed: () =>
-                      Navigator.of(context).pushNamed('/histogram_processing'),
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/histogram_processing',
+                  ),
                   text: 'Processar Histogramas',
                 ),
               ],
