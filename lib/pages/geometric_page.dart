@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
@@ -18,31 +19,25 @@ import 'package:pi_papers_2021_2/widgets/structure/header.dart';
 
 import 'package:pi_papers_2021_2/algorithm/geometric_functions.dart';
 
-class GeometricPage extends StatefulWidget {
+class GeometricPage extends HookWidget {
   const GeometricPage({Key? key}) : super(key: key);
 
   @override
-  State<GeometricPage> createState() => _GeometricPageState();
-}
-
-class _GeometricPageState extends State<GeometricPage> {
-  Uint8List? imageA;
-  Uint8List? imageB;
-  GeometricFunction? operation;
-  Map<String, int>? parameters;
-
-  var selectedRadio = 'Horizontal';
-  var selectedSlider = 0.0;
-  var selectedSlider2 = 0.0;
-  var isLoading = false;
-
-  @override
   Widget build(BuildContext context) {
+    var imageA = useState<Uint8List?>(null);
+    var imageB = useState<Uint8List?>(null);
+    var operation = useState<GeometricFunction?>(null);
+
+    var selectedRadio = useState('Horizontal');
+    var selectedSlider = useState(0.0);
+    var selectedSlider2 = useState(0.0);
+    var isLoading = useState(false);
+
     return Scaffold(
       appBar: const Header(
         title: 'Transformações Geométricas',
       ),
-      body: isLoading
+      body: isLoading.value
           ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(16.0),
@@ -52,65 +47,69 @@ class _GeometricPageState extends State<GeometricPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      if (operation != null)
+                      if (operation.value != null)
                         Column(
                           children: [
-                            operationControllers(),
+                            operationControllers(
+                              operation: operation,
+                              selectedSlider: selectedSlider,
+                              selectedSlider2: selectedSlider2,
+                              selectedRadio: selectedRadio,
+                            ),
                             FinishButton(
                               text: 'Transformar',
                               onPressed: () async {
-                                setState(() => isLoading = true);
+                                isLoading.value = true;
 
                                 await Future.delayed(
                                   const Duration(seconds: 2),
                                 );
 
-                                setState(() {
-                                  imageB = operate(
-                                    image: imageA,
-                                    inputs: {
-                                      'moveX': selectedSlider.toInt(),
-                                      'moveY': selectedSlider2.toInt(),
-                                      'reflectionType': {
-                                            'Horizontal': 1,
-                                            'Vertical': 2
-                                          }[selectedRadio] ??
-                                          0,
-                                      'rotation': selectedSlider.toInt(),
-                                      'scale': (selectedSlider * 10).toInt(),
-                                    },
-                                    operation: operation,
-                                  );
+                                imageB.value = operate(
+                                  image: imageA.value,
+                                  inputs: {
+                                    'moveX': selectedSlider.value.toInt(),
+                                    'moveY': selectedSlider2.value.toInt(),
+                                    'reflectionType': {
+                                          'Horizontal': 1,
+                                          'Vertical': 2
+                                        }[selectedRadio] ??
+                                        0,
+                                    'rotation': selectedSlider.value.toInt(),
+                                    'scale':
+                                        (selectedSlider.value * 10).toInt(),
+                                  },
+                                  operation: operation.value,
+                                );
 
-                                  isLoading = false;
+                                isLoading.value = false;
 
-                                  operation = null;
-                                });
+                                operation.value = null;
                               },
                             ),
                           ],
                         ),
                       ImageSelector(
                         isResult: false,
-                        image: imageA != null ? Image.memory(imageA!) : null,
+                        image: imageA.value != null
+                            ? Image.memory(imageA.value!)
+                            : null,
                         onTap: () async {
                           final pickedFile = await ImagePicker()
                               .pickImage(source: ImageSource.gallery);
                           if (pickedFile == null) return;
                           final fileBytes = await pickedFile.readAsBytes();
-                          setState(() {
-                            imageA = fileBytes;
-                          });
+                          imageA.value = fileBytes;
                         },
                       ),
                       ImageSelector(
                         isResult: true,
-                        image: imageB != null && imageB!.isNotEmpty
-                            ? Image.memory(imageB!)
+                        image: imageB.value != null && imageB.value!.isNotEmpty
+                            ? Image.memory(imageB.value!)
                             : null,
-                        message: imageB == null
+                        message: imageB.value == null
                             ? 'SEM IMAGEM\nPARA MOSTRAR'
-                            : imageB!.isEmpty
+                            : imageB.value!.isEmpty
                                 ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
                                 : null,
                       ),
@@ -125,12 +124,9 @@ class _GeometricPageState extends State<GeometricPage> {
                               path('images/prototype/icons/translation.png')),
                         ),
                         onPressed: () {
-                          if (operation == translation) return;
-                          setState(() {
-                            selectedSlider = 0.0;
-                            selectedSlider2 = 0.0;
-                            operation = translation;
-                          });
+                          selectedSlider.value = 0.0;
+                          selectedSlider2.value = 0.0;
+                          operation.value = translation;
                         },
                       ),
                       OperationSelection(
@@ -140,8 +136,7 @@ class _GeometricPageState extends State<GeometricPage> {
                               path('images/prototype/icons/rotation.png')),
                         ),
                         onPressed: () {
-                          if (operation == rotation) return;
-                          setState(() => operation = rotation);
+                          operation.value = rotation;
                         },
                       ),
                       OperationSelection(
@@ -150,11 +145,8 @@ class _GeometricPageState extends State<GeometricPage> {
                           AssetImage(path('images/prototype/icons/scale.png')),
                         ),
                         onPressed: () {
-                          if (operation == scale) return;
-                          setState(() {
-                            selectedSlider = 1.0;
-                            operation = scale;
-                          });
+                          selectedSlider.value = 1.0;
+                          operation.value = scale;
                         },
                       ),
                       OperationSelection(
@@ -164,8 +156,7 @@ class _GeometricPageState extends State<GeometricPage> {
                               path('images/prototype/icons/reflection.png')),
                         ),
                         onPressed: () {
-                          if (operation == reflection) return;
-                          setState(() => operation = reflection);
+                          operation.value = reflection;
                         },
                       ),
                     ],
@@ -177,7 +168,12 @@ class _GeometricPageState extends State<GeometricPage> {
     );
   }
 
-  SizedBox operationControllers() {
+  SizedBox operationControllers({
+    required ValueNotifier<GeometricFunction?> operation,
+    required ValueNotifier<double> selectedSlider,
+    required ValueNotifier<double> selectedSlider2,
+    required ValueNotifier<String> selectedRadio,
+  }) {
     final reflectionValues = ['Horizontal', 'Vertical', 'Ambos'];
     final sliderMinValues = {scale: 0.5, rotation: -180.0, translation: -50.0};
     final sliderMaxValues = {scale: 2.0, rotation: 180.0, translation: 50.0};
@@ -186,10 +182,10 @@ class _GeometricPageState extends State<GeometricPage> {
       width: 400,
       child: Column(
         children: [
-          if (operation != reflection)
+          if (operation.value != reflection)
             Row(
               children: [
-                if (operation == translation)
+                if (operation.value == translation)
                   const Expanded(
                     flex: 3,
                     child: Text(
@@ -204,20 +200,16 @@ class _GeometricPageState extends State<GeometricPage> {
                 Expanded(
                   flex: 7,
                   child: StyledSlider(
-                    min: sliderMinValues[operation]!,
-                    max: sliderMaxValues[operation]!,
-                    value: selectedSlider,
-                    isDecimal: operation == scale,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSlider = value;
-                      });
-                    },
+                    min: sliderMinValues[operation.value]!,
+                    max: sliderMaxValues[operation.value]!,
+                    value: selectedSlider.value,
+                    isDecimal: operation.value == scale,
+                    onChanged: (value) => selectedSlider.value = value,
                   ),
                 ),
               ],
             ),
-          if (operation == translation)
+          if (operation.value == translation)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -237,17 +229,13 @@ class _GeometricPageState extends State<GeometricPage> {
                   child: StyledSlider(
                     min: -50,
                     max: 50,
-                    value: selectedSlider2,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSlider2 = value;
-                      });
-                    },
+                    value: selectedSlider2.value,
+                    onChanged: (value) => selectedSlider2.value = value,
                   ),
                 ),
               ],
             ),
-          if (operation == reflection)
+          if (operation.value == reflection)
             Row(
               children: reflectionValues
                   .map(
@@ -255,12 +243,8 @@ class _GeometricPageState extends State<GeometricPage> {
                       padding: const EdgeInsets.all(10.0),
                       child: StyledRadio(
                         value: e,
-                        groupValue: selectedRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRadio = value!;
-                          });
-                        },
+                        groupValue: selectedRadio.value,
+                        onChanged: (value) => selectedRadio.value = value!,
                       ),
                     ),
                   )
