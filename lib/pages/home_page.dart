@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
-import 'package:pi_papers_2021_2/widgets/input/big_button.dart';
-import 'package:pi_papers_2021_2/widgets/structure/footer.dart';
-import 'package:pi_papers_2021_2/widgets/structure/logo.dart';
+
+import 'package:pi_papers_2021_2/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);

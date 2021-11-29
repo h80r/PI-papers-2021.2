@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
 import 'package:pi_papers_2021_2/widgets/input/selector/selector_button.dart';
 
-class Selector extends StatefulWidget {
+class Selector extends HookWidget {
   const Selector({
     Key? key,
     required this.options,
@@ -11,26 +12,21 @@ class Selector extends StatefulWidget {
   final List<OperationSelection> options;
 
   @override
-  State<StatefulWidget> createState() => _SelectorState();
-}
-
-class _SelectorState extends State<Selector> {
-  var selected = '';
-
-  @override
   Widget build(BuildContext context) {
+    final selected = useState('');
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 350),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: widget.options
+        children: options
             .map(
               (e) => SelectorButton(
-                groupValue: selected,
+                groupValue: selected.value,
                 value: e.value,
                 icon: e.icon,
                 onPressed: () {
-                  setState(() => selected = e.value);
+                  selected.value = e.value;
                   e.onPressed();
                 },
               ),
