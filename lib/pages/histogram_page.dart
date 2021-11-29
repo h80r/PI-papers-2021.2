@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pi_papers_2021_2/utils/image_hook.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
 import 'package:pi_papers_2021_2/widgets/input/image_selector.dart';
@@ -25,7 +26,7 @@ class HistogramPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var inputImage = useState<Uint8List?>(null);
+    var inputImage = useImage();
     var dropdownCurrentValue = useState<String?>(menu.keys.first);
     var operation = useState<HistogramFunction?>(null);
     var histogramResult = useState<HistogramResult?>(null);
@@ -49,16 +50,14 @@ class HistogramPage extends HookWidget {
                   children: [
                     ImageSelector(
                       isResult: false,
-                      image: inputImage.value != null
-                          ? Image.memory(inputImage.value!)
-                          : null,
+                      image: inputImage.widget,
                       onTap: () async {
                         final pickedFile = await ImagePicker().pickImage(
                           source: ImageSource.gallery,
                         );
                         if (pickedFile == null) return;
                         final fileBytes = await pickedFile.readAsBytes();
-                        inputImage.value = fileBytes;
+                        inputImage.data = fileBytes;
                       },
                     ),
                     if (resultImage != null)
@@ -87,7 +86,7 @@ class HistogramPage extends HookWidget {
                       onPressed: () {
                         operation.value = menu[dropdownCurrentValue.value];
                         histogramResult.value = operate(
-                          inputImage.value,
+                          inputImage.data,
                           operation.value,
                         );
                       },

@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
 
 import 'package:pi_papers_2021_2/style/color_palette.dart';
+import 'package:pi_papers_2021_2/utils/image_hook.dart';
 import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
@@ -24,8 +25,8 @@ class GeometricPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var imageA = useState<Uint8List?>(null);
-    var imageB = useState<Uint8List?>(null);
+    var imageA = useImage();
+    var imageB = useImage();
     var operation = useState<GeometricFunction?>(null);
 
     var selectedRadio = useState('Horizontal');
@@ -65,15 +66,15 @@ class GeometricPage extends HookWidget {
                                   const Duration(seconds: 2),
                                 );
 
-                                imageB.value = operate(
-                                  image: imageA.value,
+                                imageB.data = operate(
+                                  image: imageA.data,
                                   inputs: {
                                     'moveX': selectedSlider.value.toInt(),
                                     'moveY': selectedSlider2.value.toInt(),
                                     'reflectionType': {
                                           'Horizontal': 1,
                                           'Vertical': 2
-                                        }[selectedRadio] ??
+                                        }[selectedRadio.value] ??
                                         0,
                                     'rotation': selectedSlider.value.toInt(),
                                     'scale':
@@ -91,27 +92,19 @@ class GeometricPage extends HookWidget {
                         ),
                       ImageSelector(
                         isResult: false,
-                        image: imageA.value != null
-                            ? Image.memory(imageA.value!)
-                            : null,
+                        image: imageA.widget,
                         onTap: () async {
                           final pickedFile = await ImagePicker()
                               .pickImage(source: ImageSource.gallery);
                           if (pickedFile == null) return;
                           final fileBytes = await pickedFile.readAsBytes();
-                          imageA.value = fileBytes;
+                          imageA.data = fileBytes;
                         },
                       ),
                       ImageSelector(
                         isResult: true,
-                        image: imageB.value != null && imageB.value!.isNotEmpty
-                            ? Image.memory(imageB.value!)
-                            : null,
-                        message: imageB.value == null
-                            ? 'SEM IMAGEM\nPARA MOSTRAR'
-                            : imageB.value!.isEmpty
-                                ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
-                                : null,
+                        image: imageB.widget,
+                        message: imageB.message,
                       ),
                     ],
                   ),

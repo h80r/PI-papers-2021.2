@@ -1,10 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
+import 'package:pi_papers_2021_2/utils/image_hook.dart';
 import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
@@ -20,9 +19,9 @@ class ArithmeticPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var imageA = useState<Uint8List?>(null);
-    var imageB = useState<Uint8List?>(null);
-    var imageC = useState<Uint8List?>(null);
+    var imageA = useImage();
+    var imageB = useImage();
+    var imageC = useImage();
     var operation = useState<ArithmeticOperation?>(null);
 
     return Scaffold(
@@ -38,38 +37,32 @@ class ArithmeticPage extends HookWidget {
           children: [
             ImageSelector(
               isResult: false,
-              image: imageA.value != null ? Image.memory(imageA.value!) : null,
+              image: imageA.widget,
               onTap: () async {
                 final pickedFile =
                     await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
-                imageA.value = fileBytes;
+                imageA.data = fileBytes;
               },
             ),
             const SizedBox(width: 10),
             ImageSelector(
               isResult: false,
-              image: imageB.value != null ? Image.memory(imageB.value!) : null,
+              image: imageB.widget,
               onTap: () async {
                 final pickedFile =
                     await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (pickedFile == null) return;
                 final fileBytes = await pickedFile.readAsBytes();
-                imageB.value = fileBytes;
+                imageB.data = fileBytes;
               },
             ),
             const SizedBox(width: 10),
             ImageSelector(
               isResult: true,
-              image: imageC.value != null && imageC.value!.isNotEmpty
-                  ? Image.memory(imageC.value!)
-                  : null,
-              message: imageC.value == null
-                  ? 'SEM IMAGEM\nPARA MOSTRAR'
-                  : imageC.value!.isEmpty
-                      ? 'IMAGENS TÊM\nTAMANHOS\nDIFERENTES'
-                      : null,
+              image: imageC.widget,
+              message: imageC.message,
             ),
             Selector(
               options: [
@@ -116,9 +109,9 @@ class ArithmeticPage extends HookWidget {
               child: FinishButton(
                 text: 'Operar',
                 onPressed: () {
-                  imageC.value = operate(
-                    imageA.value,
-                    imageB.value,
+                  imageC.data = operate(
+                    imageA.data,
+                    imageB.data,
                     operation.value,
                   );
                 },
