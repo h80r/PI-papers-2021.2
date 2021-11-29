@@ -26,10 +26,10 @@ class HistogramPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var inputImage = useImage();
-    var dropdownCurrentValue = useState<String?>(menu.keys.first);
-    var operation = useState<HistogramFunction?>(null);
-    var histogramResult = useState<HistogramResult?>(null);
+    final inputImage = useImage();
+    final dropdownCurrentValue = useState<String?>(menu.keys.first);
+    final operation = useState<HistogramFunction?>(null);
+    final histogramResult = useState<HistogramResult?>(null);
 
     final resultImage = histogramResult.value?.get<Uint8List?>();
     final histogramData = histogramResult.value?.get<HistogramData>();

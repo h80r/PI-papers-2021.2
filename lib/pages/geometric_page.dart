@@ -25,14 +25,14 @@ class GeometricPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var imageA = useImage();
-    var imageB = useImage();
-    var operation = useState<GeometricFunction?>(null);
+    final imageA = useImage();
+    final imageB = useImage();
+    final operation = useState<GeometricFunction?>(null);
 
-    var selectedRadio = useState('Horizontal');
-    var selectedSlider = useState(0.0);
-    var selectedSlider2 = useState(0.0);
-    var isLoading = useState(false);
+    final selectedRadio = useState('Horizontal');
+    final selectedSlider = useState(0.0);
+    final selectedSlider2 = useState(0.0);
+    final isLoading = useState(false);
 
     return Scaffold(
       appBar: const Header(

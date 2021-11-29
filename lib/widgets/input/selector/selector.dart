@@ -13,7 +13,7 @@ class Selector extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var selected = useState('');
+    final selected = useState('');
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 350),

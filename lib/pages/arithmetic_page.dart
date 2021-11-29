@@ -19,10 +19,10 @@ class ArithmeticPage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var imageA = useImage();
-    var imageB = useImage();
-    var imageC = useImage();
-    var operation = useState<ArithmeticOperation?>(null);
+    final imageA = useImage();
+    final imageB = useImage();
+    final imageC = useImage();
+    final operation = useState<ArithmeticOperation?>(null);
 
     return Scaffold(
       appBar: const Header(
