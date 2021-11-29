@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/widgets/input/finish_button.dart';
@@ -12,20 +13,10 @@ import 'package:pi_papers_2021_2/widgets/input/styled_dropdown.dart';
 
 import 'package:pi_papers_2021_2/algorithm/histogram_functions.dart';
 
-class HistogramPage extends StatefulWidget {
+class HistogramPage extends HookWidget {
   const HistogramPage({Key? key}) : super(key: key);
 
-  @override
-  State<HistogramPage> createState() => _HistogramPageState();
-}
-
-class _HistogramPageState extends State<HistogramPage> {
-  Uint8List? inputImage;
-  String? dropdownCurrentValue;
-  HistogramFunction? operation;
-  HistogramResult? histogramResult;
-
-  final menu = {
+  final menu = const {
     'Histograma': histogramGeneration,
     'Histograma normalizado': normalizedHistogram,
     'Equalização de histograma': histogramEqualization,
@@ -33,15 +24,14 @@ class _HistogramPageState extends State<HistogramPage> {
   };
 
   @override
-  void initState() {
-    dropdownCurrentValue = menu.keys.first;
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final resultImage = histogramResult?.get<Uint8List?>();
-    final histogramData = histogramResult?.get<HistogramData>();
+    var inputImage = useState<Uint8List?>(null);
+    var dropdownCurrentValue = useState<String?>(menu.keys.first);
+    var operation = useState<HistogramFunction?>(null);
+    var histogramResult = useState<HistogramResult?>(null);
+
+    final resultImage = histogramResult.value?.get<Uint8List?>();
+    final histogramData = histogramResult.value?.get<HistogramData>();
 
     return Scaffold(
       appBar: const Header(
@@ -59,15 +49,16 @@ class _HistogramPageState extends State<HistogramPage> {
                   children: [
                     ImageSelector(
                       isResult: false,
-                      image:
-                          inputImage != null ? Image.memory(inputImage!) : null,
+                      image: inputImage.value != null
+                          ? Image.memory(inputImage.value!)
+                          : null,
                       onTap: () async {
                         final pickedFile = await ImagePicker().pickImage(
                           source: ImageSource.gallery,
                         );
                         if (pickedFile == null) return;
                         final fileBytes = await pickedFile.readAsBytes();
-                        setState(() => inputImage = fileBytes);
+                        inputImage.value = fileBytes;
                       },
                     ),
                     if (resultImage != null)
@@ -84,22 +75,21 @@ class _HistogramPageState extends State<HistogramPage> {
                   children: [
                     StyleDropdown(
                       items: menu.keys.toList(),
-                      value: dropdownCurrentValue,
+                      value: dropdownCurrentValue.value,
                       onChanged: (newValue) {
-                        setState(() {
-                          dropdownCurrentValue = newValue;
-                          operation = menu[newValue];
-                        });
+                        dropdownCurrentValue.value = newValue;
+                        operation.value = menu[newValue];
                       },
                     ),
                     FinishButton(
                       text: 'GO',
                       isCompact: true,
                       onPressed: () {
-                        setState(() {
-                          operation = menu[dropdownCurrentValue];
-                          histogramResult = operate(inputImage, operation);
-                        });
+                        operation.value = menu[dropdownCurrentValue.value];
+                        histogramResult.value = operate(
+                          inputImage.value,
+                          operation.value,
+                        );
                       },
                     ),
                   ],
