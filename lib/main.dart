@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Dr. Image',
-      initialRoute: '/',
+      initialRoute: '/smoothing_filter',
       theme: ThemeData(
         scaffoldBackgroundColor: ColorPalette.background,
       ),
