@@ -97,3 +97,16 @@ int? applyMask(List<int> mask, List<int> neighborhood) {
 num replicationSolution(num pixelValue, List mask, List neighborhood) {
   return pixelValue;
 }
+
+/// Applys the zero solution to a neighborhood.
+///
+/// Parameters:
+/// - `pixelValue`: Value of the pixel to be processed;
+/// - `mask`: List containing mask values;
+/// - `neighborhood`: List of pixel values to be processed.
+///
+/// Returns:
+/// - 0 .
+num zeroSolution(num pixelValue, List mask, List neighborhood) {
+  return 0;
+}
