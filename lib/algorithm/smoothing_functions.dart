@@ -73,13 +73,14 @@ List<int> getNeighborhood(
 /// - A number representing the new image's pixel value
 /// if `neighborhood` has the same size of `mask`, or null otherwise.
 int? applyMask(List<int> mask, List<int> neighborhood) {
-  if (mask.length == neighborhood.length) {
-    final maskSum = mask.reduce((a, b) => a + b);
-    var pixelSum = 0;
-    for (var position = 0; position < mask.length; position++) {
-      pixelSum += mask[position] * neighborhood[position];
-    }
-    return pixelSum ~/ maskSum;
+  if (mask.length != neighborhood.length) return null;
+
+  final maskSum = mask.reduce((a, b) => a + b);
+  var pixelSum = 0;
+
+  for (var position = 0; position < mask.length; position++) {
+    pixelSum += mask[position] * neighborhood[position];
   }
-  return null;
+
+  return pixelSum ~/ maskSum;
 }
