@@ -14,13 +14,33 @@ class SmoothingPage extends HookWidget {
 
     final outputImage = useImage();
 
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: const Header(title: 'Filtro Smoothing'),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: const [],
+          children: [
+            SizedBox(
+              width: size.width * 0.25,
+              child: Card(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    StyledSlider(
+                      min: 3,
+                      max: 5,
+                      value: neighbourhoodSize.value.toDouble(),
+                      onChanged: (val) => neighbourhoodSize.value = val.toInt(),
+                      onlyExtremes: true,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
         ),
       ),
       bottomNavigationBar: const Footer(),
