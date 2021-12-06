@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pi_papers_2021_2/utils/image_hook.dart';
+import 'package:pi_papers_2021_2/utils/picker_hook.dart';
 
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
 
@@ -47,14 +48,7 @@ class HistogramPage extends HookWidget {
                     ImageSelector(
                       isResult: false,
                       image: inputImage.widget,
-                      onTap: () async {
-                        final pickedFile = await ImagePicker().pickImage(
-                          source: ImageSource.gallery,
-                        );
-                        if (pickedFile == null) return;
-                        final fileBytes = await pickedFile.readAsBytes();
-                        inputImage.data = fileBytes;
-                      },
+                      onTap: () => usePicker(inputImage),
                     ),
                     if (resultImage != null)
                       Padding(

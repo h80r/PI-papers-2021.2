@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pi_papers_2021_2/models/operation_selection.dart';
 
 import 'package:pi_papers_2021_2/utils/image_hook.dart';
+import 'package:pi_papers_2021_2/utils/picker_hook.dart';
 import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
@@ -35,27 +36,13 @@ class ArithmeticPage extends HookWidget {
             ImageSelector(
               isResult: false,
               image: imageA.widget,
-              onTap: () async {
-                final pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile == null) return;
-                final fileBytes = await pickedFile.readAsBytes();
-                imageA.data = fileBytes;
-              },
+              onTap: () => usePicker(imageA),
             ),
             const SizedBox(width: 10),
             ImageSelector(
               isResult: false,
               image: imageB.widget,
-              onTap: () async {
-                final pickedFile = await ImagePicker().pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile == null) return;
-                final fileBytes = await pickedFile.readAsBytes();
-                imageB.data = fileBytes;
-              },
+              onTap: () => usePicker(imageB),
             ),
             const SizedBox(width: 10),
             ImageSelector(
