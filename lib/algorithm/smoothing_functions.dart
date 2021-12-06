@@ -63,4 +63,24 @@ List<int> getNeighborhood(
   return neighborhood;
 }
 
-void operate2() {}
+/// Applys a mask to a neighborhood.
+///
+/// Parameters:
+/// - `mask`: List containing mask values;
+/// - `neighborhood`: List of pixel values to be processed;
+///
+/// Returns:
+/// - A number representing the new image's pixel value
+/// if `neighborhood` has the same size of `mask`, or null otherwise.
+int? applyMask(List<int> mask, List<int> neighborhood) {
+  if (mask.length != neighborhood.length) return null;
+
+  final maskSum = mask.reduce((a, b) => a + b);
+  var pixelSum = 0;
+
+  for (var position = 0; position < mask.length; position++) {
+    pixelSum += mask[position] * neighborhood[position];
+  }
+
+  return pixelSum ~/ maskSum;
+}
