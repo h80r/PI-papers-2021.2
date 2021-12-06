@@ -9,6 +9,7 @@ class StyledSlider extends StatelessWidget {
     required this.value,
     required this.onChanged,
     this.isDecimal = false,
+    this.onlyExtremes = false,
   }) : super(key: key);
 
   final double min;
@@ -16,6 +17,7 @@ class StyledSlider extends StatelessWidget {
   final double value;
   final void Function(double) onChanged;
   final bool isDecimal;
+  final bool onlyExtremes;
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +54,11 @@ class StyledSlider extends StatelessWidget {
             min: min,
             max: max,
             value: value,
-            divisions: isDecimal
-                ? ((max + min.abs()) * 10).toInt()
-                : (max + min.abs()).toInt(),
+            divisions: onlyExtremes
+                ? 1
+                : isDecimal
+                    ? ((max + min.abs()) * 10).toInt()
+                    : (max + min.abs()).toInt(),
             onChanged: onChanged,
             label: value.toStringAsFixed(1),
           ),

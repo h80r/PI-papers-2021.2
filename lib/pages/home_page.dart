@@ -47,6 +47,16 @@ class HomePage extends StatelessWidget {
                   ),
                   text: 'Processar Histogramas',
                 ),
+                const VerticalDivider(
+                  color: Colors.transparent,
+                  width: 30,
+                ),
+                BigButton(
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/smoothing_filter',
+                  ),
+                  text: 'Filtro Smoothing',
+                ),
               ],
             ),
           ],
