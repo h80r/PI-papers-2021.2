@@ -5,6 +5,8 @@ import 'package:image/image.dart';
 import 'package:pi_papers_2021_2/models/mask.dart';
 import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
+typedef EdgeSolution = List<int> Function(Map<String, dynamic> parameters);
+
 /// Converts a 1D list of pixels into a 2D matrix
 /// that follows an image's shape.
 ///
@@ -116,6 +118,28 @@ List<int> zeroSolution(Map<String, dynamic> parameters) {
   return List.generate(size, (index) => 0);
 }
 
+/// Applys the zero padding solution to a neighborhood.
+///
+/// Parameters:
+///
+///
+/// Returns:
+///
+List<int> paddingSolution(Map<String, dynamic> parameters) {
+  return [];
+}
+
+/// Applys the periodic convolution solution to a neighborhood.
+///
+/// Parameters:
+/// - `size`: The desired list size;
+///
+/// Returns:
+/// - A new neighborhood with 0 on all pixels.
+List<int> convolutionSolution(Map<String, dynamic> parameters) {
+  return [];
+}
+
 /// Applies the smoothing operation to an image.
 ///
 /// Parameters:
@@ -130,7 +154,7 @@ Uint8List? operate(
   Uint8List? image,
   Mask? mask,
   int? neighborhoodSize,
-  Function? edgeSolution,
+  EdgeSolution? edgeSolution,
 ) {
   if (image == null ||
       mask == null ||

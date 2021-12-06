@@ -15,7 +15,7 @@ class Mask {
         (x) {
           final currentPoint = Point(x, y);
           final distance = currentPoint.distanceTo(center);
-          return pow(2, (size / 2).ceil() - distance.ceil()).toInt();
+          return pow(5, (size / 2).ceil() - distance.ceil()).toInt();
         },
       ),
     );
