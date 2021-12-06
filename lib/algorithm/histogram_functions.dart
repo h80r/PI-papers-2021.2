@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
-import 'package:pi_papers_2021_2/utils/histogram_utils.dart';
+import 'package:pi_papers_2021_2/models/tuple.dart';
 import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
 typedef HistogramData = Map<int, num>;

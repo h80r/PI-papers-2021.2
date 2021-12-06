@@ -3,8 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-import 'package:pi_papers_2021_2/utils/image_hook.dart';
-import 'package:pi_papers_2021_2/utils/picker_hook.dart';
+import 'package:pi_papers_2021_2/utils/hooks/image_hook.dart';
+import 'package:pi_papers_2021_2/utils/hooks/picker_hook.dart';
 
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
 

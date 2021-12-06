@@ -1,5 +1,5 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:pi_papers_2021_2/utils/image_hook.dart';
+import 'package:pi_papers_2021_2/utils/hooks/image_hook.dart';
 
 void usePicker(ImageInterface target) async {
   final pickedFile = await ImagePicker().pickImage(
