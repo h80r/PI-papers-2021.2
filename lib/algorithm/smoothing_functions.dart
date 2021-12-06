@@ -1,5 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:image/image.dart';
+import 'package:pi_papers_2021_2/utils/image_utils.dart';
+
 /// Converts a 1D list of pixels into a 2D matrix
 /// that follows an image's shape.
 ///
@@ -83,4 +86,88 @@ int? applyMask(List<int> mask, List<int> neighborhood) {
   }
 
   return pixelSum ~/ maskSum;
+}
+
+/// Applys the replication solution to a neighborhood.
+///
+/// Parameters:
+/// - `pixelValue`: Value of the pixel to be processed;
+/// - `mask`: List containing mask values;
+/// - `neighborhood`: List of pixel values to be processed.
+///
+/// Returns:
+/// - `pixelValue`: target pixel's original value.
+num replicationSolution(num pixelValue, List mask, List neighborhood) {
+  return pixelValue;
+}
+
+/// Applys the zero solution to a neighborhood.
+///
+/// Parameters:
+/// - `pixelValue`: Value of the pixel to be processed;
+/// - `mask`: List containing mask values;
+/// - `neighborhood`: List of pixel values to be processed.
+///
+/// Returns:
+/// - 0 .
+num zeroSolution(num pixelValue, List mask, List neighborhood) {
+  return 0;
+}
+
+/// Applies the smoothing operation to an image.
+///
+/// Parameters:
+/// - `image`: List of image's bytes;
+/// - `mask`: List containing mask values;
+/// - `neighborhoodSize`: Size of intended neighborhood (e.g. 3, 5, 7...).
+/// - `edgeSolution`: The chosen edge solution, in case there are not enough pixel values.
+///
+/// Returns:
+/// - List of new image's bytes after smoothing operation.
+Uint8List? operate(
+  Uint8List? image,
+  List<int>? mask,
+  int? neighborhoodSize,
+  Function? edgeSolution,
+) {
+  if (image == null ||
+      mask == null ||
+      neighborhoodSize == null ||
+      edgeSolution == null) return null;
+
+  final img = decodeImage(image)!;
+
+  final pixelsImg = convertListToMatrix(
+    img.getBytes(format: Format.luminance),
+    img.width,
+  );
+
+  final newImagePixels = <int>[];
+
+  for (var y = 0; y < pixelsImg.length; y++) {
+    for (var x = 0; x < pixelsImg[0].length; x++) {
+      final neighborhood = getNeighborhood(
+        pixelsImg,
+        y,
+        x,
+        neighborhoodSize,
+      );
+
+      newImagePixels.add(
+        applyMask(mask, neighborhood) ??
+            edgeSolution(
+              pixelsImg[y][x],
+              mask,
+              neighborhood,
+            ),
+      );
+    }
+  }
+
+  return reformat(
+    width: img.width,
+    height: img.height,
+    processedImage: Uint8List.fromList(newImagePixels),
+    format: Format.luminance,
+  );
 }
