@@ -9,12 +9,13 @@ import 'dart:typed_data';
 ///
 /// Returns:
 /// - `imageMatrix`: 2D matrix of image's luminance values.
-List convertListToMatrix(
+List<Uint8List> convertListToMatrix(
   Uint8List imageLuminanceList,
   int imageWidth,
 ) {
-  int imageHeight = imageLuminanceList.length ~/ imageWidth;
-  List imageMatrix = [];
+  final imageHeight = imageLuminanceList.length ~/ imageWidth;
+  final imageMatrix = <Uint8List>[];
+
   for (var i = 0; i < imageHeight; i++) {
     imageMatrix.add(
       imageLuminanceList.sublist(
@@ -23,6 +24,7 @@ List convertListToMatrix(
       ),
     );
   }
+
   return imageMatrix;
 }
 
@@ -36,15 +38,16 @@ List convertListToMatrix(
 ///
 /// Returns:
 /// - `neighborhood`: 1D list containing the pixel[`y`][`x`]'s neighborhood.
-List<num> getNeighborhood(
-  List imageLuminanceMatrix,
+List<int> getNeighborhood(
+  List<Uint8List> imageLuminanceMatrix,
   int yPosition,
   int xPosition,
   int neighborhoodSize,
 ) {
   // neighborhoodGroup works as the neighborhood limits (lower and upper)
-  int neighborhoodGroup = (neighborhoodSize - 1) ~/ 2;
-  List<num> neighborhood = [];
+  final neighborhoodGroup = (neighborhoodSize - 1) ~/ 2;
+  final neighborhood = <int>[];
+
   for (var y = yPosition - neighborhoodGroup;
       y <= yPosition + neighborhoodGroup;
       y++) {
