@@ -2,13 +2,13 @@ import 'dart:math';
 
 class Mask {
   Mask.simple(int size) {
-    mask = List.generate(size, (y) => List.generate(size, (x) => 1));
+    _mask = List.generate(size, (y) => List.generate(size, (x) => 1));
   }
 
   Mask.gaussian(int size) {
     final center = Point(size ~/ 2, size ~/ 2);
 
-    mask = List.generate(
+    _mask = List.generate(
       size,
       (y) => List.generate(
         size,
@@ -21,11 +21,15 @@ class Mask {
     );
   }
 
-  late final List<List<int>> mask;
+  late final List<List<int>> _mask;
+  List<int> asList() => _mask.fold(
+        [],
+        (previousValue, element) => previousValue..addAll(element),
+      );
 
   @override
   String toString() {
-    return mask.fold(
+    return _mask.fold(
       '',
       (previousValue, element) => previousValue + '\n' + element.toString(),
     );

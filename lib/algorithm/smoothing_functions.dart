@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
+import 'package:pi_papers_2021_2/models/mask.dart';
 import 'package:pi_papers_2021_2/utils/image_utils.dart';
 
 /// Converts a 1D list of pixels into a 2D matrix
@@ -41,12 +43,12 @@ List<Uint8List> convertListToMatrix(
 ///
 /// Returns:
 /// - `neighborhood`: 1D list containing the pixel[`y`][`x`]'s neighborhood.
-List<int> getNeighborhood(
-  List<Uint8List> imageLuminanceMatrix,
-  int yPosition,
-  int xPosition,
-  int neighborhoodSize,
-) {
+List<int> getNeighborhood({
+  required List<Uint8List> imageLuminanceMatrix,
+  required int yPosition,
+  required int xPosition,
+  required int neighborhoodSize,
+}) {
   // neighborhoodGroup works as the neighborhood limits (lower and upper)
   final neighborhoodGroup = (neighborhoodSize - 1) ~/ 2;
   final neighborhood = <int>[];
@@ -75,9 +77,7 @@ List<int> getNeighborhood(
 /// Returns:
 /// - A number representing the new image's pixel value
 /// if `neighborhood` has the same size of `mask`, or null otherwise.
-int? applyMask(List<int> mask, List<int> neighborhood) {
-  if (mask.length != neighborhood.length) return null;
-
+int applyMask(List<int> mask, List<int> neighborhood) {
   final maskSum = mask.reduce((a, b) => a + b);
   var pixelSum = 0;
 
@@ -92,26 +92,28 @@ int? applyMask(List<int> mask, List<int> neighborhood) {
 ///
 /// Parameters:
 /// - `pixelValue`: Value of the pixel to be processed;
-/// - `mask`: List containing mask values;
-/// - `neighborhood`: List of pixel values to be processed.
+/// - `size`: The desired list size;
 ///
 /// Returns:
-/// - `pixelValue`: target pixel's original value.
-num replicationSolution(num pixelValue, List mask, List neighborhood) {
-  return pixelValue;
+/// - `pixelList`: A new neighborhood with every pixel being the original pixel.
+List<int> replicationSolution(Map<String, dynamic> parameters) {
+  final size = parameters['size'] as int;
+  final pixelValue = parameters['pixelValue'] as int;
+
+  return List.generate(size, (index) => pixelValue);
 }
 
 /// Applys the zero solution to a neighborhood.
 ///
 /// Parameters:
-/// - `pixelValue`: Value of the pixel to be processed;
-/// - `mask`: List containing mask values;
-/// - `neighborhood`: List of pixel values to be processed.
+/// - `size`: The desired list size;
 ///
 /// Returns:
-/// - 0 .
-num zeroSolution(num pixelValue, List mask, List neighborhood) {
-  return 0;
+/// - A new neighborhood with 0 on all pixels.
+List<int> zeroSolution(Map<String, dynamic> parameters) {
+  final size = parameters['size'] as int;
+
+  return List.generate(size, (index) => 0);
 }
 
 /// Applies the smoothing operation to an image.
@@ -126,7 +128,7 @@ num zeroSolution(num pixelValue, List mask, List neighborhood) {
 /// - List of new image's bytes after smoothing operation.
 Uint8List? operate(
   Uint8List? image,
-  List<int>? mask,
+  Mask? mask,
   int? neighborhoodSize,
   Function? edgeSolution,
 ) {
@@ -146,21 +148,25 @@ Uint8List? operate(
 
   for (var y = 0; y < pixelsImg.length; y++) {
     for (var x = 0; x < pixelsImg[0].length; x++) {
-      final neighborhood = getNeighborhood(
-        pixelsImg,
-        y,
-        x,
-        neighborhoodSize,
+      var neighborhood = getNeighborhood(
+        imageLuminanceMatrix: pixelsImg,
+        yPosition: y,
+        xPosition: x,
+        neighborhoodSize: neighborhoodSize,
       );
 
-      newImagePixels.add(
-        applyMask(mask, neighborhood) ??
-            edgeSolution(
-              pixelsImg[y][x],
-              mask,
-              neighborhood,
-            ),
-      );
+      final desiredLength = pow(neighborhoodSize, 2);
+
+      if (neighborhood.length != desiredLength) {
+        neighborhood = edgeSolution(
+          {
+            'pixelValue': pixelsImg[y][x],
+            'size': desiredLength,
+          },
+        );
+      }
+
+      newImagePixels.add(applyMask(mask.asList(), neighborhood));
     }
   }
 
