@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-String path(str) {
-  return (kIsWeb && !kDebugMode) ? 'assets/$str' : str;
+/// Updates the  `originalPath` to work on deployed apps.
+String path(String originalPath) {
+  return (kIsWeb && !kDebugMode) ? 'assets/$originalPath' : originalPath;
 }

@@ -5,8 +5,8 @@ import 'package:pi_papers_2021_2/models/operation_selection.dart';
 
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
-import 'package:pi_papers_2021_2/utils/image_hook.dart';
-import 'package:pi_papers_2021_2/utils/picker_hook.dart';
+import 'package:pi_papers_2021_2/utils/hooks/image_hook.dart';
+import 'package:pi_papers_2021_2/utils/hooks/picker_hook.dart';
 import 'package:pi_papers_2021_2/utils/web_utils.dart';
 
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
