@@ -1,5 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:image/image.dart';
+import 'package:pi_papers_2021_2/utils/image_utils.dart';
+
 /// Converts a 1D list of pixels into a 2D matrix
 /// that follows an image's shape.
 ///
@@ -109,4 +112,62 @@ num replicationSolution(num pixelValue, List mask, List neighborhood) {
 /// - 0 .
 num zeroSolution(num pixelValue, List mask, List neighborhood) {
   return 0;
+}
+
+/// Applies the smoothing operation to an image.
+///
+/// Parameters:
+/// - `image`: List of image's bytes;
+/// - `mask`: List containing mask values;
+/// - `neighborhoodSize`: Size of intended neighborhood (e.g. 3, 5, 7...).
+/// - `edgeSolution`: The chosen edge solution, in case there are not enough pixel values.
+///
+/// Returns:
+/// - List of new image's bytes after smoothing operation.
+Uint8List? operate(
+  Uint8List? image,
+  List<int>? mask,
+  int? neighborhoodSize,
+  Function? edgeSolution,
+) {
+  if (image == null ||
+      mask == null ||
+      neighborhoodSize == null ||
+      edgeSolution == null) return null;
+
+  final img = decodeImage(image)!;
+
+  final pixelsImg = convertListToMatrix(
+    img.getBytes(format: Format.luminance),
+    img.width,
+  );
+
+  List<int> newImagePixels = [];
+  List<int> neighborhood;
+
+  for (var y = 0; y < pixelsImg.length; y++) {
+    for (var x = 0; x < pixelsImg[0].length; x++) {
+      neighborhood = getNeighborhood(
+        pixelsImg,
+        y,
+        x,
+        neighborhoodSize,
+      );
+      newImagePixels.add(
+        applyMask(mask, neighborhood) ??
+            edgeSolution(
+              pixelsImg[y][x],
+              mask,
+              neighborhood,
+            ),
+      );
+    }
+  }
+
+  return reformat(
+    width: img.width,
+    height: img.height,
+    processedImage: Uint8List.fromList(newImagePixels),
+    format: Format.luminance,
+  );
 }
