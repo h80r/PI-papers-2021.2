@@ -84,3 +84,16 @@ int? applyMask(List<int> mask, List<int> neighborhood) {
 
   return pixelSum ~/ maskSum;
 }
+
+/// Applys the replication solution to a neighborhood.
+///
+/// Parameters:
+/// - `pixelValue`: Value of the pixel to be processed;
+/// - `mask`: List containing mask values;
+/// - `neighborhood`: List of pixel values to be processed.
+///
+/// Returns:
+/// - `pixelValue`: target pixel's original value.
+num replicationSolution(num pixelValue, List mask, List neighborhood) {
+  return pixelValue;
+}
