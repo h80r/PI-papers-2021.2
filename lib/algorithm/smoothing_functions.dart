@@ -142,17 +142,17 @@ Uint8List? operate(
     img.width,
   );
 
-  List<int> newImagePixels = [];
-  List<int> neighborhood;
+  final newImagePixels = <int>[];
 
   for (var y = 0; y < pixelsImg.length; y++) {
     for (var x = 0; x < pixelsImg[0].length; x++) {
-      neighborhood = getNeighborhood(
+      final neighborhood = getNeighborhood(
         pixelsImg,
         y,
         x,
         neighborhoodSize,
       );
+
       newImagePixels.add(
         applyMask(mask, neighborhood) ??
             edgeSolution(
