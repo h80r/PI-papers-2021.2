@@ -50,10 +50,13 @@ List<int> getNeighborhood({
   required int yPosition,
   required int xPosition,
   required int neighborhoodSize,
+  bool isConvolution = false,
 }) {
-  // neighborhoodGroup works as the neighborhood limits (lower and upper)
+  /// neighborhoodGroup works as the neighborhood limits (lower and upper)
   final neighborhoodGroup = (neighborhoodSize - 1) ~/ 2;
   final neighborhood = <int>[];
+  final imageHeight = imageLuminanceMatrix.length;
+  final imageWidth = imageLuminanceMatrix[0].length;
 
   for (var y = yPosition - neighborhoodGroup;
       y <= yPosition + neighborhoodGroup;
@@ -64,7 +67,16 @@ List<int> getNeighborhood({
       try {
         neighborhood.add(imageLuminanceMatrix[y][x]);
       } catch (_) {
-        neighborhood.add(-1);
+        if (isConvolution) {
+          final newY = y < 0 ? imageHeight + y : y % imageHeight;
+          final newX = x < 0 ? imageWidth + x : x % imageWidth;
+
+          neighborhood.add(
+            imageLuminanceMatrix[newY][newX],
+          );
+        } else {
+          neighborhood.add(-1);
+        }
       }
     }
   }
@@ -141,7 +153,17 @@ List<int> paddingSolution(Map<String, dynamic> parameters) {
 /// Returns:
 /// - A new neighborhood with 0 on all pixels.
 List<int> convolutionSolution(Map<String, dynamic> parameters) {
-  return [];
+  final imagePixels = parameters['imagePixels'] as List<Uint8List>;
+  final position = parameters['position'] as Point;
+  final size = parameters['size'] as int;
+
+  return getNeighborhood(
+    imageLuminanceMatrix: imagePixels,
+    yPosition: position.y.toInt(),
+    xPosition: position.x.toInt(),
+    neighborhoodSize: size,
+    isConvolution: true,
+  );
 }
 
 /// Applies the smoothing operation to an image.
@@ -192,6 +214,7 @@ Uint8List? operate(
             'size': desiredLength,
             'neighborhood': neighborhood,
             'imagePixels': imagePixels,
+            'position': Point(x, y),
           },
         );
       }
