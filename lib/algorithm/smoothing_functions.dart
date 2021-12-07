@@ -149,9 +149,11 @@ List<int> paddingSolution(Map<String, dynamic> parameters) {
 ///
 /// Parameters:
 /// - `size`: The desired list size;
+/// - `position`: The position of the pixel to be processed;
+/// - `imagePixels`: The image's pixels;
 ///
 /// Returns:
-/// - A new neighborhood with 0 on all pixels.
+/// - A new neighborhood with valid pixels.
 List<int> convolutionSolution(Map<String, dynamic> parameters) {
   final imagePixels = parameters['imagePixels'] as List<Uint8List>;
   final position = parameters['position'] as Point;
@@ -203,20 +205,23 @@ Uint8List? operate(
         yPosition: y,
         xPosition: x,
         neighborhoodSize: neighborhoodSize,
+        isConvolution: edgeSolution == convolutionSolution,
       );
 
       final desiredLength = pow(neighborhoodSize, 2);
 
-      if (neighborhood.any((pixel) => pixel == -1)) {
-        neighborhood = edgeSolution(
-          {
-            'pixelValue': imagePixels[y][x],
-            'size': desiredLength,
-            'neighborhood': neighborhood,
-            'imagePixels': imagePixels,
-            'position': Point(x, y),
-          },
-        );
+      if (edgeSolution != convolutionSolution) {
+        if (neighborhood.any((pixel) => pixel == -1)) {
+          neighborhood = edgeSolution(
+            {
+              'pixelValue': imagePixels[y][x],
+              'size': desiredLength,
+              'neighborhood': neighborhood,
+              'imagePixels': imagePixels,
+              'position': Point(x, y),
+            },
+          );
+        }
       }
 
       newImagePixels.add(applyMask(mask.asList(), neighborhood));
