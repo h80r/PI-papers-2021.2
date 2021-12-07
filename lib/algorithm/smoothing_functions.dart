@@ -63,7 +63,9 @@ List<int> getNeighborhood({
         x++) {
       try {
         neighborhood.add(imageLuminanceMatrix[y][x]);
-      } catch (_) {}
+      } catch (_) {
+        neighborhood.add(-1);
+      }
     }
   }
 
@@ -121,12 +123,14 @@ List<int> zeroSolution(Map<String, dynamic> parameters) {
 /// Applys the zero padding solution to a neighborhood.
 ///
 /// Parameters:
-///
+/// - `neighborhood`: List of pixel values to be processed;
 ///
 /// Returns:
-///
+/// - A new neighborhood with 0 on inexistent pixels.
 List<int> paddingSolution(Map<String, dynamic> parameters) {
-  return [];
+  final neighborhood = parameters['neighborhood'] as List<int>;
+
+  return neighborhood.map((e) => e == -1 ? 0 : e).toList();
 }
 
 /// Applys the periodic convolution solution to a neighborhood.
@@ -163,17 +167,17 @@ Uint8List? operate(
 
   final img = decodeImage(image)!;
 
-  final pixelsImg = convertListToMatrix(
+  final imagePixels = convertListToMatrix(
     img.getBytes(format: Format.luminance),
     img.width,
   );
 
   final newImagePixels = <int>[];
 
-  for (var y = 0; y < pixelsImg.length; y++) {
-    for (var x = 0; x < pixelsImg[0].length; x++) {
+  for (var y = 0; y < imagePixels.length; y++) {
+    for (var x = 0; x < imagePixels[0].length; x++) {
       var neighborhood = getNeighborhood(
-        imageLuminanceMatrix: pixelsImg,
+        imageLuminanceMatrix: imagePixels,
         yPosition: y,
         xPosition: x,
         neighborhoodSize: neighborhoodSize,
@@ -181,11 +185,13 @@ Uint8List? operate(
 
       final desiredLength = pow(neighborhoodSize, 2);
 
-      if (neighborhood.length != desiredLength) {
+      if (neighborhood.any((pixel) => pixel == -1)) {
         neighborhood = edgeSolution(
           {
-            'pixelValue': pixelsImg[y][x],
+            'pixelValue': imagePixels[y][x],
             'size': desiredLength,
+            'neighborhood': neighborhood,
+            'imagePixels': imagePixels,
           },
         );
       }
