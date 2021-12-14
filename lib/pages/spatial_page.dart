@@ -60,10 +60,11 @@ class SpatialFilteringPage extends HookWidget {
                   image: inputImage.widget,
                   onTap: () => usePicker(inputImage),
                 ),
-                ImageSelector(
-                  isResult: true,
-                  image: outputImage.widget,
-                ),
+                if (outputImage.data != null)
+                  ImageSelector(
+                    isResult: true,
+                    image: outputImage.widget,
+                  ),
               ],
             ),
           ],
