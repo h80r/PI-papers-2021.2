@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pi_papers_2021_2/style/color_palette.dart';
 
 class StyledCheckbox extends StatelessWidget {
   const StyledCheckbox({
@@ -14,10 +15,22 @@ class StyledCheckbox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      title: Text(filter),
-      value: isChecked,
-      onChanged: onChanged,
+    return Theme(
+      data: ThemeData(unselectedWidgetColor: ColorPalette.hover),
+      child: CheckboxListTile(
+        title: Text(
+          filter,
+          style: const TextStyle(
+            fontSize: 20,
+            fontFamily: 'SF Pro Display',
+            color: ColorPalette.hover,
+          ),
+        ),
+        value: isChecked,
+        onChanged: onChanged,
+        activeColor: ColorPalette.hover,
+        checkColor: ColorPalette.background,
+      ),
     );
   }
 }
