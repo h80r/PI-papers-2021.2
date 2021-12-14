@@ -7,6 +7,8 @@ import 'package:pi_papers_2021_2/utils/hooks/picker_hook.dart';
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_checkbox.dart';
 
+import 'package:pi_papers_2021_2/algorithm/spatial_functions.dart';
+
 class SpatialFilteringPage extends HookWidget {
   const SpatialFilteringPage({Key? key}) : super(key: key);
 
@@ -14,6 +16,7 @@ class SpatialFilteringPage extends HookWidget {
   Widget build(BuildContext context) {
     final inputImage = useImage();
     final outputImage = useImage();
+    final sigmaSlider = useState(1.4);
 
     final allFilters = useState({
       "Laplaciano": false,
@@ -39,6 +42,16 @@ class SpatialFilteringPage extends HookWidget {
                   children: [
                     operationControllers(
                       allFilters: allFilters,
+                    ),
+                    FinishButton(
+                      text: 'GO',
+                      onPressed: () {
+                        outputImage.data = operate(
+                          inputImage.data,
+                          allFilters.value,
+                          sigmaSlider.value,
+                        );
+                      },
                     ),
                   ],
                 ),
