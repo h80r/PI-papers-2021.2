@@ -81,7 +81,8 @@ class SpatialFilteringPage extends HookWidget {
                           min: 0.5,
                           max: 2,
                           value: sigmaValue.value.toDouble(),
-                          onChanged: (value) => sigmaValue.value = value,
+                          onChanged: (value) => sigmaValue.value =
+                              double.parse(value.toStringAsFixed(1)),
                           isDecimal: true,
                         ),
                       ),
