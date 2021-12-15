@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 import 'package:pi_papers_2021_2/utils/web_utils.dart';
