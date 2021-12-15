@@ -59,7 +59,6 @@ class SpatialFilteringPage extends HookWidget {
               children: [
                 Column(
                   children: [
-                    const Padding(padding: EdgeInsets.all(16.0)),
                     if (allFilters.value[SpatialFilters.gaussianLaplacian] ==
                         true) ...[
                       const Text(
