@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:pi_papers_2021_2/utils/hooks/image_hook.dart';
 import 'package:pi_papers_2021_2/utils/hooks/picker_hook.dart';
 
+import 'package:pi_papers_2021_2/style/color_palette.dart';
+
 import 'package:pi_papers_2021_2/widgets/widgets.dart';
 import 'package:pi_papers_2021_2/widgets/input/styled_checkbox.dart';
 
@@ -16,7 +18,7 @@ class SpatialFilteringPage extends HookWidget {
   Widget build(BuildContext context) {
     final inputImage = useImage();
     final outputImage = useImage();
-    final sigmaSlider = useState(1.4);
+    final sigmaValue = useState(1.4);
 
     final allFilters = useState({
       "Laplaciano": false,
@@ -60,6 +62,36 @@ class SpatialFilteringPage extends HookWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.all(16.0)),
+                    if (allFilters.value["Laplaciano do Gaussiano"] == true)
+                      const Text(
+                        'Valor de Sigma',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'SF Pro Display',
+                          color: ColorPalette.button,
+                        ),
+                      ),
+                    if (allFilters.value["Laplaciano do Gaussiano"] == true)
+                      SizedBox(
+                        width: 400,
+                        child: StyledSlider(
+                          min: 0.5,
+                          max: 2,
+                          value: sigmaValue.value.toDouble(),
+                          onChanged: (value) => sigmaValue.value = value,
+                          isDecimal: true,
+                        ),
+                      ),
+                  ],
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 Center(
                   child: FinishButton(
                     text: 'GO',
@@ -67,7 +99,7 @@ class SpatialFilteringPage extends HookWidget {
                       outputImage.data = operate(
                         inputImage.data,
                         allFilters.value,
-                        sigmaSlider.value,
+                        sigmaValue.value,
                       );
                     },
                   ),
