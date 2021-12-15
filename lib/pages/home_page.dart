@@ -57,6 +57,16 @@ class HomePage extends StatelessWidget {
                   ),
                   text: 'Filtro Smoothing',
                 ),
+                const VerticalDivider(
+                  color: Colors.transparent,
+                  width: 30,
+                ),
+                BigButton(
+                  onPressed: () => Navigator.of(context).pushNamed(
+                    '/spatial_filtering',
+                  ),
+                  text: 'Filtragem Espacial',
+                ),
               ],
             ),
           ],
