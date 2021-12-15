@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import 'package:pi_papers_2021_2/utils/hooks/image_hook.dart';
 import 'package:pi_papers_2021_2/utils/hooks/picker_hook.dart';
+import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
 import 'package:pi_papers_2021_2/style/color_palette.dart';
 
@@ -20,15 +21,9 @@ class SpatialFilteringPage extends HookWidget {
     final outputImage = useImage();
     final sigmaValue = useState(1.4);
 
-    final allFilters = useState({
-      "Laplaciano": false,
-      "Sharpening": false,
-      "Laplaciano do Gaussiano": false,
-      "Unsharp Masking": false,
-      "Highboost Filtering": false,
-      "Gradiente": false,
-      "Detector de Roberts/Sobel": false,
-    });
+    final allFilters = useState(
+      {for (final filter in SpatialFilters.values) filter: false},
+    );
 
     return Scaffold(
       appBar: const Header(title: 'Filtragem Espacial'),
@@ -65,7 +60,8 @@ class SpatialFilteringPage extends HookWidget {
                 Column(
                   children: [
                     const Padding(padding: EdgeInsets.all(16.0)),
-                    if (allFilters.value["Laplaciano do Gaussiano"] == true)
+                    if (allFilters.value[SpatialFilters.gaussianLaplacian] ==
+                        true) ...[
                       const Text(
                         'Valor de Sigma',
                         style: TextStyle(
@@ -74,7 +70,6 @@ class SpatialFilteringPage extends HookWidget {
                           color: ColorPalette.button,
                         ),
                       ),
-                    if (allFilters.value["Laplaciano do Gaussiano"] == true)
                       SizedBox(
                         width: 400,
                         child: StyledSlider(
@@ -86,6 +81,7 @@ class SpatialFilteringPage extends HookWidget {
                           isDecimal: true,
                         ),
                       ),
+                    ],
                   ],
                 ),
               ],
@@ -115,7 +111,7 @@ class SpatialFilteringPage extends HookWidget {
   }
 
   SizedBox operationControllers({
-    required ValueNotifier<Map> allFilters,
+    required ValueNotifier<Map<SpatialFilters, bool>> allFilters,
   }) {
     return SizedBox(
       width: 400,
@@ -123,10 +119,10 @@ class SpatialFilteringPage extends HookWidget {
         children: allFilters.value.keys
             .map(
               (filter) => StyledCheckbox(
-                filter: filter,
-                isChecked: allFilters.value[filter],
+                filter: filter.text,
+                isChecked: allFilters.value[filter] ?? false,
                 onChanged: (_) {
-                  var copy = Map<String, bool>.from(allFilters.value);
+                  final copy = Map<SpatialFilters, bool>.from(allFilters.value);
                   copy.update(filter, (value) => !value);
                   allFilters.value = copy;
                 },
