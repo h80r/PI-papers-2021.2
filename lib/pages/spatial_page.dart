@@ -43,16 +43,6 @@ class SpatialFilteringPage extends HookWidget {
                     operationControllers(
                       allFilters: allFilters,
                     ),
-                    FinishButton(
-                      text: 'GO',
-                      onPressed: () {
-                        outputImage.data = operate(
-                          inputImage.data,
-                          allFilters.value,
-                          sigmaSlider.value,
-                        );
-                      },
-                    ),
                   ],
                 ),
                 ImageSelector(
@@ -65,6 +55,23 @@ class SpatialFilteringPage extends HookWidget {
                     isResult: true,
                     image: outputImage.widget,
                   ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center(
+                  child: FinishButton(
+                    text: 'GO',
+                    onPressed: () {
+                      outputImage.data = operate(
+                        inputImage.data,
+                        allFilters.value,
+                        sigmaSlider.value,
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ],
