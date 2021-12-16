@@ -118,7 +118,7 @@ class SpatialFilteringPage extends HookWidget {
         children: allFilters.value.keys
             .map(
               (filter) => StyledCheckbox(
-                filter: filter.text,
+                filter: filter.asText(),
                 isChecked: allFilters.value[filter] ?? false,
                 onChanged: (_) {
                   final copy = Map<SpatialFilters, bool>.from(allFilters.value);
