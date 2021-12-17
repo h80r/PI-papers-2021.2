@@ -89,9 +89,7 @@ List<int> getNeighborhood({
           final newY = y < 0 ? imageHeight + y : y % imageHeight;
           final newX = x < 0 ? imageWidth + x : x % imageWidth;
 
-          neighborhood.add(
-            imageLuminanceMatrix[newY][newX],
-          );
+          neighborhood.add(imageLuminanceMatrix[newY][newX]);
         } else {
           neighborhood.add(-1);
         }

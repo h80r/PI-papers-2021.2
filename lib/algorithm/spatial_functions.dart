@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
@@ -10,7 +11,7 @@ typedef SpatialFilter = int Function(List<int> neighborhood);
 final _laplaceMask = getLaplaceKernel(1).flat;
 int laplaceFilter(List<int> neighborhood) {
   final product = neighborhood * _laplaceMask;
-  return product.reduce(sum) ~/ 9;
+  return product.reduce(sum);
 }
 
 List<int>? _gaussianMask;
@@ -63,7 +64,7 @@ Uint8List? operate(
           isConvolution: true,
         );
 
-        stepPixels[y][x] = filter(neighborhood);
+        stepPixels[y][x] = max(0, min(filter(neighborhood), 255));
       }
     }
 
