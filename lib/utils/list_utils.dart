@@ -1,22 +1,25 @@
-extension MatrixUtils on List<List<int>> {
-  List<List<int>> operator *(List<List<int>> other) {
-    assert(
-      length == other.length,
-      'The two matrices must have the same number of rows.',
-    );
-    assert(
-      first.length == other.first.length,
-      'The two matrices must have the same number of columns.',
-    );
-
-    return List<List<int>>.generate(
-      length,
-      (y) => List<int>.generate(first.length, (x) => this[y][x] * other[y][x]),
-    );
-  }
-
-  // TODO: Add documentation
+extension IntMatrixUtils on List<List<int>> {
   List<int> get flat => [for (final line in this) ...line];
+}
+
+extension DoubleMatrixUtiles on List<List<double>> {
+  List<List<double>> operator *(dynamic other) {
+    if (other is double) {
+      return map((row) => row.map((e) => e * other).toList()).toList();
+    } else if (other is List<List<double>>) {
+      if (other.length != length || other.first.length != first.length) {
+        throw Exception('Matrix dimensions must agree');
+      }
+
+      return List<List<double>>.generate(
+        length,
+        (y) => List<double>.generate(
+            first.length, (x) => this[y][x] * other[y][x]),
+      );
+    } else {
+      throw Exception('${other.runtimeType} multiplication not supported');
+    }
+  }
 }
 
 extension ArrayUtils on List<int> {
@@ -35,3 +38,7 @@ extension ArrayUtils on List<int> {
 
 int sum(int a, int b) => a + b;
 double sumD(double a, double b) => a + b;
+
+Iterable<int> range(int n) {
+  return Iterable.generate(n);
+}

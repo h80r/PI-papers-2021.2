@@ -73,7 +73,7 @@ class SpatialFilteringPage extends HookWidget {
                         width: 400,
                         child: StyledSlider(
                           min: 0.5,
-                          max: 2,
+                          max: 1.5,
                           value: sigmaValue.value.toDouble(),
                           onChanged: (value) => sigmaValue.value =
                               double.parse(value.toStringAsFixed(1)),

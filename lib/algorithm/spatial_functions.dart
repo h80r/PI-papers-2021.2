@@ -8,9 +8,8 @@ import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
 typedef SpatialFilter = int Function(List<int> neighborhood);
 
-final _laplaceMask = getLaplaceKernel(1).flat;
 int laplaceFilter(List<int> neighborhood) {
-  final product = neighborhood * _laplaceMask;
+  final product = neighborhood * laplaceMask;
   return product.reduce(sum);
 }
 
@@ -32,9 +31,8 @@ Uint8List? operate(
 ) {
   if (image == null || allFilters == null || sigma == null) return null;
 
-  _gaussianMask = getLoGKernel(sigma).flat;
+  _gaussianMask = laplacianOfGaussian(sigma).flat;
 
-  final timer = Stopwatch()..start();
   final selectedFilters = _processInput(allFilters);
 
   final decodedImage = decodeImage(image)!;
@@ -70,8 +68,6 @@ Uint8List? operate(
 
     initialPixels = stepPixels;
   }
-  timer.stop();
-  print('Time: ${timer.elapsed}');
 
   return reformat(
     width: decodedImage.width,
