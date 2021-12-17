@@ -73,7 +73,7 @@ class SpatialFilteringPage extends HookWidget {
                         width: 400,
                         child: StyledSlider(
                           min: 0.5,
-                          max: 2,
+                          max: 1.5,
                           value: sigmaValue.value.toDouble(),
                           onChanged: (value) => sigmaValue.value =
                               double.parse(value.toStringAsFixed(1)),
@@ -118,7 +118,7 @@ class SpatialFilteringPage extends HookWidget {
         children: allFilters.value.keys
             .map(
               (filter) => StyledCheckbox(
-                filter: filter.text,
+                filter: filter.asText(),
                 isChecked: allFilters.value[filter] ?? false,
                 onChanged: (_) {
                   final copy = Map<SpatialFilters, bool>.from(allFilters.value);

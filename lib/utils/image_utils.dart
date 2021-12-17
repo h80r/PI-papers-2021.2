@@ -1,6 +1,8 @@
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
+import 'package:pi_papers_2021_2/utils/list_utils.dart';
 
 /// Formats the [processedImage] to a [Uint8List] readable by Image widgets.
 ///
@@ -21,6 +23,34 @@ Uint8List reformat({
   return Uint8List.fromList(
     encodePng(Image.fromBytes(width, height, processedImage, format: format)),
   );
+}
+
+/// Converts a 1D list of pixels into a 2D matrix
+/// that follows an image's shape.
+///
+/// Parameters:
+/// - `imageLuminanceList`: 1D list of image's luminance values;
+/// - `imageWidth`: image's width.
+///
+/// Returns:
+/// - `imageMatrix`: 2D matrix of image's luminance values.
+List<Uint8List> convertListToMatrix(
+  Uint8List imageLuminanceList,
+  int imageWidth,
+) {
+  final imageHeight = imageLuminanceList.length ~/ imageWidth;
+  final imageMatrix = <Uint8List>[];
+
+  for (var i = 0; i < imageHeight; i++) {
+    imageMatrix.add(
+      imageLuminanceList.sublist(
+        imageWidth * i,
+        imageWidth * (i + 1),
+      ),
+    );
+  }
+
+  return imageMatrix;
 }
 
 /// Gets a pixel's neighborhood.
@@ -59,9 +89,7 @@ List<int> getNeighborhood({
           final newY = y < 0 ? imageHeight + y : y % imageHeight;
           final newX = x < 0 ? imageWidth + x : x % imageWidth;
 
-          neighborhood.add(
-            imageLuminanceMatrix[newY][newX],
-          );
+          neighborhood.add(imageLuminanceMatrix[newY][newX]);
         } else {
           neighborhood.add(-1);
         }
@@ -70,4 +98,50 @@ List<int> getNeighborhood({
   }
 
   return neighborhood;
+}
+
+const laplaceMask = [-1, -1, -1, -1, 8, -1, -1, -1, -1];
+
+double _laplacianOfGaussian(double sigma, double x, double y) {
+  final laplace = -1 /
+      (pi * pow(sigma, 4)) *
+      (1 - (pow(x, 2) + pow(y, 2)) / (2 * pow(sigma, 2))) *
+      exp(-(pow(x, 2) + pow(y, 2)) / (2 * pow(sigma, 2)));
+  return laplace;
+}
+
+List<List<double>> _discreteLaplacianOfGaussian(double sigma, int n) {
+  final kernel = [
+    for (var _ in range(n)) [for (var _ in range(n)) 0.0]
+  ];
+
+  for (var y in range(n)) {
+    for (var x in range(n)) {
+      kernel[y][x] =
+          _laplacianOfGaussian(sigma, (y - (n - 1) / 2), (x - (n - 1) / 2));
+    }
+  }
+
+  return kernel;
+}
+
+List<List<int>> laplacianOfGaussian(double sigma) {
+  Iterable<Iterable<int>> kernel;
+
+  sigma = min(max(sigma, 0.5), 1.5);
+
+  var currentScale = -1;
+  while (true) {
+    kernel = (_discreteLaplacianOfGaussian(sigma, 9) *
+            (currentScale / _laplacianOfGaussian(sigma, 0, 0)))
+        .map((e) => e.map((e) => e.round()));
+
+    if (kernel.map((e) => e.reduce(sum)).reduce(sum) == 0) {
+      break;
+    }
+
+    currentScale--;
+  }
+
+  return kernel.map((e) => e.toList()).toList();
 }
