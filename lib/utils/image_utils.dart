@@ -2,7 +2,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
-import 'package:pi_papers_2021_2/utils/list_util.dart';
+import 'package:pi_papers_2021_2/utils/list_utils.dart';
 
 /// Formats the [processedImage] to a [Uint8List] readable by Image widgets.
 ///
@@ -102,16 +102,12 @@ List<int> getNeighborhood({
   return neighborhood;
 }
 
-// TODO: Add documentation
-double _sum(double a, double b) => a + b;
-
 final _memoizedLaplace = <int, List<List<int>>>{};
 // TODO: Add documentation
 List<List<int>> getLaplaceKernel(int radius) {
   if (_memoizedLaplace.containsKey(radius)) {
     return _memoizedLaplace[radius]!;
   }
-  print('calculou laplace');
   final size = radius * 2 + 1;
 
   final kernel = List.generate(
@@ -136,8 +132,71 @@ double _gaussian(int x, int mu, double sigma) {
   return exp(-pow(((x - mu) / (sigma)), 2) / 2);
 }
 
+List<List<int>> _scalingFactor(
+  List<List<double>> gaussianKernel,
+  List<List<int>> laplacianKernel,
+) {
+  final mid = gaussianKernel.length ~/ 2;
+  var scale = 1;
+  var minScale = 0;
+  var maxScale = 0;
+
+  while (true) {
+    final target = gaussianKernel[0][mid] * laplacianKernel[0][mid] * scale;
+    if (target.round() == 1 && minScale == 0.0) minScale = scale;
+
+    final avoid = gaussianKernel[1][1] * laplacianKernel[1][1] * scale;
+    if (avoid.round() == 1 && maxScale == 0.0) maxScale = scale;
+
+    scale++;
+
+    if (minScale != 0.0 && maxScale != 0.0) {
+      scale = minScale;
+      break;
+    }
+  }
+
+  final results = <int, int>{};
+
+  while (scale <= maxScale) {
+    final copy = <List<int>>[];
+
+    for (var y = 0; y < gaussianKernel.length; y++) {
+      final line = <int>[];
+      for (var x = 0; x < gaussianKernel.length; x++) {
+        final value = gaussianKernel[y][x] * laplacianKernel[y][x] * scale;
+        line.add(value.round());
+      }
+      copy.add(line);
+    }
+
+    final result = copy.map((e) => e.reduce(sum)).reduce(sum);
+    results[result.abs()] = scale;
+
+    if (result == 0) break;
+
+    scale++;
+  }
+
+  final bestResult = results.keys.reduce(min);
+  final bestScale = results[bestResult]!;
+
+  final kernel = <List<int>>[];
+
+  for (var y = 0; y < gaussianKernel.length; y++) {
+    final line = <int>[];
+    for (var x = 0; x < gaussianKernel.length; x++) {
+      final value = gaussianKernel[y][x] * laplacianKernel[y][x] * bestScale;
+      line.add(value.round());
+    }
+    kernel.add(line);
+  }
+
+  return kernel;
+}
+
 // TODO: Add documentation
-List<List<int>> getGaussianKernel(int radius, double sigma) {
+List<List<double>> getGaussianKernel(int radius, double sigma) {
   final horizontalKernel = [
     for (int x in Iterable.generate(2 * radius + 1)) _gaussian(x, radius, sigma)
   ];
@@ -149,31 +208,29 @@ List<List<int>> getGaussianKernel(int radius, double sigma) {
       [for (final xh in horizontalKernel) xv * xh]
   ];
 
-  final kernelSum = basicKernel.map((line) => line.reduce(_sum)).reduce(_sum);
+  final kernelSum = basicKernel.map((line) => line.reduce(sumD)).reduce(sumD);
 
-  final normalizedKernel =
-      basicKernel.map((line) => line.map((value) => value / kernelSum));
-
-  final kernelMin =
-      normalizedKernel.map((line) => line.reduce(min)).reduce(min);
-
-  final kernel = normalizedKernel
-      .map((line) => line.map((value) => value ~/ kernelMin).toList())
+  final normalizedKernel = basicKernel
+      .map((line) => line.map((value) => value / kernelSum).toList())
       .toList();
 
-  return kernel;
+  return normalizedKernel;
 }
 
+final _memoizedGaussian = <double, List<List<int>>>{};
 // TODO: Add documentation
-List<List<int>> getLoGKernel(int radius, double sigma) {
-  final gaussianKernel = getGaussianKernel(radius, sigma);
-  final laplacianKernel = getLaplaceKernel(radius);
-
-  return gaussianKernel * laplacianKernel;
-}
-
-void main(List<String> args) {
-  for (final line in getGaussianKernel(4, 1.4)) {
-    print([for (final x in line) x]);
+List<List<int>> getLoGKernel(double sigma) {
+  if (_memoizedGaussian.containsKey(sigma)) {
+    return _memoizedGaussian[sigma]!;
   }
+
+  final gaussianKernel = getGaussianKernel(4, sigma);
+  final laplacianKernel = getLaplaceKernel(4)
+      .map((e) => e.map((e) => e > 0 ? -1 : 1).toList())
+      .toList();
+
+  final kernel = _scalingFactor(gaussianKernel, laplacianKernel);
+
+  _memoizedGaussian[sigma] = kernel;
+  return kernel;
 }

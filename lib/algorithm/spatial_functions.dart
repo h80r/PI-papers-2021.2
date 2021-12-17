@@ -1,35 +1,22 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:image/image.dart';
 import 'package:pi_papers_2021_2/utils/image_utils.dart';
-import 'package:pi_papers_2021_2/utils/list_util.dart';
+import 'package:pi_papers_2021_2/utils/list_utils.dart';
 import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
-typedef SpatialFilter = int Function(List<int> neighborhood, double sigma);
+typedef SpatialFilter = int Function(List<int> neighborhood);
 
-int laplaceFilter(List<int> neighborhood, double sigma) {
-  final mask = getLaplaceKernel(sqrt(neighborhood.length) ~/ 2).flat;
-
-  var index = 0;
-  final sum = neighborhood.fold<int>(
-    0,
-    (sum, value) => sum + value * mask[index++],
-  );
-
-  return sum ~/ mask.length;
+final _laplaceMask = getLaplaceKernel(1).flat;
+int laplaceFilter(List<int> neighborhood) {
+  final product = neighborhood * _laplaceMask;
+  return product.reduce(sum) ~/ 9;
 }
 
-int gaussianFilter(List<int> neighborhood, double sigma) {
-  final mask = getLoGKernel(sqrt(neighborhood.length) ~/ 2, sigma).flat;
-
-  var index = 0;
-  final sum = neighborhood.fold<int>(
-    0,
-    (sum, value) => sum + value * mask[index++],
-  );
-
-  return sum ~/ mask.length;
+List<int>? _gaussianMask;
+int gaussianFilter(List<int> neighborhood) {
+  final product = neighborhood * _gaussianMask!;
+  return product.reduce(sum);
 }
 
 List<SpatialFilter> _processInput(Map<SpatialFilters, bool> allFilters) {
@@ -43,6 +30,8 @@ Uint8List? operate(
   double? sigma,
 ) {
   if (image == null || allFilters == null || sigma == null) return null;
+
+  _gaussianMask = getLoGKernel(sigma).flat;
 
   final timer = Stopwatch()..start();
   final selectedFilters = _processInput(allFilters);
@@ -59,9 +48,6 @@ Uint8List? operate(
     (row) => [...initialPixels[row]],
   );
 
-  var totalSteps = 0;
-  final expectedSteps = decodedImage.width * decodedImage.height;
-
   for (final filter in selectedFilters) {
     final isLaplace = filter == laplaceFilter;
     final imageLuminanceMatrix =
@@ -77,16 +63,13 @@ Uint8List? operate(
           isConvolution: true,
         );
 
-        stepPixels[y][x] = filter(neighborhood, sigma);
-        totalSteps++;
+        stepPixels[y][x] = filter(neighborhood);
       }
     }
 
     initialPixels = stepPixels;
   }
   timer.stop();
-
-  print('$totalSteps | $expectedSteps');
   print('Time: ${timer.elapsed}');
 
   return reformat(

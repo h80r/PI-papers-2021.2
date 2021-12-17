@@ -16,10 +16,7 @@ extension MatrixUtils on List<List<int>> {
   }
 
   // TODO: Add documentation
-  List<int> get flat => fold<List<int>>(
-        [],
-        (List<int> result, List<int> row) => result..addAll(row),
-      );
+  List<int> get flat => [for (final line in this) ...line];
 }
 
 extension ArrayUtils on List<int> {
@@ -35,3 +32,6 @@ extension ArrayUtils on List<int> {
     );
   }
 }
+
+int sum(int a, int b) => a + b;
+double sumD(double a, double b) => a + b;
