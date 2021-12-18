@@ -145,3 +145,11 @@ List<List<int>> laplacianOfGaussian(double sigma) {
 
   return kernel.map((e) => e.toList()).toList();
 }
+
+List<int> getDetectorMask(String detector) {
+  if (detector == 'Roberts') {
+    return [1, 0, 0, -1, 0, 0, 0, 0, 0];
+  } else {
+    return [-1, 0, 1, -2, 0, 2, -1, 0, 1];
+  }
+}
