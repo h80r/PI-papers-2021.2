@@ -28,9 +28,27 @@ extension Conversors on SpatialFilters {
     SpatialFilters.unsharpMasking: laplaceFilter,
     SpatialFilters.highboostFiltering: laplaceFilter,
     SpatialFilters.gradient: laplaceFilter,
-    SpatialFilters.robertsSobel: laplaceFilter,
+    SpatialFilters.robertsSobel: robertsSobelFilter,
   };
 
   SpatialFilter asOperation() =>
       _functionMap[this] ?? _functionMap.values.first;
+}
+
+enum DetectorOptions {
+  roberts,
+  sobel,
+}
+
+extension Types on DetectorOptions {
+  static const _stringMap = {
+    DetectorOptions.roberts: 'Roberts',
+    DetectorOptions.sobel: 'Sobel',
+  };
+
+  String asText() => _stringMap[this] ?? _stringMap.values.first;
+
+  DetectorOptions change() => this == DetectorOptions.roberts
+      ? DetectorOptions.sobel
+      : DetectorOptions.roberts;
 }
