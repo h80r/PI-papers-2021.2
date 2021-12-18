@@ -34,10 +34,17 @@ Uint8List? operate(
   Uint8List? image,
   Map<SpatialFilters, bool>? allFilters,
   double? sigma,
+  DetectorOptions? detector,
 ) {
-  if (image == null || allFilters == null || sigma == null) return null;
+  if (image == null ||
+      allFilters == null ||
+      sigma == null ||
+      detector == null) {
+    return null;
+  }
 
   _gaussianMask = laplacianOfGaussian(sigma).flat;
+  _detectorMask = getDetectorMask(detector.asText());
 
   final selectedFilters = _processInput(allFilters);
 
@@ -54,7 +61,8 @@ Uint8List? operate(
   );
 
   for (final filter in selectedFilters) {
-    final isLaplace = filter == laplaceFilter;
+    final threeNeighborhood =
+        (filter == laplaceFilter || filter == robertsSobelFilter);
     final imageLuminanceMatrix =
         initialPixels.map((e) => Uint8List.fromList(e)).toList();
 
@@ -64,7 +72,7 @@ Uint8List? operate(
           imageLuminanceMatrix: imageLuminanceMatrix,
           yPosition: y,
           xPosition: x,
-          neighborhoodSize: isLaplace ? 3 : 9,
+          neighborhoodSize: threeNeighborhood ? 3 : 9,
           isConvolution: true,
         );
 

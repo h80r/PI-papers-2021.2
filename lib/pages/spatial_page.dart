@@ -131,6 +131,7 @@ class SpatialFilteringPage extends HookWidget {
                         inputImage.data,
                         allFilters.value,
                         sigmaValue.value,
+                        detectorValue.value,
                       );
                     },
                   ),
