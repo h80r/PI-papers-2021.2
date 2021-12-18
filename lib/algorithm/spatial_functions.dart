@@ -110,18 +110,22 @@ Uint8List? operate(
     final imageLuminanceMatrix =
         initialPixels.map((e) => Uint8List.fromList(e)).toList();
 
-    for (var y = 0; y < initialPixels.length; y++) {
-      for (var x = 0; x < initialPixels[0].length; x++) {
-        final neighborhood = getNeighborhood(
-          imageLuminanceMatrix: imageLuminanceMatrix,
-          yPosition: y,
-          xPosition: x,
-          neighborhoodSize: threeNeighborhood ? 3 : 9,
-          isConvolution: true,
-        );
+    if (filter != unsharpMaskingFilter) {
+      for (var y = 0; y < initialPixels.length; y++) {
+        for (var x = 0; x < initialPixels[0].length; x++) {
+          final neighborhood = getNeighborhood(
+            imageLuminanceMatrix: imageLuminanceMatrix,
+            yPosition: y,
+            xPosition: x,
+            neighborhoodSize: threeNeighborhood ? 3 : 9,
+            isConvolution: true,
+          );
 
-        stepPixels[y][x] = max(0, min(filter(neighborhood), 255));
+          stepPixels[y][x] = max(0, min(filter(neighborhood), 255));
+        }
       }
+    } else {
+      stepPixels = filter(initialPixels);
     }
 
     initialPixels = stepPixels;
