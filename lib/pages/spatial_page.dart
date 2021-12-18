@@ -20,6 +20,7 @@ class SpatialFilteringPage extends HookWidget {
     final inputImage = useImage();
     final outputImage = useImage();
     final sigmaValue = useState(1.4);
+    final detectorValue = useState(DetectorOptions.roberts);
 
     final allFilters = useState(
       {for (final filter in SpatialFilters.values) filter: false},
@@ -55,7 +56,7 @@ class SpatialFilteringPage extends HookWidget {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Column(
                   children: [
@@ -78,6 +79,40 @@ class SpatialFilteringPage extends HookWidget {
                           onChanged: (value) => sigmaValue.value =
                               double.parse(value.toStringAsFixed(1)),
                           isDecimal: true,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                Column(
+                  children: [
+                    if (allFilters.value[SpatialFilters.robertsSobel] ==
+                        true) ...[
+                      const Text(
+                        'Detector',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontFamily: 'SF Pro Display',
+                          color: ColorPalette.button,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 400,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: DetectorOptions.values
+                              .map(
+                                (e) => Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: StyledRadio(
+                                    value: e.asText(),
+                                    groupValue: detectorValue.value.asText(),
+                                    onChanged: (value) => detectorValue.value =
+                                        detectorValue.value.change(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
                         ),
                       ),
                     ],
