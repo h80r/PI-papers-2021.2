@@ -19,6 +19,12 @@ int gaussianFilter(List<int> neighborhood) {
   return product.reduce(sum);
 }
 
+List<int>? _detectorMask;
+int robertsSobelFilter(List<int> neighborhood) {
+  final product = neighborhood * _detectorMask!;
+  return product.reduce(sum);
+}
+
 List<SpatialFilter> _processInput(Map<SpatialFilters, bool> allFilters) {
   final filters = {...allFilters}..removeWhere((key, value) => !value);
   return filters.keys.map((e) => e.asOperation()).toList();
