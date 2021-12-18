@@ -6,21 +6,24 @@ import 'package:pi_papers_2021_2/utils/image_utils.dart';
 import 'package:pi_papers_2021_2/utils/list_utils.dart';
 import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
-typedef SpatialFilter = int Function(List<int> neighborhood);
+typedef SpatialFilter = dynamic Function(dynamic parameter);
 
-int laplaceFilter(List<int> neighborhood) {
+int laplaceFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * laplaceMask;
   return product.reduce(sum);
 }
 
 List<int>? _gaussianMask;
-int gaussianFilter(List<int> neighborhood) {
+int gaussianFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * _gaussianMask!;
   return product.reduce(sum);
 }
 
 List<int>? _detectorMask;
-int robertsSobelFilter(List<int> neighborhood) {
+int robertsSobelFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * _detectorMask!;
   return product.reduce(sum);
 }
