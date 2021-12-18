@@ -5,7 +5,6 @@ enum SpatialFilters {
   gaussianLaplacian,
   unsharpMasking,
   highboostFiltering,
-  gradient,
   robertsSobel,
 }
 
@@ -15,19 +14,16 @@ extension Conversors on SpatialFilters {
     SpatialFilters.gaussianLaplacian: 'Laplaciano do Gaussiano',
     SpatialFilters.unsharpMasking: 'Unsharp Masking',
     SpatialFilters.highboostFiltering: 'Highboost Filtering',
-    SpatialFilters.gradient: 'Gradiente',
     SpatialFilters.robertsSobel: 'Detector de Roberts/Sobel',
   };
 
   String asText() => _stringMap[this] ?? _stringMap.values.first;
 
-  // TODO: Replace missing filters
   static const _functionMap = {
     SpatialFilters.laplacian: laplaceFilter,
     SpatialFilters.gaussianLaplacian: gaussianFilter,
     SpatialFilters.unsharpMasking: unsharpMaskingFilter,
     SpatialFilters.highboostFiltering: highboostFilter,
-    SpatialFilters.gradient: laplaceFilter,
     SpatialFilters.robertsSobel: robertsSobelFilter,
   };
 
