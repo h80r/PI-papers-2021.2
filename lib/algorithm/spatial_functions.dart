@@ -6,23 +6,71 @@ import 'package:pi_papers_2021_2/utils/image_utils.dart';
 import 'package:pi_papers_2021_2/utils/list_utils.dart';
 import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
-typedef SpatialFilter = int Function(List<int> neighborhood);
+import 'package:pi_papers_2021_2/models/mask.dart';
+import 'package:pi_papers_2021_2/algorithm/smoothing_functions.dart'
+    as smoothing;
 
-int laplaceFilter(List<int> neighborhood) {
+typedef SpatialFilter = dynamic Function(dynamic parameter);
+
+int laplaceFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * laplaceMask;
   return product.reduce(sum);
 }
 
 List<int>? _gaussianMask;
-int gaussianFilter(List<int> neighborhood) {
+int gaussianFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * _gaussianMask!;
   return product.reduce(sum);
 }
 
 List<int>? _detectorMask;
-int robertsSobelFilter(List<int> neighborhood) {
+int robertsSobelFilter(dynamic parameter) {
+  List<int> neighborhood = parameter;
   final product = neighborhood * _detectorMask!;
   return product.reduce(sum);
+}
+
+void unsharpMaskingFilter(dynamic _) {}
+
+void highboostFilter(dynamic _) {}
+
+List<List<int>> highlightFilters(dynamic parameters) {
+  List<List<int>> initialPixels = parameters['initialPixels'];
+  int k = parameters['constantK'];
+  final currentImage = initialPixels.flat;
+  const neighborhoodSize = 5;
+
+  final blurryImage = decodeImage(
+    smoothing.operate(
+      reformat(
+        width: initialPixels[0].length,
+        height: initialPixels.length,
+        processedImage: Uint8List.fromList(currentImage),
+        format: Format.luminance,
+      ),
+      Mask.gaussian(neighborhoodSize),
+      neighborhoodSize,
+      smoothing.convolutionSolution,
+    )!,
+  );
+
+  final mask = [
+    for (var i = 0; i < currentImage.length; i++)
+      currentImage[i] - blurryImage![i]
+  ];
+
+  final resultImage = [
+    for (var i = 0; i < currentImage.length; i++)
+      currentImage[i] + (k * mask[i])
+  ];
+
+  final stepPixels = convertListToMatrix(
+    Uint8List.fromList(resultImage),
+    initialPixels[0].length,
+  );
+  return stepPixels;
 }
 
 List<SpatialFilter> _processInput(Map<SpatialFilters, bool> allFilters) {
@@ -66,18 +114,25 @@ Uint8List? operate(
     final imageLuminanceMatrix =
         initialPixels.map((e) => Uint8List.fromList(e)).toList();
 
-    for (var y = 0; y < initialPixels.length; y++) {
-      for (var x = 0; x < initialPixels[0].length; x++) {
-        final neighborhood = getNeighborhood(
-          imageLuminanceMatrix: imageLuminanceMatrix,
-          yPosition: y,
-          xPosition: x,
-          neighborhoodSize: threeNeighborhood ? 3 : 9,
-          isConvolution: true,
-        );
+    if (filter != unsharpMaskingFilter && filter != highboostFilter) {
+      for (var y = 0; y < initialPixels.length; y++) {
+        for (var x = 0; x < initialPixels[0].length; x++) {
+          final neighborhood = getNeighborhood(
+            imageLuminanceMatrix: imageLuminanceMatrix,
+            yPosition: y,
+            xPosition: x,
+            neighborhoodSize: threeNeighborhood ? 3 : 9,
+            isConvolution: true,
+          );
 
-        stepPixels[y][x] = max(0, min(filter(neighborhood), 255));
+          stepPixels[y][x] = max(0, min(filter(neighborhood), 255));
+        }
       }
+    } else {
+      stepPixels = highlightFilters({
+        'initialPixels': initialPixels,
+        'constantK': filter == unsharpMaskingFilter ? 1 : 2,
+      });
     }
 
     initialPixels = stepPixels;

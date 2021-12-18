@@ -25,8 +25,8 @@ extension Conversors on SpatialFilters {
   static const _functionMap = {
     SpatialFilters.laplacian: laplaceFilter,
     SpatialFilters.gaussianLaplacian: gaussianFilter,
-    SpatialFilters.unsharpMasking: laplaceFilter,
-    SpatialFilters.highboostFiltering: laplaceFilter,
+    SpatialFilters.unsharpMasking: unsharpMaskingFilter,
+    SpatialFilters.highboostFiltering: highboostFilter,
     SpatialFilters.gradient: laplaceFilter,
     SpatialFilters.robertsSobel: robertsSobelFilter,
   };
