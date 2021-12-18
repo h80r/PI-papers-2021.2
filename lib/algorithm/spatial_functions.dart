@@ -6,6 +6,10 @@ import 'package:pi_papers_2021_2/utils/image_utils.dart';
 import 'package:pi_papers_2021_2/utils/list_utils.dart';
 import 'package:pi_papers_2021_2/utils/spatial_enum.dart';
 
+import 'package:pi_papers_2021_2/models/mask.dart';
+import 'package:pi_papers_2021_2/algorithm/smoothing_functions.dart'
+    as smoothing;
+
 typedef SpatialFilter = dynamic Function(dynamic parameter);
 
 int laplaceFilter(dynamic parameter) {
@@ -26,6 +30,43 @@ int robertsSobelFilter(dynamic parameter) {
   List<int> neighborhood = parameter;
   final product = neighborhood * _detectorMask!;
   return product.reduce(sum);
+}
+
+List<List<int>> unsharpMaskingFilter(dynamic parameter) {
+  List<List<int>> initialPixels = parameter;
+  final currentImage = initialPixels.flat;
+  const k = 1;
+  const neighborhoodSize = 5;
+
+  final blurryImage = decodeImage(
+    smoothing.operate(
+      reformat(
+        width: initialPixels[0].length,
+        height: initialPixels.length,
+        processedImage: Uint8List.fromList(currentImage),
+        format: Format.luminance,
+      ),
+      Mask.gaussian(neighborhoodSize),
+      neighborhoodSize,
+      smoothing.convolutionSolution,
+    )!,
+  );
+
+  final mask = [
+    for (var i = 0; i < currentImage.length; i++)
+      currentImage[i] - blurryImage![i]
+  ];
+
+  final resultImage = [
+    for (var i = 0; i < currentImage.length; i++)
+      currentImage[i] + (k * mask[i])
+  ];
+
+  final stepPixels = convertListToMatrix(
+    Uint8List.fromList(resultImage),
+    initialPixels[0].length,
+  );
+  return stepPixels;
 }
 
 List<SpatialFilter> _processInput(Map<SpatialFilters, bool> allFilters) {
