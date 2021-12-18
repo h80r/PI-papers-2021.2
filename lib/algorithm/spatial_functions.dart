@@ -32,10 +32,14 @@ int robertsSobelFilter(dynamic parameter) {
   return product.reduce(sum);
 }
 
-List<List<int>> unsharpMaskingFilter(dynamic parameter) {
-  List<List<int>> initialPixels = parameter;
+void unsharpMaskingFilter(dynamic _) {}
+
+void highboostFilter(dynamic _) {}
+
+List<List<int>> highlightFilters(dynamic parameters) {
+  List<List<int>> initialPixels = parameters['initialPixels'];
+  int k = parameters['constantK'];
   final currentImage = initialPixels.flat;
-  const k = 1;
   const neighborhoodSize = 5;
 
   final blurryImage = decodeImage(
@@ -110,7 +114,7 @@ Uint8List? operate(
     final imageLuminanceMatrix =
         initialPixels.map((e) => Uint8List.fromList(e)).toList();
 
-    if (filter != unsharpMaskingFilter) {
+    if (filter != unsharpMaskingFilter && filter != highboostFilter) {
       for (var y = 0; y < initialPixels.length; y++) {
         for (var x = 0; x < initialPixels[0].length; x++) {
           final neighborhood = getNeighborhood(
@@ -125,7 +129,10 @@ Uint8List? operate(
         }
       }
     } else {
-      stepPixels = filter(initialPixels);
+      stepPixels = highlightFilters({
+        'initialPixels': initialPixels,
+        'constantK': filter == unsharpMaskingFilter ? 1 : 2,
+      });
     }
 
     initialPixels = stepPixels;

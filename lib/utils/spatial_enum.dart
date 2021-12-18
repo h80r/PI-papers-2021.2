@@ -26,7 +26,7 @@ extension Conversors on SpatialFilters {
     SpatialFilters.laplacian: laplaceFilter,
     SpatialFilters.gaussianLaplacian: gaussianFilter,
     SpatialFilters.unsharpMasking: unsharpMaskingFilter,
-    SpatialFilters.highboostFiltering: laplaceFilter,
+    SpatialFilters.highboostFiltering: highboostFilter,
     SpatialFilters.gradient: laplaceFilter,
     SpatialFilters.robertsSobel: robertsSobelFilter,
   };
